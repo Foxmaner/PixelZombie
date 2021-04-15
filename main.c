@@ -6,13 +6,11 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_image.h>
-#include <stdbool.h>
 #include "gridSystem.h"
 
 #define WINDOW_WIDTH (1600)
 #define WINDOW_HEIGHT (800)
 
-bool init(SDL_Renderer **gRenderer);
 void renderBackground(SDL_Renderer *gRenderer, SDL_Texture *mTile, SDL_Rect gTiles[]);
 void loadMedia(SDL_Renderer *gRenderer,SDL_Texture **mTiles, SDL_Rect gTiles[]);
 
