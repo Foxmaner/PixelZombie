@@ -105,7 +105,7 @@ void renderBackground(SDL_Renderer *gRenderer, SDL_Texture *mTiles, SDL_Rect gTi
 }
 
 void loadMedia(SDL_Renderer *gRenderer, SDL_Texture **mTiles, SDL_Rect gTiles[]){
-    SDL_Surface* gTilesSurface = IMG_Load("resources/TILES.PNG");
+    SDL_Surface* gTilesSurface = IMG_Load("resources/groundTextures/grass1.PNG");
     *mTiles = SDL_CreateTextureFromSurface(gRenderer, gTilesSurface);
     for (int i = 0; i < 16; i++) {
         gTiles[i].x = i*getTileWidth();
