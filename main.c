@@ -16,7 +16,6 @@ int WinMain(void){
     // Setup
     //-------------------------------------------
     // Setup
-    SDL_Renderer *gRenderer = NULL;
 
     if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER) != 0)
     {
@@ -34,14 +33,14 @@ int WinMain(void){
 	    return 1;
     }
 
-    
-    // set to 1 when window close button is pressed
-    int close_requested = 0;
 
 
     // End of Setup
     //-------------------------------------------
     // Start of continuing render-loop 
+
+    // set to 1 when window close button is pressed
+    int close_requested = 0;
 
     while (!close_requested)
     {
