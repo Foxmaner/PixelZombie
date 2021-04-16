@@ -1,4 +1,5 @@
 //v0.1
+//Create map
 
 #include <stdio.h>
 #include <stdlib.h>
