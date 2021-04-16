@@ -18,6 +18,10 @@ void loadMedia(SDL_Renderer *gRenderer,SDL_Texture **mTiles, SDL_Rect gTiles[]);
 
 
 int WinMain(void){
+    
+    // Setup
+    //-------------------------------------------
+    // Setup
     SDL_Renderer *gRenderer = NULL;
 
     if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER) != 0)
@@ -52,7 +56,10 @@ int WinMain(void){
 
     loadMedia(gRenderer, &mTiles, gTiles);
 
-    // main loop
+    // End of Setup
+    //-------------------------------------------
+    // Start of continuing render-loop 
+
     while (!close_requested)
     {
         // process events
@@ -76,6 +83,10 @@ int WinMain(void){
     SDL_Quit();
 }
 
+
+//
+//Function which renders the whole game-field
+//
 void renderBackground(SDL_Renderer *gRenderer, SDL_Texture *mTiles, SDL_Rect gTiles[]){
     
     SDL_Rect possition;
