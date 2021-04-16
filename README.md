@@ -1,5 +1,5 @@
 # Projektkurs: PixelZombie
-Ett projekt under första året på KTH, för att lära/öva på att bygga stora program samt scrum metodiken.
+Ett projekt under första året på KTH, för att lära/öva på att bygga stora program samt scrum metodiken. Programmet är en arcade shooter. 
 
 ## Ett projekt av
 * Eskil B
@@ -7,4 +7,5 @@ Ett projekt under första året på KTH, för att lära/öva på att bygga stora
 * Carl G
 * Anton C
 * Markus H
+
 
