@@ -11,7 +11,7 @@
 #include "map.h"
 
 #define WINDOW_WIDTH (1200)
-#define WINDOW_HEIGHT (800)
+#define WINDOW_HEIGHT (1000)
 
 
 void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTile, SDL_Rect gTiles[]);
