@@ -10,7 +10,7 @@
 
 #include "map.h"
 
-#define WINDOW_WIDTH (1200)
+#define WINDOW_WIDTH (800)
 #define WINDOW_HEIGHT (800)
 
 
@@ -46,7 +46,7 @@ int WinMain(void){
 
     // Initilize background
     SDL_Texture *mTiles = NULL;
-    SDL_Rect gTiles[16];
+    SDL_Rect gTiles[32];
    
    
 
@@ -105,9 +105,9 @@ void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTiles, SDL_Rect gTil
 
 void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[]){
 
-    SDL_Surface* gTilesSurface = IMG_Load("resources/TILES.PNG");
+    SDL_Surface* gTilesSurface = IMG_Load("resources/TexturV4.PNG");
     *mTiles = SDL_CreateTextureFromSurface(renderer, gTilesSurface);
-    for (int i = 0; i < 16; i++) {
+    for (int i = 0; i < 32; i++) {
         gTiles[i].x = i*getTileWidth();
         gTiles[i].y = 0;
         gTiles[i].w = getTileWidth();
