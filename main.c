@@ -7,7 +7,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_image.h>
-#include <stdbool.h>
 
 #include "map.h"
 
@@ -24,7 +23,7 @@ int WinMain(void){
     //-------------------------------------------
     // Setup
 
-    if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
+    if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER) != 0)
     {
         printf("error initializing SDL: %s\n", SDL_GetError());
         return 1;
@@ -49,7 +48,6 @@ int WinMain(void){
     SDL_Texture *mTiles = NULL;
     SDL_Rect gTiles[16];
    
-  
    
 
 
@@ -77,14 +75,16 @@ int WinMain(void){
             }
 
         }
+        SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+        SDL_RenderClear(renderer);
+        renderBackground(renderer, mTiles, gTiles);
+        SDL_RenderPresent(renderer);
     }
-    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-    SDL_RenderClear(renderer);
 
-    renderBackground(renderer, mTiles, gTiles);
-    SDL_RenderPresent(renderer);
-    SDL_DestroyWindow(win);
-    SDL_Quit();
+    
+
+   // SDL_DestroyWindow(win);
+   // SDL_Quit();
 }
 
 void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTiles, SDL_Rect gTiles[]){
@@ -107,7 +107,7 @@ void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[]){
 
     SDL_Surface* gTilesSurface = IMG_Load("resources/TILES.PNG");
     *mTiles = SDL_CreateTextureFromSurface(renderer, gTilesSurface);
-    for (int i = 0; i < 32; i++) {
+    for (int i = 0; i < 16; i++) {
         gTiles[i].x = i*getTileWidth();
         gTiles[i].y = 0;
         gTiles[i].w = getTileWidth();
