@@ -8,6 +8,8 @@
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_image.h>
 
+#include "map.h"
+
 #define WINDOW_WIDTH (1200)
 #define WINDOW_HEIGHT (800)
 
