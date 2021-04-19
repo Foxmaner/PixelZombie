@@ -88,17 +88,17 @@ int WinMain(void){
 }
 
 void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTiles, SDL_Rect gTiles[]){
-    SDL_Rect possition;
-    possition.y = 0;
-    possition.x = 0;
-    possition.h = getTileHeight();
-    possition.w = getTileWidth();
+    SDL_Rect position;
+    position.y = 0;
+    position.x = 0;
+    position.h = getTileHeight();
+    position.w = getTileWidth();
     
     for (int i = 0; i<getTileColumns(); i++) {
         for (int j = 0; j<getTileRows(); j++) {
-            possition.y = i*getTileHeight();
-            possition.x = j*getTileWidth();
-            SDL_RenderCopyEx(renderer, mTiles, &gTiles[getTileGrid(i,j)],&possition , 0, NULL, SDL_FLIP_NONE);
+            position.y = i*getTileHeight();
+            position.x = j*getTileWidth();
+            SDL_RenderCopyEx(renderer, mTiles, &gTiles[getTileGrid(i,j)],&position , 0, NULL, SDL_FLIP_NONE);
         }
     }
 }
