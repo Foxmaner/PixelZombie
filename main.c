@@ -34,6 +34,11 @@ int WinMain(void){
 	    return 1;
     }
 
+    //Initilize renderer
+    SDL_Renderer *renderer = NULL;
+    renderer = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+
 
 
     // End of Setup
@@ -61,6 +66,22 @@ int WinMain(void){
 
     SDL_DestroyWindow(win);
     SDL_Quit();
+}
+
+void renderBackground(SDL_Renderer *gRenderer, SDL_Texture *mTiles, SDL_Rect gTiles[]){
+    SDL_Rect possition;
+    possition.y = 0;
+    possition.x = 0;
+    possition.h = getTileHeight();
+    possition.w = getTileWidth();
+    
+    for (int i = 0; i<getTileColumns(); i++) {
+        for (int j = 0; j<getTileRows(); j++) {
+            possition.y = i*getTileHeight();
+            possition.x = j*getTileWidth();
+            SDL_RenderCopyEx(gRenderer, mTiles, &gTiles[getTileGrid(i,j)],&possition , 0, NULL, SDL_FLIP_NONE);
+        }
+    }
 }
 
 
