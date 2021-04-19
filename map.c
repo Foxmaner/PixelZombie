@@ -41,8 +41,8 @@ PRIVATE int tileGrid[32][32] = {
 
 PRIVATE int TILE_ROWS = 32;
 PRIVATE int TILE_COLUMNS = 32;
-PRIVATE int TILE_WIDTH = 8;
-PRIVATE int TILE_HEIGHT = 8;
+PRIVATE int TILE_WIDTH = 16;
+PRIVATE int TILE_HEIGHT = 16;
 
 PUBLIC int getTileRows(){
     return TILE_ROWS;
