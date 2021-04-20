@@ -16,12 +16,12 @@ struct zombie_type{
 };
 
 PUBLIC Zombie createZombie(int x, int y){
-    Zombie s = malloc(sizeof(struct zombie_type));
-    s->ZOMBIE_POSITION_Y = y;
-    s->ZOMBIE_POSITION_X = x;
-    s->ZOMBIE_FRAME = 0;
-    s->slow = 1;
-    return s;
+    Zombie z = malloc(sizeof(struct zombie_type));
+    z->ZOMBIE_POSITION_Y = y;
+    z->ZOMBIE_POSITION_X = x;
+    z->ZOMBIE_FRAME = 0;
+    z->slow = 1;
+    return z;
 }
 
 void setY(Zombie a, int y){
