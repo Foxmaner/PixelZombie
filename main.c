@@ -9,12 +9,13 @@
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_image.h>
 #include "map.h"
+#include "zombie.h"
 
 #define WINDOW_WIDTH (1024)
 #define WINDOW_HEIGHT (1024)
 
 void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTile, SDL_Rect gTiles[]);
-void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie);
+void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[]);
 
 int WinMain(void){
     // Setup
@@ -45,14 +46,15 @@ int WinMain(void){
    
     //Alien
     SDL_Texture *mZombie = NULL;
-    SDL_Rect gZombie[100];
-    
-
+    SDL_Rect gZombie[1];
+    Zombie z1;
+    z1 = createZombie(512,512);
+    SDL_Rect z1position = {getZombiePositionX(z1),getZombiePositionY(z1),54,54};
 
     // End of Setup
     //-------------------------------------------
     // Start of continuing render-loop
-    loadMedia(renderer, &mTiles, gTiles, &mZombie);
+    loadMedia(renderer, &mTiles, gTiles, &mZombie, gZombie);
     
     // set to 1 when window close button is pressed
     int close_requested = 0;
@@ -75,6 +77,7 @@ int WinMain(void){
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
         SDL_RenderClear(renderer);
         renderBackground(renderer, mTiles, gTiles);
+        SDL_RenderCopyEx(renderer, mZombie, &gZombie[getZombieFrame(z1)], &z1position, 0, NULL, SDL_FLIP_NONE);
         SDL_RenderPresent(renderer);
     }
 
@@ -99,7 +102,7 @@ void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTiles, SDL_Rect gTil
     }
 }
 
-void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie){
+void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[]){
 
     SDL_Surface* gTilesSurface = IMG_Load("resources/Textur32x32V4.PNG");
     *mTiles = SDL_CreateTextureFromSurface(renderer, gTilesSurface);
@@ -110,7 +113,12 @@ void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], 
         gTiles[i].h = getTileHeight();
     }
 
-    SDL_Surface* gZombieSurface = IMG_Load("resources/ZombieSheet.png");
+    SDL_Surface* gZombieSurface = IMG_Load("resources/ZombieSheetSizeX2.png");
     *mZombie = SDL_CreateTextureFromSurface(renderer, gZombieSurface);
-
+    for(int i = 0; i < 1; i++){
+        gZombie[i].x = 0;
+        gZombie[i].y = 0;
+        gZombie[i].w = 54;
+        gZombie[i].h = 54;
+    }
 }
