@@ -14,7 +14,7 @@
 #define WINDOW_HEIGHT (1024)
 
 void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTile, SDL_Rect gTiles[]);
-void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[]);
+void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie);
 
 int WinMain(void){
     // Setup
@@ -44,13 +44,15 @@ int WinMain(void){
    
    
     //Alien
-
+    SDL_Texture *mZombie = NULL;
+    SDL_Rect gZombie[100];
+    
 
 
     // End of Setup
     //-------------------------------------------
     // Start of continuing render-loop
-    loadMedia(renderer, &mTiles, gTiles);
+    loadMedia(renderer, &mTiles, gTiles, &mZombie);
     
     // set to 1 when window close button is pressed
     int close_requested = 0;
@@ -97,7 +99,7 @@ void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTiles, SDL_Rect gTil
     }
 }
 
-void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[]){
+void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie){
 
     SDL_Surface* gTilesSurface = IMG_Load("resources/Textur32x32V4.PNG");
     *mTiles = SDL_CreateTextureFromSurface(renderer, gTilesSurface);
@@ -107,4 +109,8 @@ void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[]){
         gTiles[i].w = getTileWidth();
         gTiles[i].h = getTileHeight();
     }
+
+    SDL_Surface* gZombieSurface = IMG_Load("resources/ZombieSheet.png");
+    *mZombie = SDL_CreateTextureFromSurface(renderer, gZombieSurface);
+
 }
