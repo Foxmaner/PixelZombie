@@ -8,6 +8,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_image.h>
+
 #include "map.h"
 #include "zombie.h"
 
@@ -45,7 +46,7 @@ int WinMain(void){
    
     //Alien
     SDL_Texture *mZombie = NULL;
-    SDL_Rect gZombie[2];
+    SDL_Rect gZombie[3];
     Zombie z1;
     z1 = createZombie(450,300);
     SDL_Rect z1position = {getZombiePositionX(z1),getZombiePositionY(z1),54,54};
@@ -53,6 +54,8 @@ int WinMain(void){
     Zombie z2;
     z2 = createZombie(1030,500);
     SDL_Rect z2position = {getZombiePositionX(z2),getZombiePositionY(z2),54,54};
+
+    int zFrame = 1;
 
     // End of Setup
     //-------------------------------------------
@@ -76,15 +79,22 @@ int WinMain(void){
         //Game logic
         z2position.x -= 1;
 
+        if((z2position.x % 9 == 0) && zFrame == 1) 
+            zFrame = 2;
+        else if((z2position.x % 9 == 0) && zFrame == 2)
+            zFrame = 1;
+
+
         //Game rendering
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
         SDL_RenderClear(renderer);
         renderBackground(renderer, mTiles, gTiles);
         SDL_RenderCopyEx(renderer, mZombie, &gZombie[0], &z1position, 0, NULL, SDL_FLIP_NONE);
-        SDL_RenderCopyEx(renderer, mZombie, &gZombie[1], &z2position, 0, NULL, SDL_FLIP_NONE);
+        SDL_RenderCopyEx(renderer, mZombie, &gZombie[zFrame], &z2position, 0, NULL, SDL_FLIP_NONE);
         SDL_RenderPresent(renderer);
-
+    
         SDL_Delay(1000/60);
+        
     }
 
 
@@ -131,4 +141,9 @@ void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], 
     gZombie[1].y = 54;
     gZombie[1].w = 54;
     gZombie[1].h = 54;
+
+    gZombie[2].x = 108;
+    gZombie[2].y = 54;
+    gZombie[2].w = 54;
+    gZombie[2].h = 54;
 }
