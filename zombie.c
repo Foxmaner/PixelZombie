@@ -5,8 +5,8 @@
 #define PUBLIC /* empty */
 #define PRIVATE static
 
-PRIVATE int ZOMBIE_WIDTH = 15;
-PRIVATE int ZOMBIE_HEIGTH = 15;
+PRIVATE int ZOMBIE_WIDTH = 54;
+PRIVATE int ZOMBIE_HEIGTH = 54;
 
 struct zombie_type{
     int ZOMBIE_POSITION_X;

@@ -43,13 +43,16 @@ int WinMain(void){
     SDL_Texture *mTiles = NULL;
     SDL_Rect gTiles[32];
    
-   
     //Alien
     SDL_Texture *mZombie = NULL;
-    SDL_Rect gZombie[1];
+    SDL_Rect gZombie[2];
     Zombie z1;
-    z1 = createZombie(512,512);
+    z1 = createZombie(450,300);
     SDL_Rect z1position = {getZombiePositionX(z1),getZombiePositionY(z1),54,54};
+
+    Zombie z2;
+    z2 = createZombie(1030,500);
+    SDL_Rect z2position = {getZombiePositionX(z2),getZombiePositionY(z2),54,54};
 
     // End of Setup
     //-------------------------------------------
@@ -71,14 +74,17 @@ int WinMain(void){
         }
 
         //Game logic
-
+        z2position.x -= 1;
 
         //Game rendering
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
         SDL_RenderClear(renderer);
         renderBackground(renderer, mTiles, gTiles);
-        SDL_RenderCopyEx(renderer, mZombie, &gZombie[getZombieFrame(z1)], &z1position, 0, NULL, SDL_FLIP_NONE);
+        SDL_RenderCopyEx(renderer, mZombie, &gZombie[0], &z1position, 0, NULL, SDL_FLIP_NONE);
+        SDL_RenderCopyEx(renderer, mZombie, &gZombie[1], &z2position, 0, NULL, SDL_FLIP_NONE);
         SDL_RenderPresent(renderer);
+
+        SDL_Delay(1000/60);
     }
 
 
@@ -115,10 +121,14 @@ void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], 
 
     SDL_Surface* gZombieSurface = IMG_Load("resources/ZombieSheetSizeX2.png");
     *mZombie = SDL_CreateTextureFromSurface(renderer, gZombieSurface);
-    for(int i = 0; i < 1; i++){
-        gZombie[i].x = 0;
-        gZombie[i].y = 0;
-        gZombie[i].w = 54;
-        gZombie[i].h = 54;
-    }
+        
+    gZombie[0].x = 54;
+    gZombie[0].y = 0;
+    gZombie[0].w = 54;
+    gZombie[0].h = 54;
+
+    gZombie[1].x = 0;
+    gZombie[1].y = 54;
+    gZombie[1].w = 54;
+    gZombie[1].h = 54;
 }
