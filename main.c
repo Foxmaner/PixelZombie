@@ -43,6 +43,7 @@ int WinMain(void){
     SDL_Rect gTiles[32];
    
    
+    //Alien
 
 
 
@@ -106,5 +107,4 @@ void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[]){
         gTiles[i].w = getTileWidth();
         gTiles[i].h = getTileHeight();
     }
-
 }
