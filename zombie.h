@@ -13,6 +13,8 @@ void setY(Zombie a, int y);
 int getZombieWidth();
 int getZombieHeight();
 int getZombieFrame(Zombie a);
+int getSpawnPointX(int a);
+int getSpawnPointY(int a);
 
 #endif /* Zombie_h */
 

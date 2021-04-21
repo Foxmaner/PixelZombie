@@ -8,6 +8,11 @@
 PRIVATE int ZOMBIE_WIDTH = 54;
 PRIVATE int ZOMBIE_HEIGTH = 54;
 
+PRIVATE int zSpawnPointX0 = 500;
+PRIVATE int zSpawnPointY0 = 500;
+PRIVATE int zSpawnPointX1 = 1040;
+PRIVATE int zSpawnPointY1 = 400;
+
 struct zombie_type{
     int ZOMBIE_POSITION_X;
     int ZOMBIE_POSITION_Y;
@@ -52,4 +57,18 @@ PUBLIC int getZombieHeight(){
 
 PUBLIC int getZombieFrame(Zombie a){
     return a->ZOMBIE_FRAME;
+}
+
+PUBLIC int getSpawnPointX(int a){
+    if(a == 0)
+        return zSpawnPointX0;
+    else if(a == 1)
+        return zSpawnPointX1;
+}
+
+PUBLIC int getSpawnPointY(int a){
+    if(a == 0)
+        return zSpawnPointY0;
+    else if(a == 1)
+        return zSpawnPointY1;
 }

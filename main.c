@@ -14,7 +14,6 @@
 
 #define WINDOW_WIDTH (1024)
 #define WINDOW_HEIGHT (1024)
-
 void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTile, SDL_Rect gTiles[]);
 void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[]);
 
@@ -46,14 +45,17 @@ int WinMain(void){
    
     //Alien
     SDL_Texture *mZombie = NULL;
-    SDL_Rect gZombie[3];
-    Zombie z1;
-    z1 = createZombie(450,300);
-    SDL_Rect z1position = {getZombiePositionX(z1),getZombiePositionY(z1),54,54};
-
-    Zombie z2;
-    z2 = createZombie(1030,500);
-    SDL_Rect z2position = {getZombiePositionX(z2),getZombiePositionY(z2),54,54};
+    SDL_Rect gZombie[8];
+    int nrOfZombies=2;
+    Zombie z[nrOfZombies];
+    SDL_Rect zPosition[nrOfZombies];
+    for(int i = 0; i < nrOfZombies; i++){
+        z[i] = createZombie(getSpawnPointX(i),getSpawnPointY(i));
+        zPosition[i].x = getZombiePositionX(z[i]);
+        zPosition[i].y = getZombiePositionY(z[i]);
+        zPosition[i].w = 54;
+        zPosition[i].h = 54;
+    }
 
     int zFrame = 1;
 
@@ -77,11 +79,10 @@ int WinMain(void){
         }
 
         //Game logic
-        z2position.x -= 1;                                      //
-
-        if((z2position.x % 9 == 0) && zFrame == 1)              //
+        zPosition[1].x -= 1;                                      //
+        if((zPosition[1].x % 9 == 0) && zFrame == 1)              //
             zFrame = 2;                                         // PLACEHOLDER
-        else if((z2position.x % 9 == 0) && zFrame == 2)         //
+        else if((zPosition[1].x % 9 == 0) && zFrame == 2)         //
             zFrame = 1;                                         //
 
 
@@ -89,8 +90,8 @@ int WinMain(void){
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
         SDL_RenderClear(renderer);
         renderBackground(renderer, mTiles, gTiles);
-        SDL_RenderCopyEx(renderer, mZombie, &gZombie[0], &z1position, 0, NULL, SDL_FLIP_NONE);
-        SDL_RenderCopyEx(renderer, mZombie, &gZombie[zFrame], &z2position, 0, NULL, SDL_FLIP_NONE);
+        SDL_RenderCopyEx(renderer, mZombie, &gZombie[0], &zPosition[0], 0, NULL, SDL_FLIP_NONE);
+        SDL_RenderCopyEx(renderer, mZombie, &gZombie[zFrame], &zPosition[1], 0, NULL, SDL_FLIP_NONE);
         SDL_RenderPresent(renderer);
     
         SDL_Delay(1000/60);
