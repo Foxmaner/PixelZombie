@@ -11,7 +11,7 @@ PRIVATE int ZOMBIE_HEIGTH = 54;
 PRIVATE int zSpawnPointX0 = 500;
 PRIVATE int zSpawnPointY0 = 500;
 PRIVATE int zSpawnPointX1 = 1040;
-PRIVATE int zSpawnPointY1 = 400;
+PRIVATE int zSpawnPointY1 = 250;
 
 struct zombie_type{
     int ZOMBIE_POSITION_X;

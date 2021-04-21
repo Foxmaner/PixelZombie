@@ -45,12 +45,12 @@ int WinMain(void){
    
     //Alien
     SDL_Texture *mZombie = NULL;
-    SDL_Rect gZombie[8];
+    SDL_Rect gZombie[8];  //8 sprites per zombie
     int nrOfZombies=2;
     Zombie z[nrOfZombies];
     SDL_Rect zPosition[nrOfZombies];
     for(int i = 0; i < nrOfZombies; i++){
-        z[i] = createZombie(getSpawnPointX(i),getSpawnPointY(i));
+        z[i] = createZombie(getZSpawnPointX(i),getZSpawnPointY(i));
         zPosition[i].x = getZombiePositionX(z[i]);
         zPosition[i].y = getZombiePositionY(z[i]);
         zPosition[i].w = 54;
@@ -79,7 +79,24 @@ int WinMain(void){
         }
 
         //Game logic
-        zPosition[1].x -= 1;                                      //
+
+        //
+        for(int i = 1; i < nrOfZombies; i++){
+            if(zPosition[i].x > getZSpawnPointX(0)){
+                zPosition[i].x -= 1;
+            }
+            else if(zPosition[i].x < getZSpawnPointX(0)){
+                zPosition[i].x += 1;
+            }
+
+            if(zPosition[i].y > getZSpawnPointY(0)){
+                zPosition[i].y -= 1;
+            }
+            else if (zPosition[i].y < getZSpawnPointY(0)){
+                zPosition[i].y += 1;
+            }
+        }
+
         if((zPosition[1].x % 9 == 0) && zFrame == 1)              //
             zFrame = 2;                                         // PLACEHOLDER
         else if((zPosition[1].x % 9 == 0) && zFrame == 2)         //
