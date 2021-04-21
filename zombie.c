@@ -59,14 +59,14 @@ PUBLIC int getZombieFrame(Zombie a){
     return a->ZOMBIE_FRAME;
 }
 
-PUBLIC int getSpawnPointX(int a){
+PUBLIC int getZSpawnPointX(int a){
     if(a == 0)
         return zSpawnPointX0;
     else if(a == 1)
         return zSpawnPointX1;
 }
 
-PUBLIC int getSpawnPointY(int a){
+PUBLIC int getZSpawnPointY(int a){
     if(a == 0)
         return zSpawnPointY0;
     else if(a == 1)
