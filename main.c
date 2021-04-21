@@ -77,12 +77,12 @@ int WinMain(void){
         }
 
         //Game logic
-        z2position.x -= 1;
+        z2position.x -= 1;                                      //
 
-        if((z2position.x % 9 == 0) && zFrame == 1) 
-            zFrame = 2;
-        else if((z2position.x % 9 == 0) && zFrame == 2)
-            zFrame = 1;
+        if((z2position.x % 9 == 0) && zFrame == 1)              //
+            zFrame = 2;                                         // PLACEHOLDER
+        else if((z2position.x % 9 == 0) && zFrame == 2)         //
+            zFrame = 1;                                         //
 
 
         //Game rendering
