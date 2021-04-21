@@ -77,6 +77,9 @@ int WinMain(void){
         SDL_Event event;
         while (SDL_PollEvent(&event)){
             switch (event.type){
+                case SDL_QUIT:
+                close_requested = 1;
+                break;
                 case SDL_KEYDOWN:
                 switch( event.key.keysym.sym )
                 {
@@ -115,13 +118,7 @@ int WinMain(void){
                         break;
                     default:
                         break;
-        
-                break;
 
-
-                case SDL_QUIT:
-                    close_requested = 1;
-                break;
             }
         }
     }
