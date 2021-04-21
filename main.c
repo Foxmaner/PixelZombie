@@ -77,11 +77,54 @@ int WinMain(void){
         SDL_Event event;
         while (SDL_PollEvent(&event)){
             switch (event.type){
+                case SDL_KEYDOWN:
+                switch( event.key.keysym.sym )
+                {
+                    case SDLK_w:
+                        // should be in game logic
+                        pPosition->y -= 2;
+                        //flip = SDL_FLIP_NONE;
+                        if(pFrame == 4)
+                            pFrame = 5;
+                        else
+                            pFrame = 4;
+                        break;
+                    case SDLK_s:
+                        pPosition->y += 2;
+                        //flip = SDL_FLIP_NONE;
+                        if(pFrame == 0)
+                            pFrame = 1;
+                        else
+                            pFrame = 0;
+                        break;
+                    case SDLK_a:
+                        pPosition->x -= 2;
+                        //flip = SDL_FLIP_HORIZONTAL;
+                        if(pFrame == 2)
+                            pFrame = 3;
+                        else
+                            pFrame = 2;
+                        break;
+                    case SDLK_d:
+                        pPosition->x += 2;
+                        //flip = SDL_FLIP_NONE;
+                        if(pFrame == 2)
+                            pFrame = 3;
+                        else
+                            pFrame = 2;
+                        break;
+                    default:
+                        break;
+        
+                break;
+
+
                 case SDL_QUIT:
                     close_requested = 1;
                 break;
             }
         }
+    }
 
         //Game logic
 
