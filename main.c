@@ -10,6 +10,8 @@
 #include <SDL2/SDL_image.h>
 #include "map.h"
 
+#include "player.h"
+
 #define WINDOW_WIDTH (1024)
 #define WINDOW_HEIGHT (1024)
 
