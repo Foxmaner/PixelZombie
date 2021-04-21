@@ -46,7 +46,7 @@ int WinMain(void){
     //Alien
     SDL_Texture *mZombie = NULL;
     SDL_Rect gZombie[8];  //8 sprites per zombie
-    int nrOfZombies=2;
+    int nrOfZombies=4;
     Zombie z[nrOfZombies];
     SDL_Rect zPosition[nrOfZombies];
     for(int i = 0; i < nrOfZombies; i++){
@@ -80,28 +80,22 @@ int WinMain(void){
 
         //Game logic
 
-        //
+        //Zombie following the Survivor
         for(int i = 0; i < nrOfZombies; i++){
-            if(zPosition[i].x > getZSpawnPointX(0)){
+            if(zPosition[i].x > getZSpawnPointX(i)){        //change getZSpawnPointX(0) to getSurvivorX()
                 zPosition[i].x -= 1;
             }
-            else if(zPosition[i].x < getZSpawnPointX(0)){
+            else if(zPosition[i].x < getZSpawnPointX(i)){
                 zPosition[i].x += 1;
             }
 
-            if(zPosition[i].y > getZSpawnPointY(0)){
+            if(zPosition[i].y > getZSpawnPointY(i)){        //change getZSpawnPointX(0) to getSurvivorY()
                 zPosition[i].y -= 1;
             }
-            else if (zPosition[i].y < getZSpawnPointY(0)){
+            else if (zPosition[i].y < getZSpawnPointY(i)){
                 zPosition[i].y += 1;
             }
         }
-
-        if((zPosition[1].x % 9 == 0) && zFrame == 1)              //
-            zFrame = 2;                                         //PLACEHOLDER
-        else if((zPosition[1].x % 9 == 0) && zFrame == 2)         //
-            zFrame = 1;                                         //
-
 
         //Game rendering
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
