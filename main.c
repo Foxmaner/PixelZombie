@@ -10,10 +10,12 @@
 #include <SDL2/SDL_image.h>
 #include "map.h"
 
+
 #include "player.h"
 
 #define WINDOW_WIDTH (1024)
 #define WINDOW_HEIGHT (1024)
+
 
 void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTile, SDL_Rect gTiles[]);
 void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mPlayer, SDL_Rect gPlayer[]);
