@@ -81,7 +81,7 @@ int WinMain(void){
         //Game logic
 
         //
-        for(int i = 1; i < nrOfZombies; i++){
+        for(int i = 0; i < nrOfZombies; i++){
             if(zPosition[i].x > getZSpawnPointX(0)){
                 zPosition[i].x -= 1;
             }
@@ -98,7 +98,7 @@ int WinMain(void){
         }
 
         if((zPosition[1].x % 9 == 0) && zFrame == 1)              //
-            zFrame = 2;                                         // PLACEHOLDER
+            zFrame = 2;                                         //PLACEHOLDER
         else if((zPosition[1].x % 9 == 0) && zFrame == 2)         //
             zFrame = 1;                                         //
 

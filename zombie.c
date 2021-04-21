@@ -29,7 +29,7 @@ PUBLIC Zombie createZombie(int x, int y){
     return z;
 }
 
-void setY(Zombie a, int y){
+void setY(Zombie a, int y){         //ta bort
     a->ZOMBIE_POSITION_Y = y;
 }
 
