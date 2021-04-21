@@ -101,8 +101,9 @@ int WinMain(void){
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
         SDL_RenderClear(renderer);
         renderBackground(renderer, mTiles, gTiles);
-        SDL_RenderCopyEx(renderer, mZombie, &gZombie[0], &zPosition[0], 0, NULL, SDL_FLIP_NONE);
-        SDL_RenderCopyEx(renderer, mZombie, &gZombie[zFrame], &zPosition[1], 0, NULL, SDL_FLIP_NONE);
+        for(int i = 0; i < nrOfZombies; i++){
+            SDL_RenderCopyEx(renderer, mZombie, &gZombie[0], &zPosition[i], 0, NULL, SDL_FLIP_NONE);
+        }
         SDL_RenderPresent(renderer);
     
         SDL_Delay(1000/60);
