@@ -128,16 +128,20 @@ void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], 
     SDL_Surface* gPlayerSurface = IMG_Load("resources/girlPlayer.png");
     *mPlayer = SDL_CreateTextureFromSurface(renderer, gPlayerSurface);
 
-    gPlayer[0].x = 54;
-    gPlayer[0].y = 0;
-    gPlayer[0].w = 48;
-    gPlayer[0].h = 48;
 
+    //Ståendes med kroppen mot skärmen med pistol
+    gPlayer[0].x = 7;
+    gPlayer[0].y = 399;
+    gPlayer[0].w = 63;
+    gPlayer[0].h = 63;
+
+    //Ej i bruk
     gPlayer[1].x = 0;
     gPlayer[1].y = 54;
     gPlayer[1].w = 48;
     gPlayer[1].h = 48;
 
+    //Ej i bruk
     gPlayer[2].x = 108;
     gPlayer[2].y = 54;
     gPlayer[2].w = 48;

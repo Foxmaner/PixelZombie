@@ -1,4 +1,4 @@
-pixelzombie: main.o map.o
+pixelzombie: main.o map.o player.o
 	gcc -o pixelzombie main.o map.o player.o -lSDL2 -lSDL2_image
 main.o: main.c
 
