@@ -10,11 +10,15 @@
 #include <SDL2/SDL_image.h>
 #include "map.h"
 
-#define WINDOW_WIDTH (640)
-#define WINDOW_HEIGHT (640)
+
+#include "player.h"
+
+#define WINDOW_WIDTH (1024)
+#define WINDOW_HEIGHT (1024)
+
 
 void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTile, SDL_Rect gTiles[]);
-void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[]);
+void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mPlayer, SDL_Rect gPlayer[]);
 
 int WinMain(void){
     // Setup
@@ -42,14 +46,28 @@ int WinMain(void){
     SDL_Texture *mTiles = NULL;
     SDL_Rect gTiles[32];
    
-   
+    //Player
+    SDL_Texture *mPlayer = NULL;
+    SDL_Rect gPlayer[8];
+    int nrOfPlayers=2;
+    Player p[nrOfPlayers];
+    SDL_Rect pPosition[nrOfPlayers];
+    for(int i = 0; i < nrOfPlayers; i++){
+        p[i] = createPlayer(getSpawnPointX(i),getSpawnPointY(i));
+        pPosition[i].x = getPlayerPositionX(p[i]);
+        pPosition[i].y = getPlayerPositionY(p[i]);
+        pPosition[i].w = 54;
+        pPosition[i].h = 54;
+    }
+
+    int pFrame = 1;
 
 
 
     // End of Setup
     //-------------------------------------------
     // Start of continuing render-loop
-    loadMedia(renderer, &mTiles, gTiles);
+    loadMedia(renderer, &mTiles, gTiles, &mPlayer, gPlayer);
     
     // set to 1 when window close button is pressed
     int close_requested = 0;
@@ -72,8 +90,11 @@ int WinMain(void){
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
         SDL_RenderClear(renderer);
         renderBackground(renderer, mTiles, gTiles);
+        SDL_RenderCopyEx(renderer, mPlayer, &gPlayer[0], &pPosition[0], 0, NULL, SDL_FLIP_NONE);
+        SDL_RenderCopyEx(renderer, mPlayer, &gPlayer[pFrame], &pPosition[1], 0, NULL, SDL_FLIP_NONE);
         SDL_RenderPresent(renderer);
     }
+
 
    // SDL_DestroyWindow(win);
    // SDL_Quit();
@@ -95,9 +116,9 @@ void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTiles, SDL_Rect gTil
     }
 }
 
-void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[]){
+void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mPlayer, SDL_Rect gPlayer[]){
 
-    SDL_Surface* gTilesSurface = IMG_Load("resources/TexturV4.PNG");
+    SDL_Surface* gTilesSurface = IMG_Load("resources/Textur32x32V4.PNG");
     *mTiles = SDL_CreateTextureFromSurface(renderer, gTilesSurface);
     for (int i = 0; i < 32; i++) {
         gTiles[i].x = i*getTileWidth();
@@ -105,4 +126,26 @@ void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[]){
         gTiles[i].w = getTileWidth();
         gTiles[i].h = getTileHeight();
     }
+
+    SDL_Surface* gPlayerSurface = IMG_Load("resources/girlPlayer.png");
+    *mPlayer = SDL_CreateTextureFromSurface(renderer, gPlayerSurface);
+
+
+    //Ståendes med kroppen mot skärmen med pistol
+    gPlayer[0].x = 7;
+    gPlayer[0].y = 399;
+    gPlayer[0].w = 63;
+    gPlayer[0].h = 63;
+
+    //Ej i bruk
+    gPlayer[1].x = 0;
+    gPlayer[1].y = 54;
+    gPlayer[1].w = 48;
+    gPlayer[1].h = 48;
+
+    //Ej i bruk
+    gPlayer[2].x = 108;
+    gPlayer[2].y = 54;
+    gPlayer[2].w = 48;
+    gPlayer[2].h = 48;
 }
