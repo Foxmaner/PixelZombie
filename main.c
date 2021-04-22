@@ -15,6 +15,7 @@
 
 #define WINDOW_WIDTH (1024)
 #define WINDOW_HEIGHT (1024)
+#define PLAYERSPEED (2)
 
 
 void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTile, SDL_Rect gTiles[]);
@@ -60,7 +61,7 @@ int WinMain(void){
         pPosition[i].h = 54;
     }
 
-    int pFrame = 1;
+    int pFrame; // används i gPlayer[] för att ange vilket läge som spelar är, vilken sprite som används
 
 
 
@@ -84,9 +85,8 @@ int WinMain(void){
                 switch( event.key.keysym.sym )
                 {
                     case SDLK_w:
-                        // should be in game logic
                         pPosition->y -= 2;
-                        //flip = SDL_FLIP_NONE;
+                        //flip = SDL_FLIP_NONE; Onödigt än, kanske inte behövs
                         if(pFrame == 4)
                             pFrame = 5;
                         else
@@ -94,7 +94,7 @@ int WinMain(void){
                         break;
                     case SDLK_s:
                         pPosition->y += 2;
-                        //flip = SDL_FLIP_NONE;
+                        //flip = SDL_FLIP_NONE; Onödigt än, kanske inte behövs
                         if(pFrame == 0)
                             pFrame = 1;
                         else
@@ -102,7 +102,7 @@ int WinMain(void){
                         break;
                     case SDLK_a:
                         pPosition->x -= 2;
-                        //flip = SDL_FLIP_HORIZONTAL;
+                        //flip = SDL_FLIP_HORIZONTAL; Onödigt än, kanske inte behövs
                         if(pFrame == 2)
                             pFrame = 3;
                         else
@@ -110,7 +110,7 @@ int WinMain(void){
                         break;
                     case SDLK_d:
                         pPosition->x += 2;
-                        //flip = SDL_FLIP_NONE;
+                        //flip = SDL_FLIP_NONE; Onödigt än, kanske inte behövs
                         if(pFrame == 2)
                             pFrame = 3;
                         else
@@ -130,7 +130,7 @@ int WinMain(void){
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
         SDL_RenderClear(renderer);
         renderBackground(renderer, mTiles, gTiles);
-        SDL_RenderCopyEx(renderer, mPlayer, &gPlayer[0], &pPosition[0], 0, NULL, SDL_FLIP_NONE);
+        SDL_RenderCopyEx(renderer, mPlayer, &gPlayer[0], &pPosition[0], 0, NULL, SDL_FLIP_NONE); // gplayer[0] anger vilken bild
         SDL_RenderCopyEx(renderer, mPlayer, &gPlayer[pFrame], &pPosition[1], 0, NULL, SDL_FLIP_NONE);
         SDL_RenderPresent(renderer);
     }
