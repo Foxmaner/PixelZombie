@@ -82,21 +82,43 @@ int WinMain(void){
 
         //Zombie following the Survivor
         for(int i = 0; i < nrOfZombies; i++){
-            if(zPosition[i].x > getZSpawnPointX(i)){        //change getZSpawnPointX(0) to getSurvivorX()
-                for(int j = 0; j < nrOfZombies; j++){
-                    
-                }
+            if(zPosition[i].x > getZSpawnPointX(1)){        //change getZSpawnPointX(0) to getSurvivorX()
                 zPosition[i].x -= 1;
             }
-            else if(zPosition[i].x < getZSpawnPointX(i)){
+            else if(zPosition[i].x < getZSpawnPointX(1)){
                 zPosition[i].x += 1;
             }
 
-            if(zPosition[i].y > getZSpawnPointY(i)){        //change getZSpawnPointX(0) to getSurvivorY()
+            if(zPosition[i].y > getZSpawnPointY(1)){        //change getZSpawnPointX(0) to getSurvivorY()
                 zPosition[i].y -= 1;
             }
-            else if (zPosition[i].y < getZSpawnPointY(i)){
+            else if (zPosition[i].y < getZSpawnPointY(1)){
                 zPosition[i].y += 1;
+            }
+            
+            //Collision detection X
+            for(int j = 0; j < nrOfZombies; j++){
+                if(j==i){
+                    break;
+                }
+                else if((zPosition[i].x - zPosition[j].x) <= 38){
+                    zPosition[j].x -= 1;
+                }
+                else if((zPosition[i].x - zPosition[j].x) >= -38){
+                    zPosition[j].x +=1;
+                }
+            }
+            //Collision detection Y
+            for(int j = 0; j < nrOfZombies; j++){
+                if(j==i){
+                    break;
+                }
+                else if((zPosition[i].y - zPosition[j].y) <= 53){
+                    zPosition[j].y -= 1;
+                }
+                else if((zPosition[i].y - zPosition[j].y) >= -53){
+                    zPosition[j].y +=1;
+                }
             }
         }
 
