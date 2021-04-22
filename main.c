@@ -44,20 +44,20 @@ int WinMain(void){
     SDL_Rect gTiles[32];
    
     //Alien
+    //Initilizers
     SDL_Texture *mZombie = NULL;
     SDL_Rect gZombie[8];  //8 sprites per zombie
-    int nrOfZombies=4;
+    int nrOfZombies=3;
     Zombie z[nrOfZombies];
     SDL_Rect zPosition[nrOfZombies];
+    //Creates the zombies
     for(int i = 0; i < nrOfZombies; i++){
-        z[i] = createZombie(getZSpawnPointX(i),getZSpawnPointY(i));
+        z[i] = createZombie(650,-2);
         zPosition[i].x = getZombiePositionX(z[i]);
         zPosition[i].y = getZombiePositionY(z[i]);
         zPosition[i].w = 54;
         zPosition[i].h = 54;
     }
-
-    int zFrame = 1;
 
     // End of Setup
     //-------------------------------------------
@@ -83,6 +83,9 @@ int WinMain(void){
         //Zombie following the Survivor
         for(int i = 0; i < nrOfZombies; i++){
             if(zPosition[i].x > getZSpawnPointX(i)){        //change getZSpawnPointX(0) to getSurvivorX()
+                for(int j = 0; j < nrOfZombies; j++){
+                    
+                }
                 zPosition[i].x -= 1;
             }
             else if(zPosition[i].x < getZSpawnPointX(i)){
@@ -101,8 +104,9 @@ int WinMain(void){
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
         SDL_RenderClear(renderer);
         renderBackground(renderer, mTiles, gTiles);
+        //Renders all zombies
         for(int i = 0; i < nrOfZombies; i++){
-            SDL_RenderCopyEx(renderer, mZombie, &gZombie[0], &zPosition[i], 0, NULL, SDL_FLIP_NONE);
+            SDL_RenderCopyEx(renderer, mZombie, &gZombie[0], &zPosition[i], 0, NULL, SDL_FLIP_NONE);       //add different sprites
         }
         SDL_RenderPresent(renderer);
     
