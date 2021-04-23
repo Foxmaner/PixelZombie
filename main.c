@@ -48,6 +48,7 @@ int WinMain(void){
     SDL_Texture *mZombie = NULL;
     SDL_Rect gZombie[8];  //8 sprites per zombie
     int nrOfZombies=3;
+    int zFrame = 0;
     Zombie z[nrOfZombies];
     SDL_Rect zPosition[nrOfZombies];
     //Creates the zombies
@@ -63,7 +64,7 @@ int WinMain(void){
     //-------------------------------------------
     // Start of continuing render-loop
     loadMedia(renderer, &mTiles, gTiles, &mZombie, gZombie);
-    
+
     // set to 1 when window close button is pressed
     int close_requested = 0;
     //Game event
@@ -78,7 +79,7 @@ int WinMain(void){
             }
         }
 
-        //Game logic
+        //Game logic 
 
         //Zombie following the Survivor
         for(int i = 0; i < nrOfZombies; i++){
@@ -128,12 +129,11 @@ int WinMain(void){
         renderBackground(renderer, mTiles, gTiles);
         //Renders all zombies
         for(int i = 0; i < nrOfZombies; i++){
-            SDL_RenderCopyEx(renderer, mZombie, &gZombie[0], &zPosition[i], 0, NULL, SDL_FLIP_NONE);       //add different sprites
+            SDL_RenderCopyEx(renderer, mZombie, &gZombie[zFrame], &zPosition[i], 0, NULL, SDL_FLIP_NONE);       //add different sprites
         }
         SDL_RenderPresent(renderer);
     
         SDL_Delay(1000/60);
-        
     }
 
 
@@ -171,18 +171,43 @@ void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], 
     SDL_Surface* gZombieSurface = IMG_Load("resources/ZombieSheetSizeX2.png");
     *mZombie = SDL_CreateTextureFromSurface(renderer, gZombieSurface);
         
-    gZombie[0].x = 54;
+    gZombie[0].x = 0;
     gZombie[0].y = 0;
     gZombie[0].w = 54;
     gZombie[0].h = 54;
 
-    gZombie[1].x = 0;
-    gZombie[1].y = 54;
+    gZombie[1].x = 108;
+    gZombie[1].y = 0;
     gZombie[1].w = 54;
     gZombie[1].h = 54;
 
-    gZombie[2].x = 108;
+    gZombie[2].x = 0;
     gZombie[2].y = 54;
     gZombie[2].w = 54;
     gZombie[2].h = 54;
+
+    gZombie[3].x = 108;
+    gZombie[3].y = 54;
+    gZombie[3].w = 54;
+    gZombie[3].h = 54;
+
+    gZombie[4].x = 0;
+    gZombie[4].y = 108;
+    gZombie[4].w = 54;
+    gZombie[4].h = 54;
+
+    gZombie[5].x = 108;
+    gZombie[5].y = 108;
+    gZombie[5].w = 54;
+    gZombie[5].h = 54;
+
+    gZombie[6].x = 0;
+    gZombie[6].y = 162;
+    gZombie[6].w = 54;
+    gZombie[6].h = 54;
+
+    gZombie[7].x = 108;
+    gZombie[7].y = 162;
+    gZombie[7].w = 54;
+    gZombie[7].h = 54;
 }
