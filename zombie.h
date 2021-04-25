@@ -2,8 +2,14 @@
 #define zombie_h
 
 #include <stdio.h>
+#include <stdbool.h>
 
 typedef struct zombie_type *Zombie;
+
+struct zombie_frame{
+    int frame;
+    bool diagonal;
+}; typedef struct zombie_frame ZombieFrame;
 
 int getZombiePositionX(Zombie a);
 int getZombiePositionY(Zombie a);
