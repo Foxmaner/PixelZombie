@@ -86,19 +86,41 @@ int WinMain(void){
                 {
                     case SDLK_w:
                         pPosition->y -= 2;
-                        //flip = SDL_FLIP_NONE; Onödigt än, kanske inte behövs
-                        if(pFrame == 0)//4
-                            pFrame = 0;//5
-                        else
-                            pFrame = 0;//4
+                        if(pFrame == 0 || pFrame==8)//2
+                            pFrame = 1;//3
+                        else if(pFrame==1)
+                            pFrame = 2;
+                        else if(pFrame==2)
+                            pFrame=3;
+                        else if(pFrame==3)
+                            pFrame=4;
+                        else if(pFrame==4)
+                            pFrame=5;
+                        else if(pFrame==5)
+                            pFrame=6;
+                        else if(pFrame==6)
+                            pFrame=7;
+                            else
+                            pFrame=8;
                         break;
                     case SDLK_s:
                         pPosition->y += 2;
-                        //flip = SDL_FLIP_NONE; Onödigt än, kanske inte behövs
-                        if(pFrame == 0)//0
-                            pFrame = 0;//1
-                        else
-                            pFrame = 0;//0
+                        if(pFrame == 0 || pFrame==8)//2
+                            pFrame = 1;//3
+                        else if(pFrame==1)
+                            pFrame = 2;
+                        else if(pFrame==2)
+                            pFrame=3;
+                        else if(pFrame==3)
+                            pFrame=4;
+                        else if(pFrame==4)
+                            pFrame=5;
+                        else if(pFrame==5)
+                            pFrame=6;
+                        else if(pFrame==6)
+                            pFrame=7;
+                            else
+                            pFrame=8;
                         break;
                     case SDLK_a:
                         pPosition->x -= 2;//2
@@ -154,7 +176,7 @@ int WinMain(void){
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
         SDL_RenderClear(renderer);
         renderBackground(renderer, mTiles, gTiles);
-        SDL_RenderCopyEx(renderer, mPlayer, &gPlayer[pFrame], &pPosition[0], 0, NULL, flip); // gplayer[0] anger vilken bild
+        SDL_RenderCopyEx(renderer, mPlayer, &gPlayer[pFrame], &pPosition[0], 0, NULL, flip); // gplayer[0] anger vilken bild 
         //SDL_RenderCopyEx(renderer, mPlayer, &gPlayer[pFrame], &pPosition[1], 0, NULL, SDL_FLIP_NONE);
         SDL_RenderPresent(renderer);
     }
