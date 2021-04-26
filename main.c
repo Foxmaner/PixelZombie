@@ -48,7 +48,6 @@ int WinMain(void){
     SDL_Texture *mZombie = NULL;
     SDL_Rect gZombie[8];  //8 sprites per zombie
     int nrOfZombies=6;
-    int zFrameCounter = 0;
     ZombieFrame zFrame[nrOfZombies];
     Zombie z[nrOfZombies];
     SDL_Rect zPosition[nrOfZombies];
@@ -89,23 +88,23 @@ int WinMain(void){
             if((zPosition[i].x - mousex) > 20){        //change to getSurvivorX()
                 zPosition[i].x -= 1;
                 //Frame change LEFT
-                changeZFrameX(&zFrame[i].frame, 2, 3, &zFrameCounter, &zFrame[i].diagonal);
+                changeZFrameX(&zFrame[i].frame, 2, 3, &zFrame[i].counter, &zFrame[i].diagonal);
             }
             else if((zPosition[i].x - mousex) < -20){              //change to getSurvivorX()
                 zPosition[i].x += 1;
                 //Frame change RIGHT
-                changeZFrameX(&zFrame[i].frame, 4, 5, &zFrameCounter, &zFrame[i].diagonal);
+                changeZFrameX(&zFrame[i].frame, 4, 5, &zFrame[i].counter, &zFrame[i].diagonal);
             }
             //Zombie following the Survivor Y
             if((zPosition[i].y - mousey) > 20){        //change to getSurvivorY()
                 zPosition[i].y -= 1;
                 //Frame change UP
-                changeZFrameY(&zFrame[i].frame, 6, 7, &zFrameCounter, &zFrame[i].diagonal);
+                changeZFrameY(&zFrame[i].frame, 6, 7, &zFrame[i].counter, &zFrame[i].diagonal);
             }
             else if ((zPosition[i].y - mousey) < -20){         //change to getSurvivorY()
                 zPosition[i].y += 1;
                 //Frame change DOWN
-                changeZFrameY(&zFrame[i].frame, 0, 1, &zFrameCounter, &zFrame[i].diagonal);
+                changeZFrameY(&zFrame[i].frame, 0, 1, &zFrame[i].counter, &zFrame[i].diagonal);
             }
 
             //Collision detection X

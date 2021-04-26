@@ -8,6 +8,7 @@ typedef struct zombie_type *Zombie;
 struct zombie_frame{
     int frame;
     int diagonal;
+    int counter;
 }; typedef struct zombie_frame ZombieFrame;
 
 int getZombiePositionX(Zombie a);
