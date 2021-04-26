@@ -11,17 +11,19 @@
 
 #include "map.h"
 #include "zombie.h"
+#include "player.h"
 
 #define WINDOW_WIDTH (1024)
 #define WINDOW_HEIGHT (1024)
 
 void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTile, SDL_Rect gTiles[]);
-void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[]);
+void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[], SDL_Texture **mPlayer, SDL_Rect gPlayer[]);
 
 int WinMain(void){
     // Setup
     //-------------------------------------------
     // Setup
+    SDL_RendererFlip flip = SDL_FLIP_NONE;
 
     if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER) != 0){
         printf("error initializing SDL: %s\n", SDL_GetError());
@@ -60,11 +62,28 @@ int WinMain(void){
         zPosition[i].h = 54;
     }
 
+    //Player
+    SDL_Texture *mPlayer = NULL;
+    SDL_Rect gPlayer[9];
+    int nrOfPlayers=2;
+    Player p[nrOfPlayers];
+    SDL_Rect pPosition[nrOfPlayers];
+    for(int i = 0; i < nrOfPlayers; i++){
+        p[i] = createPlayer(getSpawnPointX(i),getSpawnPointY(i));
+        pPosition[i].x = getPlayerPositionX(p[i]);
+        pPosition[i].y = getPlayerPositionY(p[i]);
+        pPosition[i].w = 54;
+        pPosition[i].h = 54;
+    }
+
+    int pFrame=0; // används i gPlayer[] för att ange vilket läge som spelar är, vilken sprite som används
+
     int mousex, mousey;         //For GetMouseState to simulate survivor walking
     // End of Setup
     //-------------------------------------------
     // Start of continuing render-loop
-    loadMedia(renderer, &mTiles, gTiles, &mZombie, gZombie);
+
+    loadMedia(renderer, &mTiles, gTiles, &mZombie, gZombie, &mPlayer, gPlayer);
 
     // set to 1 when window close button is pressed
     int close_requested = 0;
@@ -75,10 +94,98 @@ int WinMain(void){
         while (SDL_PollEvent(&event)){
             switch (event.type){
                 case SDL_QUIT:
-                    close_requested = 1;
+                close_requested = 1;
                 break;
+                case SDL_KEYDOWN:
+                switch( event.key.keysym.sym )
+                {
+                    case SDLK_w:            
+                        pPosition->y -= 2;
+                        if(pFrame == 0 || pFrame==8)//2
+                            pFrame = 1;//3
+                        else if(pFrame==1)
+                            pFrame = 2;
+                        else if(pFrame==2)
+                            pFrame=3;
+                        else if(pFrame==3)
+                            pFrame=4;
+                        else if(pFrame==4)
+                            pFrame=5;
+                        else if(pFrame==5)
+                            pFrame=6;
+                        else if(pFrame==6)
+                            pFrame=7;
+                            else
+                            pFrame=8;
+                        break;
+                    case SDLK_s:
+                        pPosition->y += 2;
+                        if(pFrame == 0 || pFrame==8)//2
+                            pFrame = 1;//3
+                        else if(pFrame==1)
+                            pFrame = 2;
+                        else if(pFrame==2)
+                            pFrame=3;
+                        else if(pFrame==3)
+                            pFrame=4;
+                        else if(pFrame==4)
+                            pFrame=5;
+                        else if(pFrame==5)
+                            pFrame=6;
+                        else if(pFrame==6)
+                            pFrame=7;
+                            else
+                            pFrame=8;
+                        break;
+                    case SDLK_a:
+                        pPosition->x -= 2;//2
+                        flip = SDL_FLIP_NONE; //Om image ska flippas eller inte                     
+                        if(pFrame == 0 || pFrame==8)//2
+                            pFrame = 1;//3
+                        else if(pFrame==1)
+                            pFrame = 2;
+                        else if(pFrame==2)
+                            pFrame=3;
+                        else if(pFrame==3)
+                            pFrame=4;
+                        else if(pFrame==4)
+                            pFrame=5;
+                        else if(pFrame==5)
+                            pFrame=6;
+                        else if(pFrame==6)
+                            pFrame=7;
+                            else
+                            pFrame=8;
+                        break;
+                    case SDLK_d:
+                        pPosition->x += 2;
+                        flip = SDL_FLIP_HORIZONTAL;
+                        if(pFrame == 0 || pFrame==8)//2
+                            pFrame = 1;//3
+                        else if(pFrame==1)
+                            pFrame = 2;
+                        else if(pFrame==2)
+                            pFrame=3;
+                        else if(pFrame==3)
+                            pFrame=4;
+                        else if(pFrame==4)
+                            pFrame=5;
+                        else if(pFrame==5)
+                            pFrame=6;
+                        else if(pFrame==6)
+                            pFrame=7;
+                            else
+                            pFrame=8;
+                        break;
+                    default:
+                        break;
             }
+            break;
+            case SDL_KEYUP:
+            pFrame=0;
+            break;
         }
+    }
 
         //Game logic 
         SDL_GetMouseState(&mousex, &mousey);        //Simulate the survivor walking
@@ -141,6 +248,7 @@ int WinMain(void){
         for(int i = 0; i < nrOfZombies; i++){
             SDL_RenderCopyEx(renderer, mZombie, &gZombie[zFrame[i].frame], &zPosition[i], 0, NULL, SDL_FLIP_NONE);
         }
+        SDL_RenderCopyEx(renderer, mPlayer, &gPlayer[pFrame], &pPosition[0], 0, NULL, flip); // gplayer[0] anger vilken bild 
         SDL_RenderPresent(renderer);
         //Delay 1/60th second
         SDL_Delay(1000/60);
@@ -165,7 +273,7 @@ void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTiles, SDL_Rect gTil
     }
 }
 
-void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[]){
+void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[], SDL_Texture **mPlayer, SDL_Rect gPlayer[]){
     SDL_Surface* gTilesSurface = IMG_Load("resources/Textur32x32V8.PNG");
     *mTiles = SDL_CreateTextureFromSurface(renderer, gTilesSurface);
     for (int i = 0; i < 32; i++) {
@@ -175,6 +283,7 @@ void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], 
         gTiles[i].h = getTileHeight();
     }
 
+    //Zombie
     SDL_Surface* gZombieSurface = IMG_Load("resources/ZombieSheetSizeX2.png");
     *mZombie = SDL_CreateTextureFromSurface(renderer, gZombieSurface);
     
@@ -221,4 +330,54 @@ void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], 
     gZombie[7].y = 162;
     gZombie[7].w = 54;
     gZombie[7].h = 54;
+    
+    //Player
+    SDL_Surface* gPlayerSurface = IMG_Load("resources/girlPlayer.png");
+    *mPlayer = SDL_CreateTextureFromSurface(renderer, gPlayerSurface);
+
+    //Ståendes med kroppen mot skärmen med pistol
+    gPlayer[0].x = 8;
+    gPlayer[0].y = 400;
+    gPlayer[0].w = 64;
+    gPlayer[0].h = 64;
+
+    gPlayer[1].x = 8; //Det är 96 mellan varje bild sidleds
+    gPlayer[1].y = 210;//80 mellan varje rad
+    gPlayer[1].w = 64;
+    gPlayer[1].h = 64;
+ 
+    gPlayer[2].x = 104;
+    gPlayer[2].y = 210;
+    gPlayer[2].w = 64;
+    gPlayer[2].h = 64;
+
+    gPlayer[3].x = 200;
+    gPlayer[3].y = 210;
+    gPlayer[3].w = 64;
+    gPlayer[3].h = 64;
+
+    gPlayer[4].x = 296;
+    gPlayer[4].y = 210;
+    gPlayer[4].w = 64;
+    gPlayer[4].h = 64;
+
+    gPlayer[5].x = 392;
+    gPlayer[5].y = 210;
+    gPlayer[5].w = 64;
+    gPlayer[5].h = 64;
+
+    gPlayer[6].x = 488;
+    gPlayer[6].y = 210;
+    gPlayer[6].w = 64;
+    gPlayer[6].h = 64;
+
+    gPlayer[7].x = 584;
+    gPlayer[7].y = 210;
+    gPlayer[7].w = 64;
+    gPlayer[7].h = 64;
+
+    gPlayer[8].x = 680;
+    gPlayer[8].y = 210;
+    gPlayer[8].w = 64;
+    gPlayer[8].h = 64; 
 }
