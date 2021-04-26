@@ -96,11 +96,12 @@ PUBLIC void changeZFrameX(int *pCurrentFrame, int frameA, int frameB, int *pFram
     }
     else{
         *pCurrentFrame = frameA;
+        (*pFrameCounter)++;
     }
 }
 
 PUBLIC void changeZFrameY(int *pCurrentFrame, int frameA, int frameB, int *pFrameCounter, int *pDiagonal){
-    if(*pDiagonal++ > 0){
+    if((*pDiagonal)++ > 0){
         if(*pCurrentFrame == frameA && *pFrameCounter >= 25){
             *pCurrentFrame = frameB;
             *pFrameCounter = 0;
@@ -114,6 +115,7 @@ PUBLIC void changeZFrameY(int *pCurrentFrame, int frameA, int frameB, int *pFram
         }
         else{
             *pCurrentFrame = frameA;
+            (*pFrameCounter)++;
         }
     }
 }
