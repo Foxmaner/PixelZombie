@@ -61,11 +61,12 @@ int WinMain(void){
         zPosition[i].w = 54;
         zPosition[i].h = 54;
     }
-
+    //int mousex, mousey;         //For GetMouseState to simulate survivor walking
+    
     //Player
     SDL_Texture *mPlayer = NULL;
     SDL_Rect gPlayer[9];
-    int nrOfPlayers=2;
+    int nrOfPlayers=1;
     Player p[nrOfPlayers];
     SDL_Rect pPosition[nrOfPlayers];
     for(int i = 0; i < nrOfPlayers; i++){
@@ -76,9 +77,8 @@ int WinMain(void){
         pPosition[i].h = 54;
     }
 
-    int pFrame=0; // används i gPlayer[] för att ange vilket läge som spelar är, vilken sprite som används
+    int pFrame=0; //in gPlayer[] to show which state the player is in, which sprite is being used
 
-    int mousex, mousey;         //For GetMouseState to simulate survivor walking
     // End of Setup
     //-------------------------------------------
     // Start of continuing render-loop
@@ -94,121 +94,120 @@ int WinMain(void){
         while (SDL_PollEvent(&event)){
             switch (event.type){
                 case SDL_QUIT:
-                close_requested = 1;
-                break;
+                    close_requested = 1;
+                    break;
                 case SDL_KEYDOWN:
-                switch( event.key.keysym.sym )
-                {
-                    case SDLK_w:            
-                        pPosition->y -= 2;
-                        if(pFrame == 0 || pFrame==8)//2
-                            pFrame = 1;//3
-                        else if(pFrame==1)
-                            pFrame = 2;
-                        else if(pFrame==2)
-                            pFrame=3;
-                        else if(pFrame==3)
-                            pFrame=4;
-                        else if(pFrame==4)
-                            pFrame=5;
-                        else if(pFrame==5)
-                            pFrame=6;
-                        else if(pFrame==6)
-                            pFrame=7;
+                    switch( event.key.keysym.sym ){
+                        case SDLK_w:            
+                            pPosition->y -= 6;
+                            if(pFrame == 0 || pFrame==8)//2
+                                pFrame = 1;//3
+                            else if(pFrame==1)
+                                pFrame = 2;
+                            else if(pFrame==2)
+                                pFrame=3;
+                            else if(pFrame==3)
+                                pFrame=4;
+                            else if(pFrame==4)
+                                pFrame=5;
+                            else if(pFrame==5)
+                                pFrame=6;
+                            else if(pFrame==6)
+                                pFrame=7;
                             else
-                            pFrame=8;
-                        break;
-                    case SDLK_s:
-                        pPosition->y += 2;
-                        if(pFrame == 0 || pFrame==8)//2
-                            pFrame = 1;//3
-                        else if(pFrame==1)
-                            pFrame = 2;
-                        else if(pFrame==2)
-                            pFrame=3;
-                        else if(pFrame==3)
-                            pFrame=4;
-                        else if(pFrame==4)
-                            pFrame=5;
-                        else if(pFrame==5)
-                            pFrame=6;
-                        else if(pFrame==6)
-                            pFrame=7;
+                                pFrame=8;
+                            break;
+                        case SDLK_s:
+                            pPosition->y += 6;
+                            if(pFrame == 0 || pFrame==8)//2
+                                pFrame = 1;//3
+                            else if(pFrame==1)
+                                pFrame = 2;
+                            else if(pFrame==2)
+                                pFrame=3;
+                            else if(pFrame==3)
+                                pFrame=4;
+                            else if(pFrame==4)
+                                pFrame=5;
+                            else if(pFrame==5)
+                                pFrame=6;
+                            else if(pFrame==6)
+                                pFrame=7;
                             else
-                            pFrame=8;
-                        break;
-                    case SDLK_a:
-                        pPosition->x -= 2;//2
-                        flip = SDL_FLIP_NONE; //Om image ska flippas eller inte                     
-                        if(pFrame == 0 || pFrame==8)//2
-                            pFrame = 1;//3
-                        else if(pFrame==1)
-                            pFrame = 2;
-                        else if(pFrame==2)
-                            pFrame=3;
-                        else if(pFrame==3)
-                            pFrame=4;
-                        else if(pFrame==4)
-                            pFrame=5;
-                        else if(pFrame==5)
-                            pFrame=6;
-                        else if(pFrame==6)
-                            pFrame=7;
+                                pFrame=8;
+                            break;
+                        case SDLK_a:
+                            pPosition->x -= 6;//2
+                            flip = SDL_FLIP_NONE; //If image should flip or not
+                            if(pFrame == 0 || pFrame==8)//2
+                                pFrame = 1;//3
+                            else if(pFrame==1)
+                                pFrame = 2;
+                            else if(pFrame==2)
+                                pFrame=3;
+                            else if(pFrame==3)
+                                pFrame=4;
+                            else if(pFrame==4)
+                                pFrame=5;
+                            else if(pFrame==5)
+                                pFrame=6;
+                            else if(pFrame==6)
+                                pFrame=7;
                             else
-                            pFrame=8;
-                        break;
-                    case SDLK_d:
-                        pPosition->x += 2;
-                        flip = SDL_FLIP_HORIZONTAL;
-                        if(pFrame == 0 || pFrame==8)//2
-                            pFrame = 1;//3
-                        else if(pFrame==1)
-                            pFrame = 2;
-                        else if(pFrame==2)
-                            pFrame=3;
-                        else if(pFrame==3)
-                            pFrame=4;
-                        else if(pFrame==4)
-                            pFrame=5;
-                        else if(pFrame==5)
-                            pFrame=6;
-                        else if(pFrame==6)
-                            pFrame=7;
+                                pFrame=8;
+                            break;
+                        case SDLK_d:
+                            pPosition->x += 6;
+                            flip = SDL_FLIP_HORIZONTAL;
+                            if(pFrame == 0 || pFrame==8)//2
+                                pFrame = 1;//3
+                            else if(pFrame==1)
+                                pFrame = 2;
+                            else if(pFrame==2)
+                                pFrame=3;
+                            else if(pFrame==3)
+                                pFrame=4;
+                            else if(pFrame==4)
+                                pFrame=5;
+                            else if(pFrame==5)
+                                pFrame=6;
+                            else if(pFrame==6)
+                                pFrame=7;
                             else
-                            pFrame=8;
-                        break;
-                    default:
-                        break;
+                                pFrame=8;
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case SDL_KEYUP:
+                    pFrame=0;
+                    break;
             }
-            break;
-            case SDL_KEYUP:
-            pFrame=0;
-            break;
         }
-    }
 
         //Game logic 
-        SDL_GetMouseState(&mousex, &mousey);        //Simulate the survivor walking
+        //SDL_GetMouseState(&mousex, &mousey);        //Simulate the survivor walking
 
         //Zombie following the Survivor X
         for(int i = 0; i < nrOfZombies; i++){
-            if((zPosition[i].x - mousex) > 20){        //change to getSurvivorX()
+            if((zPosition[i].x - pPosition->x) > 20){
                 zPosition[i].x -= 1;
                 //Frame change LEFT
                 changeZFrameX(&zFrame[i].frame, 2, 3, &zFrame[i].counter, &zFrame[i].diagonal);
             }
-            else if((zPosition[i].x - mousex) < -20){              //change to getSurvivorX()
+            else if((zPosition[i].x - pPosition->x) < -20){
                 zPosition[i].x += 1;
                 //Frame change RIGHT
                 changeZFrameX(&zFrame[i].frame, 4, 5, &zFrame[i].counter, &zFrame[i].diagonal);
             }
             //Zombie following the Survivor Y
-            if((zPosition[i].y - mousey) > 20){        //change to getSurvivorY()
+            if((zPosition[i].y - pPosition->y) > 20){
                 zPosition[i].y -= 1;
                 //Frame change UP
                 changeZFrameY(&zFrame[i].frame, 6, 7, &zFrame[i].counter, &zFrame[i].diagonal);
             }
-            else if ((zPosition[i].y - mousey) < -20){         //change to getSurvivorY()
+            else if ((zPosition[i].y - pPosition->y) < -20){
                 zPosition[i].y += 1;
                 //Frame change DOWN
                 changeZFrameY(&zFrame[i].frame, 0, 1, &zFrame[i].counter, &zFrame[i].diagonal);
@@ -248,7 +247,8 @@ int WinMain(void){
         for(int i = 0; i < nrOfZombies; i++){
             SDL_RenderCopyEx(renderer, mZombie, &gZombie[zFrame[i].frame], &zPosition[i], 0, NULL, SDL_FLIP_NONE);
         }
-        SDL_RenderCopyEx(renderer, mPlayer, &gPlayer[pFrame], &pPosition[0], 0, NULL, flip); // gplayer[0] anger vilken bild 
+        //Renders player
+        SDL_RenderCopyEx(renderer, mPlayer, &gPlayer[pFrame], &pPosition[0], 0, NULL, flip);
         SDL_RenderPresent(renderer);
         //Delay 1/60th second
         SDL_Delay(1000/60);
