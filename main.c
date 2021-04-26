@@ -8,17 +8,16 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_image.h>
+
 #include "map.h"
-
-
+#include "zombie.h"
 #include "player.h"
 
 #define WINDOW_WIDTH (1024)
 #define WINDOW_HEIGHT (1024)
 
-
 void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTile, SDL_Rect gTiles[]);
-void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mPlayer, SDL_Rect gPlayer[]);
+void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[], SDL_Texture **mPlayer, SDL_Rect gPlayer[]);
 
 int WinMain(void){
     // Setup
@@ -47,6 +46,22 @@ int WinMain(void){
     SDL_Texture *mTiles = NULL;
     SDL_Rect gTiles[32];
    
+    //Alien Initilizers
+    SDL_Texture *mZombie = NULL;
+    SDL_Rect gZombie[8];  //8 sprites per zombie
+    int nrOfZombies=6;
+    ZombieFrame zFrame[nrOfZombies];
+    Zombie z[nrOfZombies];
+    SDL_Rect zPosition[nrOfZombies];
+    //Creates the zombies
+    for(int i = 0; i < nrOfZombies; i++){
+        z[i] = createZombie(getZSpawnPointX(i % 3),getZSpawnPointY(i % 3));
+        zPosition[i].x = getZombiePositionX(z[i]);
+        zPosition[i].y = getZombiePositionY(z[i]);
+        zPosition[i].w = 54;
+        zPosition[i].h = 54;
+    }
+
     //Player
     SDL_Texture *mPlayer = NULL;
     SDL_Rect gPlayer[9];
@@ -63,13 +78,13 @@ int WinMain(void){
 
     int pFrame=0; // används i gPlayer[] för att ange vilket läge som spelar är, vilken sprite som används
 
-
-
+    int mousex, mousey;         //For GetMouseState to simulate survivor walking
     // End of Setup
     //-------------------------------------------
     // Start of continuing render-loop
-    loadMedia(renderer, &mTiles, gTiles, &mPlayer, gPlayer);
-    
+
+    loadMedia(renderer, &mTiles, gTiles, &mZombie, gZombie, &mPlayer, gPlayer);
+
     // set to 1 when window close button is pressed
     int close_requested = 0;
     //Game event
@@ -172,19 +187,72 @@ int WinMain(void){
         }
     }
 
-        //Game logic
+        //Game logic 
+        SDL_GetMouseState(&mousex, &mousey);        //Simulate the survivor walking
 
+        //Zombie following the Survivor X
+        for(int i = 0; i < nrOfZombies; i++){
+            if((zPosition[i].x - mousex) > 20){        //change to getSurvivorX()
+                zPosition[i].x -= 1;
+                //Frame change LEFT
+                changeZFrameX(&zFrame[i].frame, 2, 3, &zFrame[i].counter, &zFrame[i].diagonal);
+            }
+            else if((zPosition[i].x - mousex) < -20){              //change to getSurvivorX()
+                zPosition[i].x += 1;
+                //Frame change RIGHT
+                changeZFrameX(&zFrame[i].frame, 4, 5, &zFrame[i].counter, &zFrame[i].diagonal);
+            }
+            //Zombie following the Survivor Y
+            if((zPosition[i].y - mousey) > 20){        //change to getSurvivorY()
+                zPosition[i].y -= 1;
+                //Frame change UP
+                changeZFrameY(&zFrame[i].frame, 6, 7, &zFrame[i].counter, &zFrame[i].diagonal);
+            }
+            else if ((zPosition[i].y - mousey) < -20){         //change to getSurvivorY()
+                zPosition[i].y += 1;
+                //Frame change DOWN
+                changeZFrameY(&zFrame[i].frame, 0, 1, &zFrame[i].counter, &zFrame[i].diagonal);
+            }
+
+            //Collision detection X
+            for(int j = 0; j < nrOfZombies; j++){
+                if(j==i){
+                    break;
+                }
+                else if((zPosition[i].x - zPosition[j].x) <= 19 && (zPosition[i].x - zPosition[j].x) >=0){
+                    zPosition[j].x -= 1;
+                }
+                else if((zPosition[i].x - zPosition[j].x) >= -19 && (zPosition[i].x - zPosition[j].x) <=0){
+                    zPosition[i].x -=1;
+                }
+            }
+            //Collision detection Y
+            for(int j = 0; j < nrOfZombies; j++){
+                if(j==i){
+                    break;
+                }
+                else if((zPosition[i].y - zPosition[j].y) <= 27 && (zPosition[i].y - zPosition[j].y) >= 0){
+                    zPosition[j].y -= 1;
+                }
+                else if((zPosition[i].y - zPosition[j].y) >= -27 && (zPosition[i].y - zPosition[j].y) <= 0){
+                    zPosition[i].y -=1;
+                }
+            }
+        }
 
         //Game rendering
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
         SDL_RenderClear(renderer);
         renderBackground(renderer, mTiles, gTiles);
+        //Renders all zombies
+        for(int i = 0; i < nrOfZombies; i++){
+            SDL_RenderCopyEx(renderer, mZombie, &gZombie[zFrame[i].frame], &zPosition[i], 0, NULL, SDL_FLIP_NONE);
+        }
         SDL_RenderCopyEx(renderer, mPlayer, &gPlayer[pFrame], &pPosition[0], 0, NULL, flip); // gplayer[0] anger vilken bild 
-        //SDL_RenderCopyEx(renderer, mPlayer, &gPlayer[pFrame], &pPosition[1], 0, NULL, SDL_FLIP_NONE);
         SDL_RenderPresent(renderer);
+        //Delay 1/60th second
+        SDL_Delay(1000/60);
     }
-
-
    // SDL_DestroyWindow(win);
    // SDL_Quit();
 }
@@ -205,9 +273,8 @@ void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTiles, SDL_Rect gTil
     }
 }
 
-void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mPlayer, SDL_Rect gPlayer[]){
-
-    SDL_Surface* gTilesSurface = IMG_Load("resources/Textur32x32V4.PNG");
+void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[], SDL_Texture **mPlayer, SDL_Rect gPlayer[]){
+    SDL_Surface* gTilesSurface = IMG_Load("resources/Textur32x32V8.PNG");
     *mTiles = SDL_CreateTextureFromSurface(renderer, gTilesSurface);
     for (int i = 0; i < 32; i++) {
         gTiles[i].x = i*getTileWidth();
@@ -216,9 +283,57 @@ void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], 
         gTiles[i].h = getTileHeight();
     }
 
+    //Zombie
+    SDL_Surface* gZombieSurface = IMG_Load("resources/ZombieSheetSizeX2.png");
+    *mZombie = SDL_CreateTextureFromSurface(renderer, gZombieSurface);
+    
+    //Down
+    gZombie[0].x = 0;
+    gZombie[0].y = 0;
+    gZombie[0].w = 54;
+    gZombie[0].h = 54;
+
+    gZombie[1].x = 108;
+    gZombie[1].y = 0;
+    gZombie[1].w = 54;
+    gZombie[1].h = 54;
+
+    //Left
+    gZombie[2].x = 0;
+    gZombie[2].y = 54;
+    gZombie[2].w = 54;
+    gZombie[2].h = 54;
+
+    gZombie[3].x = 108;
+    gZombie[3].y = 54;
+    gZombie[3].w = 54;
+    gZombie[3].h = 54;
+
+    //Right
+    gZombie[4].x = 0;
+    gZombie[4].y = 108;
+    gZombie[4].w = 54;
+    gZombie[4].h = 54;
+
+    gZombie[5].x = 108;
+    gZombie[5].y = 108;
+    gZombie[5].w = 54;
+    gZombie[5].h = 54;
+
+    //Up
+    gZombie[6].x = 0;
+    gZombie[6].y = 162;
+    gZombie[6].w = 54;
+    gZombie[6].h = 54;
+
+    gZombie[7].x = 108;
+    gZombie[7].y = 162;
+    gZombie[7].w = 54;
+    gZombie[7].h = 54;
+    
+    //Player
     SDL_Surface* gPlayerSurface = IMG_Load("resources/girlPlayer.png");
     *mPlayer = SDL_CreateTextureFromSurface(renderer, gPlayerSurface);
-
 
     //Ståendes med kroppen mot skärmen med pistol
     gPlayer[0].x = 8;
@@ -226,12 +341,10 @@ void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], 
     gPlayer[0].w = 64;
     gPlayer[0].h = 64;
 
-
     gPlayer[1].x = 8; //Det är 96 mellan varje bild sidleds
     gPlayer[1].y = 210;//80 mellan varje rad
     gPlayer[1].w = 64;
     gPlayer[1].h = 64;
-
  
     gPlayer[2].x = 104;
     gPlayer[2].y = 210;
@@ -267,5 +380,4 @@ void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], 
     gPlayer[8].y = 210;
     gPlayer[8].w = 64;
     gPlayer[8].h = 64; 
-
 }
