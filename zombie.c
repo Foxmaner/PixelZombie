@@ -80,3 +80,40 @@ PUBLIC int getZSpawnPointY(int a){
     else if(a == 2)
         return zSpawnPointY2 + (rand() % 50);
 }
+
+PUBLIC void changeZFrameX(int *pCurrentFrame, int frameA, int frameB, int *pFrameCounter, int *pDiagonal){
+    *pDiagonal = 0;
+    if(*pCurrentFrame == frameA && *pFrameCounter >= 25){
+        *pCurrentFrame = frameB;
+        *pFrameCounter = 0;
+    }
+    else if(*pCurrentFrame == frameB){
+        if(*pFrameCounter >= 25){
+            *pCurrentFrame = frameA;
+            *pFrameCounter = 0;
+        }
+        else (*pFrameCounter)++;
+    }
+    else{
+        *pCurrentFrame = frameA;
+    }
+}
+
+PUBLIC void changeZFrameY(int *pCurrentFrame, int frameA, int frameB, int *pFrameCounter, int *pDiagonal){
+    if(*pDiagonal++ > 0){
+        if(*pCurrentFrame == frameA && *pFrameCounter >= 25){
+            *pCurrentFrame = frameB;
+            *pFrameCounter = 0;
+        }
+        else if(*pCurrentFrame == frameB){
+            if(*pFrameCounter >= 25){
+                *pCurrentFrame = frameA;
+                *pFrameCounter = 0;
+            }
+            else (*pFrameCounter)++;
+        }
+        else{
+            *pCurrentFrame = frameA;
+        }
+    }
+}

@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <stdbool.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_image.h>
@@ -48,7 +47,7 @@ int WinMain(void){
     //Alien Initilizers
     SDL_Texture *mZombie = NULL;
     SDL_Rect gZombie[8];  //8 sprites per zombie
-    int nrOfZombies=7;
+    int nrOfZombies=6;
     int zFrameCounter = 0;
     ZombieFrame zFrame[nrOfZombies];
     Zombie z[nrOfZombies];
@@ -90,98 +89,25 @@ int WinMain(void){
             if((zPosition[i].x - mousex) > 20){        //change to getSurvivorX()
                 zPosition[i].x -= 1;
                 //Frame change LEFT
-                zFrame[i].diagonal = 0;
-                if(zFrame[i].frame == 2 && zFrameCounter >= 25){
-                    zFrame[i].frame = 3;
-                    zFrameCounter = 0;
-                }
-                else if(zFrame[i].frame == 3){
-                    if(zFrameCounter >= 25){
-                        zFrame[i].frame = 2;
-                        zFrameCounter = 0;
-                    }
-                    else{
-                        zFrameCounter++;
-                    }
-                }
-                else{
-                    zFrame[i].frame = 2;
-                    zFrameCounter++;
-                }
+                changeZFrameX(&zFrame[i].frame, 2, 3, &zFrameCounter, &zFrame[i].diagonal);
             }
             else if((zPosition[i].x - mousex) < -20){              //change to getSurvivorX()
                 zPosition[i].x += 1;
                 //Frame change RIGHT
-                zFrame[i].diagonal = 0;
-                if(zFrame[i].frame == 4 && zFrameCounter >= 25){
-                    zFrame[i].frame = 5;
-                    zFrameCounter = 0;
-                }
-                else if(zFrame[i].frame == 5){
-                    if(zFrameCounter >= 25){
-                        zFrame[i].frame = 4;
-                        zFrameCounter = 0;
-                    }
-                    else{
-                        zFrameCounter++;
-                    }
-                }
-                else{
-                    zFrame[i].frame = 4;
-                    zFrameCounter++;
-                }
+                changeZFrameX(&zFrame[i].frame, 4, 5, &zFrameCounter, &zFrame[i].diagonal);
             }
             //Zombie following the Survivor Y
             if((zPosition[i].y - mousey) > 20){        //change to getSurvivorY()
                 zPosition[i].y -= 1;
                 //Frame change UP
-                if(zFrame[i].diagonal++ > 0){
-                    if(zFrame[i].frame == 6 && zFrameCounter >= 25){
-                        zFrame[i].frame = 7;
-                        zFrameCounter = 0;
-                    }
-                    else if(zFrame[i].frame == 7){
-                        if(zFrameCounter >= 25){
-                            zFrame[i].frame = 6;
-                            zFrameCounter = 0;
-                        }
-                        else{
-                            zFrameCounter++;
-                        }
-                    }
-                    else{
-                        zFrame[i].frame = 6;
-                        zFrameCounter++;
-                    }
-                }
+                changeZFrameY(&zFrame[i].frame, 6, 7, &zFrameCounter, &zFrame[i].diagonal);
             }
             else if ((zPosition[i].y - mousey) < -20){         //change to getSurvivorY()
                 zPosition[i].y += 1;
                 //Frame change DOWN
-                if(zFrame[i].diagonal++ > 0){
-                    if(zFrame[i].frame == 0 && zFrameCounter >= 25){
-                        zFrame[i].frame = 1;
-                        zFrameCounter = 0;
-                    }
-                    else if(zFrame[i].frame == 1){
-                        if(zFrameCounter >= 25){
-                            zFrame[i].frame = 0;
-                            zFrameCounter = 0;
-                        }
-                        else{
-                            zFrameCounter++;
-                        }
-                    }
-                    else{
-                        zFrame[i].frame = 0;
-                        zFrameCounter++;
-                    }
-                }
+                changeZFrameY(&zFrame[i].frame, 0, 1, &zFrameCounter, &zFrame[i].diagonal);
             }
-            //Resets zFramecounter (Resolves problem that kept int going above 25 when changing direction when int was =25)
-            //if(zFrameCounter>25)               IN ORDER TO USE THIS, REMOVE ">" WHEN COMPARING zFrameCounter TO 25
-            //    zFrameCounter = 0;
-            
+
             //Collision detection X
             for(int j = 0; j < nrOfZombies; j++){
                 if(j==i){
