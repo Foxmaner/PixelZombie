@@ -145,8 +145,6 @@ int WinMain(void){
         //Delay 1/60th second
         SDL_Delay(1000/60);
     }
-
-
    // SDL_DestroyWindow(win);
    // SDL_Quit();
 }
