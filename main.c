@@ -84,7 +84,7 @@ int WinMain(void){
                 case SDL_KEYDOWN:
                 switch( event.key.keysym.sym )
                 {
-                    case SDLK_w:
+                    case SDLK_w:            
                         pPosition->y -= 2;
                         if(pFrame == 0 || pFrame==8)//2
                             pFrame = 1;//3
@@ -124,8 +124,7 @@ int WinMain(void){
                         break;
                     case SDLK_a:
                         pPosition->x -= 2;//2
-                        //flip = SDL_FLIP_HORIZONTAL; Onödigt än, kanske inte behövs
-                        flip = SDL_FLIP_NONE;
+                        flip = SDL_FLIP_NONE; //Om image ska flippas eller inte                     
                         if(pFrame == 0 || pFrame==8)//2
                             pFrame = 1;//3
                         else if(pFrame==1)
@@ -166,6 +165,10 @@ int WinMain(void){
                     default:
                         break;
             }
+            break;
+            case SDL_KEYUP:
+            pFrame=0;
+            break;
         }
     }
 
