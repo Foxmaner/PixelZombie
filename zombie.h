@@ -15,7 +15,6 @@ int getZombiePositionX(Zombie a);
 int getZombiePositionY(Zombie a);
 Zombie createZombie(int x, int y);
 void setZombiePositionY(Zombie a, int y);
-void setY(Zombie a, int y);
 int getZombieWidth();
 int getZombieHeight();
 int getZombieFrame(Zombie a);

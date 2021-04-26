@@ -33,11 +33,6 @@ PUBLIC Zombie createZombie(int x, int y){
     return z;
 }
 
-void setY(Zombie a, int y){         //ta bort
-    a->ZOMBIE_POSITION_Y = y;
-}
-
-
 PUBLIC void setZombiePositionY(Zombie a, int y){
     a->ZOMBIE_POSITION_Y = y;
 }
