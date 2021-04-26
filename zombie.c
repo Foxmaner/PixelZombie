@@ -1,4 +1,6 @@
 #include <stdlib.h>
+#include <stdio.h>
+#include <time.h>
 #include "zombie.h"
 
 
@@ -63,18 +65,18 @@ PUBLIC int getZombieFrame(Zombie a){
 
 PUBLIC int getZSpawnPointX(int a){
     if(a == 0)
-        return zSpawnPointX0;
+        return zSpawnPointX0 + (rand() % 200);
     else if(a == 1)
-        return zSpawnPointX1;
+        return zSpawnPointX1 + (rand() % 50);
     else if(a == 2)
-        return zSpawnPointX2;
+        return zSpawnPointX2 + (rand() % 200);
 }
 
 PUBLIC int getZSpawnPointY(int a){
     if(a == 0)
-        return zSpawnPointY0;
+        return zSpawnPointY0 + (rand() % 50);
     else if(a == 1)
-        return zSpawnPointY1;
+        return zSpawnPointY1 + (rand() % 200);
     else if(a == 2)
-        return zSpawnPointY2;
+        return zSpawnPointY2 + (rand() % 50);
 }
