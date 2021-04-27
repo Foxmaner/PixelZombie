@@ -286,50 +286,13 @@ void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], 
     //Zombie
     SDL_Surface* gZombieSurface = IMG_Load("resources/ZombieSheetSizeX2.png");
     *mZombie = SDL_CreateTextureFromSurface(renderer, gZombieSurface);
-    
-    //Down
-    gZombie[0].x = 0;
-    gZombie[0].y = 0;
-    gZombie[0].w = 54;
-    gZombie[0].h = 54;
-
-    gZombie[1].x = 108;
-    gZombie[1].y = 0;
-    gZombie[1].w = 54;
-    gZombie[1].h = 54;
-
-    //Left
-    gZombie[2].x = 0;
-    gZombie[2].y = 54;
-    gZombie[2].w = 54;
-    gZombie[2].h = 54;
-
-    gZombie[3].x = 108;
-    gZombie[3].y = 54;
-    gZombie[3].w = 54;
-    gZombie[3].h = 54;
-
-    //Right
-    gZombie[4].x = 0;
-    gZombie[4].y = 108;
-    gZombie[4].w = 54;
-    gZombie[4].h = 54;
-
-    gZombie[5].x = 108;
-    gZombie[5].y = 108;
-    gZombie[5].w = 54;
-    gZombie[5].h = 54;
-
-    //Up
-    gZombie[6].x = 0;
-    gZombie[6].y = 162;
-    gZombie[6].w = 54;
-    gZombie[6].h = 54;
-
-    gZombie[7].x = 108;
-    gZombie[7].y = 162;
-    gZombie[7].w = 54;
-    gZombie[7].h = 54;
+    for(int i = 0; i < 8; i++){
+        gZombie[i].x = 108 * (i % 2);
+        if(i % 2 == 0) gZombie[i].y = (54 * i) / 2;
+        else gZombie[i].y = gZombie[i-1].y;
+        gZombie[i].w = 54;
+        gZombie[i].h = 54;
+    }
     
     //Player
     SDL_Surface* gPlayerSurface = IMG_Load("resources/girlPlayer.png");
