@@ -12,6 +12,7 @@
 #include "map.h"
 #include "zombie.h"
 #include "player.h"
+#include "server/udpClient.h"
 
 #define WINDOW_WIDTH (1024)
 #define WINDOW_HEIGHT (1024)
@@ -20,6 +21,7 @@ void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTile, SDL_Rect gTile
 void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[], SDL_Texture **mPlayer, SDL_Rect gPlayer[]);
 
 int WinMain(void){
+    
     // Setup
     //-------------------------------------------
     // Setup
@@ -89,6 +91,7 @@ int WinMain(void){
     int close_requested = 0;
     //Game event
     while (!close_requested){
+        sendData(1);
         // process events
         SDL_Event event;
         while (SDL_PollEvent(&event)){

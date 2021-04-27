@@ -6,10 +6,11 @@
  
 int WinMain(int argc, char **argv)
 {
+	fprintf(stderr, "Server initilizing.....\n");
 	UDPsocket sd;       /* Socket descriptor */
 	UDPpacket *p;       /* Pointer to packet memory */
 	int quit;
- 
+	
 	/* Initialize SDL_net */
 	if (SDLNet_Init() < 0)
 	{
