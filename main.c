@@ -91,15 +91,16 @@ int WinMain(void){
     int close_requested = 0;
     //Game event
     while (!close_requested){
-        sendData(1);
         // process events
         SDL_Event event;
         while (SDL_PollEvent(&event)){
+            
             switch (event.type){
                 case SDL_QUIT:
                     close_requested = 1;
                     break;
                 case SDL_KEYDOWN:
+                sendData(pPosition->x, pPosition->y);
                     switch( event.key.keysym.sym ){
                         case SDLK_w:            
                             pPosition->y -= 6;
