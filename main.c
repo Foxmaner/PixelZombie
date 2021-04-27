@@ -58,10 +58,9 @@ int WinMain(void){
         z[i] = createZombie(getZSpawnPointX(i % 3),getZSpawnPointY(i % 3));
         zPosition[i].x = getZombiePositionX(z[i]);
         zPosition[i].y = getZombiePositionY(z[i]);
-        zPosition[i].w = 54;
+        zPosition[i].w = 43;
         zPosition[i].h = 54;
     }
-    //int mousex, mousey;         //For GetMouseState to simulate survivor walking
     
     //Player
     SDL_Texture *mPlayer = NULL;
@@ -187,7 +186,6 @@ int WinMain(void){
         }
 
         //Game logic 
-        //SDL_GetMouseState(&mousex, &mousey);        //Simulate the survivor walking
 
         //Zombie following the Survivor X
         for(int i = 0; i < nrOfZombies; i++){
@@ -213,7 +211,7 @@ int WinMain(void){
                 changeZFrameY(&zFrame[i].frame, 0, 1, &zFrame[i].counter, &zFrame[i].diagonal);
             }
 
-            //Collision detection X
+            //Collision detection X with other zombies
             for(int j = 0; j < nrOfZombies; j++){
                 if(j==i){
                     break;
@@ -225,7 +223,7 @@ int WinMain(void){
                     zPosition[i].x -=1;
                 }
             }
-            //Collision detection Y
+            //Collision detection Y with other zombies
             for(int j = 0; j < nrOfZombies; j++){
                 if(j==i){
                     break;
@@ -274,6 +272,7 @@ void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTiles, SDL_Rect gTil
 }
 
 void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[], SDL_Texture **mPlayer, SDL_Rect gPlayer[]){
+    //Map
     SDL_Surface* gTilesSurface = IMG_Load("resources/Textur32x32V8.PNG");
     *mTiles = SDL_CreateTextureFromSurface(renderer, gTilesSurface);
     for (int i = 0; i < 32; i++) {
@@ -287,10 +286,10 @@ void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], 
     SDL_Surface* gZombieSurface = IMG_Load("resources/ZombieSheetSizeX2.png");
     *mZombie = SDL_CreateTextureFromSurface(renderer, gZombieSurface);
     for(int i = 0; i < 8; i++){
-        gZombie[i].x = 108 * (i % 2);
+        gZombie[i].x = 108 * (i % 2) + 6;
         if(i % 2 == 0) gZombie[i].y = (54 * i) / 2;
         else gZombie[i].y = gZombie[i-1].y;
-        gZombie[i].w = 54;
+        gZombie[i].w = 43;
         gZombie[i].h = 54;
     }
     
