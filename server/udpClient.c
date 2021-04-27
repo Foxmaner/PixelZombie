@@ -25,9 +25,9 @@ void sendData(int x_cord, int y_cord)
 	}
 
     /* Resolve server name  */
-	if (SDLNet_ResolveHost(&srvadd, "127.0.0.1", 2000) == -1)
+	if (SDLNet_ResolveHost(&srvadd, "185.76.9.42", 2000) == -1)
 	{
-		fprintf(stderr, "SDLNet_ResolveHost(192.0.0.1 2000): %s\n", SDLNet_GetError());
+		fprintf(stderr, "SDLNet_ResolveHost(185.76.9.42 2000): %s\n", SDLNet_GetError());
 		//exit(EXIT_FAILURE);
 	}
 
