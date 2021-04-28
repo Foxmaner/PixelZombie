@@ -3,13 +3,14 @@
 #include <string.h>
 #include "udpClient.h"
 #include "SDL2/SDL_net.h"
- 
-void sendData(int x_cord, int y_cord, char selectedIp[100]){
 
     UDPsocket sd;
 	IPaddress srvadd;
 	UDPpacket *p;
-    UDPpacket *p2;
+    UDPpacket *p2; 
+void sendData(int x_cord, int y_cord, char selectedIp[100]){
+
+
 
 	struct data_packet{
 		int nrOfP;
@@ -31,7 +32,7 @@ void sendData(int x_cord, int y_cord, char selectedIp[100]){
 	}
 
     /* Resolve server name  */
-	if (SDLNet_ResolveHost(&srvadd, selectedIp, 2000) == -1){
+	if (SDLNet_ResolveHost(&srvadd, "127.0.0.1", 2000) == -1){
 		fprintf(stderr, "SDLNet_ResolveHost(81.230.227.193 2000) : % s\n ", SDLNet_GetError());
 		//exit(EXIT_FAILURE);
 	}
@@ -45,7 +46,7 @@ void sendData(int x_cord, int y_cord, char selectedIp[100]){
             // send and retrive positions  
         
             
-            sprintf((char *)p->data, "%d%d\n", (int) x_cord, (int) y_cord);    
+            sprintf((char *)p->data, "%d %d\n", (int) x_cord, (int) y_cord);    
             p->address.host = srvadd.host;	/* Set the destination host */
 		    p->address.port = srvadd.port;	/* And destination port */
 		    p->len = strlen((char *)p->data) + 1;

@@ -62,6 +62,9 @@ int WinMain(int argc, char **argv)
                 IPclient2 = pRecive->address.host;
                 portClient2 = pRecive->address.port;
             }else{
+				printf("ELSE?\n");
+				printf("Port %x ---", pRecive->address.port);
+				printf("Port %x ---", portClient1);
                 if (pRecive->address.port == portClient1){
                     printf("Recived data\n");
                     if(IPclient2 != 0){
