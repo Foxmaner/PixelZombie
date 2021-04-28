@@ -244,7 +244,6 @@ int WinMain(void){
                 }
             }
         }
-
         //Game rendering
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
         SDL_RenderClear(renderer);
