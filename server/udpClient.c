@@ -45,7 +45,7 @@ void sendData(int x_cord, int y_cord, char selectedIp[100]){
             // send and retrive positions  
         
             
-            sprintf((char *)p->data, "%d %d\n", (int) x_cord, (int) y_cord);    
+            sprintf((char *)p->data, "%d%d\n", (int) x_cord, (int) y_cord);    
             p->address.host = srvadd.host;	/* Set the destination host */
 		    p->address.port = srvadd.port;	/* And destination port */
 		    p->len = strlen((char *)p->data) + 1;
