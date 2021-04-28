@@ -61,7 +61,7 @@ int WinMain(void){
         zPosition[i].w = 43;
         zPosition[i].h = 54;
     }
-    
+
     //Player
     SDL_Texture *mPlayer = NULL;
     SDL_Rect gPlayer[9];
@@ -75,7 +75,7 @@ int WinMain(void){
         pPosition[i].w = 54;
         pPosition[i].h = 54;
     }
-
+    unsigned int lastDmgTakenTime = 0, currentDmgTakenTime = 0; //Used to limit taken damage to 1hp/s
     int pFrame=0; //in gPlayer[] to show which state the player is in, which sprite is being used
 
     // End of Setup
@@ -233,6 +233,13 @@ int WinMain(void){
                 }
                 else if((zPosition[i].y - zPosition[j].y) >= -27 && (zPosition[i].y - zPosition[j].y) <= 0){
                     zPosition[i].y -=1;
+                }
+            }
+            if(checkZCollisionWithP(zPosition[i],pPosition[0])){
+                currentDmgTakenTime = SDL_GetTicks();
+                if(currentDmgTakenTime >= lastDmgTakenTime + 1000){
+                    printf("-1HP");
+                    lastDmgTakenTime = currentDmgTakenTime;
                 }
             }
         }
