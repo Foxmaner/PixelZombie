@@ -4,7 +4,7 @@
 #include "udpClient.h"
 #include "SDL2/SDL_net.h"
  
-void sendData(int x_cord, int y_cord){
+void sendData(int x_cord, int y_cord, char selectedIp[100]){
 
     UDPsocket sd;
 	IPaddress srvadd;
@@ -31,7 +31,7 @@ void sendData(int x_cord, int y_cord){
 	}
 
     /* Resolve server name  */
-	if (SDLNet_ResolveHost(&srvadd, "81.230.227.193", 2000) == -1){
+	if (SDLNet_ResolveHost(&srvadd, selectedIp, 2000) == -1){
 		fprintf(stderr, "SDLNet_ResolveHost(81.230.227.193 2000) : % s\n ", SDLNet_GetError());
 		//exit(EXIT_FAILURE);
 	}

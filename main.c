@@ -100,7 +100,7 @@ int WinMain(void){
                     close_requested = 1;
                     break;
                 case SDL_KEYDOWN:
-                sendData(pPosition->x, pPosition->y);
+                sendData(pPosition->x, pPosition->y, "192.168.56.1");
                     switch( event.key.keysym.sym ){
                         case SDLK_w:            
                             pPosition->y -= 6;
