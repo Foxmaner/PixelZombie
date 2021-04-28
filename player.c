@@ -16,8 +16,6 @@ PRIVATE int zSpawnPointY1 = 400;
 struct player_type{
     int PLAYER_POSITION_X;
     int PLAYER_POSITION_Y;
-    int PLAYER_FRAME;
-    int slow;
     int hitPoint;
 };
 
@@ -25,12 +23,9 @@ PUBLIC Player createPlayer(int x, int y){
     Player z = malloc(sizeof(struct player_type));
     z->PLAYER_POSITION_Y = y;
     z->PLAYER_POSITION_X = x;
-    z->PLAYER_FRAME = 0;
-    z->slow = 1;
     z->hitPoint = 3;
     return z;
 }
-
 
 PUBLIC void setPlayerPositionY(Player a, int y){
     a->PLAYER_POSITION_Y = y;
@@ -58,8 +53,8 @@ PUBLIC int getPlayerHeight(){
     return PLAYER_HEIGTH;
 }
 
-PUBLIC int getPlayerFrame(Player a){
-    return a->PLAYER_FRAME;
+PUBLIC int getPlayerHitpoint(Player a){
+    return a->hitPoint;
 }
 
 PUBLIC int getSpawnPointX(int a){
