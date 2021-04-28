@@ -97,84 +97,26 @@ int WinMain(void){
                     close_requested = 1;
                     break;
                 case SDL_KEYDOWN:
+                if (pFrame==8)
+                pFrame=1;
                     switch( event.key.keysym.sym ){
                         case SDLK_w:            
                             pPosition->y -= 6;
-                            if(pFrame == 0 || pFrame==8)//2
-                                pFrame = 1;//3
-                            else if(pFrame==1)
-                                pFrame = 2;
-                            else if(pFrame==2)
-                                pFrame=3;
-                            else if(pFrame==3)
-                                pFrame=4;
-                            else if(pFrame==4)
-                                pFrame=5;
-                            else if(pFrame==5)
-                                pFrame=6;
-                            else if(pFrame==6)
-                                pFrame=7;
-                            else
-                                pFrame=8;
+                            pFrame++;
                             break;
                         case SDLK_s:
                             pPosition->y += 6;
-                            if(pFrame == 0 || pFrame==8)//2
-                                pFrame = 1;//3
-                            else if(pFrame==1)
-                                pFrame = 2;
-                            else if(pFrame==2)
-                                pFrame=3;
-                            else if(pFrame==3)
-                                pFrame=4;
-                            else if(pFrame==4)
-                                pFrame=5;
-                            else if(pFrame==5)
-                                pFrame=6;
-                            else if(pFrame==6)
-                                pFrame=7;
-                            else
-                                pFrame=8;
+                            pFrame++;
                             break;
                         case SDLK_a:
                             pPosition->x -= 6;//2
                             flip = SDL_FLIP_NONE; //If image should flip or not
-                            if(pFrame == 0 || pFrame==8)//2
-                                pFrame = 1;//3
-                            else if(pFrame==1)
-                                pFrame = 2;
-                            else if(pFrame==2)
-                                pFrame=3;
-                            else if(pFrame==3)
-                                pFrame=4;
-                            else if(pFrame==4)
-                                pFrame=5;
-                            else if(pFrame==5)
-                                pFrame=6;
-                            else if(pFrame==6)
-                                pFrame=7;
-                            else
-                                pFrame=8;
+                            pFrame++;
                             break;
                         case SDLK_d:
                             pPosition->x += 6;
                             flip = SDL_FLIP_HORIZONTAL;
-                            if(pFrame == 0 || pFrame==8)//2
-                                pFrame = 1;//3
-                            else if(pFrame==1)
-                                pFrame = 2;
-                            else if(pFrame==2)
-                                pFrame=3;
-                            else if(pFrame==3)
-                                pFrame=4;
-                            else if(pFrame==4)
-                                pFrame=5;
-                            else if(pFrame==5)
-                                pFrame=6;
-                            else if(pFrame==6)
-                                pFrame=7;
-                            else
-                                pFrame=8;
+                            pFrame++;
                             break;
                         default:
                             break;
