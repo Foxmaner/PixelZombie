@@ -17,7 +17,7 @@
 #define WINDOW_HEIGHT (1024)
 
 void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTile, SDL_Rect gTiles[]);
-void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[], SDL_Texture **mPlayer, SDL_Rect gPlayer[]);
+void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[], SDL_Texture **mPlayer, SDL_Rect gPlayer[], SDL_Texture **mBullet, SDL_Rect gBullet);
 
 int WinMain(void){
     // Setup
@@ -78,11 +78,22 @@ int WinMain(void){
     unsigned int lastDmgTakenTime = 0, currentDmgTakenTime = 0; //Used to limit taken damage to 1hp/s
     int pFrame=0; //in gPlayer[] to show which state the player is in, which sprite is being used
 
+    //Bullet
+    SDL_Texture *mBullet = NULL;
+    SDL_Rect gBullet;
+    int nrOfBullets=1;
+    SDL_Rect test;
+    test.x = 500;
+    test.y = 500;
+    test.w = 15;
+    test.h = 5;
+
     // End of Setup
     //-------------------------------------------
     // Start of continuing render-loop
 
-    loadMedia(renderer, &mTiles, gTiles, &mZombie, gZombie, &mPlayer, gPlayer);
+    loadMedia(renderer, &mTiles, gTiles, &mZombie, gZombie, &mPlayer, gPlayer, &mBullet, gBullet
+);
 
     // set to 1 when window close button is pressed
     int close_requested = 0;
@@ -254,6 +265,8 @@ int WinMain(void){
         }
         //Renders player
         SDL_RenderCopyEx(renderer, mPlayer, &gPlayer[pFrame], &pPosition[0], 0, NULL, flip);
+        //Render bullet
+        SDL_RenderCopyEx(renderer, mBullet, &gBullet, &test, 0, NULL, SDL_FLIP_NONE);
         SDL_RenderPresent(renderer);
         //Delay 1/60th second
         SDL_Delay(1000/60);
@@ -278,7 +291,7 @@ void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTiles, SDL_Rect gTil
     }
 }
 
-void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[], SDL_Texture **mPlayer, SDL_Rect gPlayer[]){
+void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[], SDL_Texture **mPlayer, SDL_Rect gPlayer[], SDL_Texture **mBullet, SDL_Rect gBullet){
     //Map
     SDL_Surface* gTilesSurface = IMG_Load("resources/Textur32x32V8.PNG");
     *mTiles = SDL_CreateTextureFromSurface(renderer, gTilesSurface);
@@ -299,7 +312,7 @@ void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], 
         gZombie[i].w = 43;
         gZombie[i].h = 54;
     }
-    
+
     //Player
     SDL_Surface* gPlayerSurface = IMG_Load("resources/girlPlayer.png");
     *mPlayer = SDL_CreateTextureFromSurface(renderer, gPlayerSurface);
@@ -349,4 +362,12 @@ void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], 
     gPlayer[8].y = 210;
     gPlayer[8].w = 64;
     gPlayer[8].h = 64; 
+
+    //Bullet
+    SDL_Surface* gBulletSurface = IMG_Load("resources/bullet.png");
+    *mBullet = SDL_CreateTextureFromSurface(renderer, gBulletSurface);
+    gBullet.x = 0;
+    gBullet.y = 0;
+    gBullet.w = 15;
+    gBullet.h = 5;
 }
