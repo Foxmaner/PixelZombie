@@ -238,7 +238,8 @@ int WinMain(void){
             if(checkZCollisionWithP(zPosition[i],pPosition[0])){
                 currentDmgTakenTime = SDL_GetTicks();
                 if(currentDmgTakenTime >= lastDmgTakenTime + 1000){
-                    printf("-1HP");
+                    printf("-1HP, %d ",p[0]->hitPoint);
+                    respawnPlayer(p[0], &pPosition[0]);
                     lastDmgTakenTime = currentDmgTakenTime;
                 }
             }

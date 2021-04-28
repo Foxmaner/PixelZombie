@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include "player.h"
+#include <SDL2/SDL.h>
 
 
 #define PUBLIC /* empty */
@@ -13,18 +14,12 @@ PRIVATE int zSpawnPointY0 = 500;
 PRIVATE int zSpawnPointX1 = 1040;
 PRIVATE int zSpawnPointY1 = 400;
 
-struct player_type{
-    int PLAYER_POSITION_X;
-    int PLAYER_POSITION_Y;
-    int hitPoint;
-};
-
 PUBLIC Player createPlayer(int x, int y){
-    Player z = malloc(sizeof(struct player_type));
-    z->PLAYER_POSITION_Y = y;
-    z->PLAYER_POSITION_X = x;
-    z->hitPoint = 3;
-    return z;
+    Player p = malloc(sizeof(struct player_type));
+    p->PLAYER_POSITION_Y = y;
+    p->PLAYER_POSITION_X = x;
+    p->hitPoint = 3;
+    return p;
 }
 
 PUBLIC void setPlayerPositionY(Player a, int y){
@@ -71,10 +66,10 @@ PUBLIC int getSpawnPointY(int a){
         return zSpawnPointY1;
 }
 
-PUBLIC void respawnPlayer(Player a){
+PUBLIC void respawnPlayer(Player a, SDL_Rect pPostion[]){
     if (!--a->hitPoint){
         a->hitPoint=3;
-        a->PLAYER_POSITION_X=512;
-        a->PLAYER_POSITION_Y=512;
+        pPostion->x=512;
+        pPostion->y=512;
     }
 }

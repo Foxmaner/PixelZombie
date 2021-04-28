@@ -3,8 +3,13 @@
 #define player_h
 
 #include <stdio.h>
+#include <SDL2/SDL.h>
 
-typedef struct player_type *Player;
+struct player_type{
+    int PLAYER_POSITION_X;
+    int PLAYER_POSITION_Y;
+    int hitPoint;
+};typedef struct player_type *Player;
 
 int getPlayerPositionX(Player a);
 int getPlayerPositionY(Player a);
@@ -16,7 +21,7 @@ int getPlayerHeight();
 int getPlayerHitpoint(Player a);
 int getSpawnPointX(int a);
 int getSpawnPointY(int a);
-void respawnPlayer(Player a);
+void respawnPlayer(Player a, SDL_Rect pPostion[]);
 
 
 #endif /* Player_h */
