@@ -5,5 +5,5 @@
 
 
 void sendData(int x_cord, int y_cord, char selectedIp[100]);
-
+int reciveData(char selectedIp[100]);
 #endif

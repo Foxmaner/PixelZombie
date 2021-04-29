@@ -92,6 +92,9 @@ int WinMain(void){
     //Game event
     while (!close_requested){
         // process events
+        ////
+        reciveData("192.168.56.1");
+        ///
         SDL_Event event;
         while (SDL_PollEvent(&event)){
             

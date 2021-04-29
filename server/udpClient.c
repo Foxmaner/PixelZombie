@@ -4,55 +4,71 @@
 #include "udpClient.h"
 #include "SDL2/SDL_net.h"
 
-    UDPsocket sd;
-	IPaddress srvadd;
-	UDPpacket *p;
-    UDPpacket *p2; 
+UDPsocket sd;
+IPaddress srvadd;
+UDPpacket *p;
+UDPpacket *p2;
 
-void createConnection(char selectedIp[100]){
+void createConnection(char selectedIp[100])
+{
 
-	if (SDLNet_Init() < 0){
+	if (SDLNet_Init() < 0)
+	{
 		fprintf(stderr, "SDLNet_Init: %s\n", SDLNet_GetError());
 		//exit(EXIT_FAILURE);
 	}
 
-    if (!(sd = SDLNet_UDP_Open(0))){
+	if (!(sd = SDLNet_UDP_Open(0)))
+	{
 		fprintf(stderr, "SDLNet_UDP_Open: %s\n", SDLNet_GetError());
 		//exit(EXIT_FAILURE);
 	}
 
-    /* Resolve server name  */
-	if (SDLNet_ResolveHost(&srvadd, "127.0.0.1", 2000) == -1){
+	/* Resolve server name  */
+	if (SDLNet_ResolveHost(&srvadd, "127.0.0.1", 2000) == -1)
+	{
 		fprintf(stderr, "SDLNet_ResolveHost(81.230.227.193 2000) : % s\n ", SDLNet_GetError());
 		//exit(EXIT_FAILURE);
 	}
-	
-
 }
 
-void sendData(int x_cord, int y_cord, char selectedIp[100]){
+void sendData(int x_cord, int y_cord, char selectedIp[100])
+{
 
-
-
-	if(sd!=NULL){
-		if (!((p = SDLNet_AllocPacket(512))&& (p2 = SDLNet_AllocPacket(512)))){
+	if (sd != NULL){
+		if (!((p = SDLNet_AllocPacket(512)) && (p2 = SDLNet_AllocPacket(512))))
+		{
 			fprintf(stderr, "SDLNet_AllocPacket: %s\n", SDLNet_GetError());
 			//exit(EXIT_FAILURE);
 		}
 
+		// send and retrive positions
 
-            // send and retrive positions  
-        
-            
-		sprintf((char *)p->data, "%d %d\n", (int) x_cord, (int) y_cord);    
-		p->address.host = srvadd.host;	/* Set the destination host */
-		p->address.port = srvadd.port;	/* And destination port */
+		sprintf((char *)p->data, "%d %d\n", (int)x_cord, (int)y_cord);
+		p->address.host = srvadd.host; /* Set the destination host */
+		p->address.port = srvadd.port; /* And destination port */
 		p->len = strlen((char *)p->data) + 1;
 		SDLNet_UDP_Send(sd, -1, p);
-}
 
+		
+	}
 	else{
 		createConnection(selectedIp);
 		sendData(x_cord, y_cord, selectedIp);
+	}
+}
+
+int reciveData(char selectedIp[100]){
+	if (sd != NULL){
+		if (SDLNet_UDP_Recv(sd, p2)){
+			int a, b;
+			sscanf((char *)p2->data, "%d %d\n", &a, &b);
+			
+			printf("UDP Packet incoming %d %d\n", a, b);
+		}
+	}
+	else{
+		createConnection(selectedIp);
+		reciveData(selectedIp);
 	}
 }
