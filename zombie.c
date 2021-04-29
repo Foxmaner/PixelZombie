@@ -138,3 +138,12 @@ PUBLIC bool checkZCollisionWithP(SDL_Rect zombie, SDL_Rect player){
 PUBLIC void killZombie(Zombie a){
     a->alive = 0;
 }
+
+PUBLIC int msTimer(int *pCurrentTime, int *pLastRecordedTime, int ms){
+    *pCurrentTime = SDL_GetTicks();
+    if(*pCurrentTime >= *pLastRecordedTime + ms){
+        *pLastRecordedTime = *pCurrentTime;
+        return 1;
+    }
+    else return 0;
+}

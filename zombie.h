@@ -30,6 +30,7 @@ void changeZFrameX(int *pCurrentFrame, int frameA, int frameB, int *pFrameCounte
 void changeZFrameY(int *pCurrentFrame, int frameA, int frameB, int *pFrameCounter, int *pDiagonal);
 bool checkZCollisionWithP(SDL_Rect zombie, SDL_Rect player);
 void killZombie(Zombie a);
+int msTimer(int *pCurrentTime, int *pLastRecordedTime, int ms);
 
 #endif /* Zombie_h */
 
