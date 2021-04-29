@@ -24,6 +24,7 @@ PUBLIC Zombie createZombie(int x, int y){
     z->ZOMBIE_POSITION_Y = y;
     z->ZOMBIE_POSITION_X = x;
     z->hitPoint = 1;
+    z->alive = 1;
     return z;
 }
 
@@ -132,4 +133,8 @@ PUBLIC bool checkZCollisionWithP(SDL_Rect zombie, SDL_Rect player){
     if(zRight < plLeft) return false;
     //if sides are not outside eachother(aka collision), then return true
     return true;
+}
+
+PUBLIC void killZombie(Zombie a){
+    a->alive = 0;
 }
