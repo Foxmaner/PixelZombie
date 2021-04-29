@@ -88,7 +88,7 @@ int WinMain(void){
     bool shot = false;
     int lastShotTime = 0, currentShotTime = 0;
     int bVelX = 1, bVelY = 1, bUpDown = 0;
-
+    int shotpers=0, current=0, last=0;
     // End of Setup
     //-------------------------------------------
     // Start of continuing render-loop
@@ -198,7 +198,8 @@ int WinMain(void){
                                 pFrame=8;
                             break;
                         case SDLK_LCTRL:
-                            shot = true;
+                            if(msTimer(&currentShotTime, &lastShotTime, 500))  //13 rps
+                                shot = true;
                             break;
                         case SDLK_RCTRL:  //TEMPORARY--------------------------------------------------------------------
                             close_requested = 1;
@@ -275,6 +276,10 @@ int WinMain(void){
             bPosition.y = pPosition[0].y + 17;
         }
         else{
+            if(msTimer(&current, &last, 1000)){
+                printf(" %d ", shotpers);
+                shotpers=0;
+            }else shotpers++;
             if(!bVelY) bPosition.x += bVelX * 75;
             else bPosition.y += bVelY * 75;
             if(bPosition.x < 0 || bPosition.x > 1024 || bPosition.y < 0 || bPosition.y > 1024){
