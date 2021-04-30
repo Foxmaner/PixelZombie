@@ -88,12 +88,12 @@ int WinMain(void){
     bool shot = false;
     int lastShotTime = 0, currentShotTime = 0;
     int bVelX = 1, bVelY = 1, bUpDown = 0;
-    int shotpers=0, current=0, last=0;
+
     // End of Setup
     //-------------------------------------------
     // Start of continuing render-loop
     loadMedia(renderer, &mTiles, gTiles, &mZombie, gZombie, &mPlayer, gPlayer, &mBullet, gBullet);
-    int x =0,y=0;
+
     // set to 1 when window close button is pressed
     int close_requested = 0;
     //Game event
@@ -105,9 +105,6 @@ int WinMain(void){
                 case SDL_QUIT:
                     close_requested = 1;
                     break;
-                case SDL_MOUSEBUTTONDOWN:
-                    SDL_GetMouseState(&x, &y);
-                    printf("%d,%d ", x,y);
                 case SDL_KEYDOWN:
                     switch( event.key.keysym.sym ){
                         case SDLK_w:
@@ -204,8 +201,6 @@ int WinMain(void){
                             if(msTimer(&currentShotTime, &lastShotTime, 500))  //13 rps
                                 shot = true;
                             break;
-                        case SDLK_RCTRL:  //TEMPORARY--------------------------------------------------------------------
-                            close_requested = 1;
                         default:
                             break;
                     }
@@ -272,7 +267,7 @@ int WinMain(void){
                 }
             }
 
-            //Border collision detection ZOMBIE
+            //Map collision detection ZOMBIE
             //TOP
             if(zPosition[i].y < 15){
                 zPosition[i].y = 15;
@@ -302,6 +297,16 @@ int WinMain(void){
             else if(zPosition[i].x > 930 && zPosition[i].y > 425)
                 zPosition[i].y = 425;
         }
+
+        //Map collision detection PLAYER
+        //TOP
+        if(pPosition[0].y < 15) pPosition[0].y = 15;
+        //BOTTOM
+        if(pPosition[0].y > 905) pPosition[0].y = 905;
+        //LEFT
+        if(pPosition[0].x < 30) pPosition[0].x = 30;
+        //RIGHT
+        if(pPosition[0].x > 930) pPosition[0].x = 930;
 
         //Bullet positioning
         if(!shot){
