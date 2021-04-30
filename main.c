@@ -93,7 +93,7 @@ int WinMain(void){
     //-------------------------------------------
     // Start of continuing render-loop
     loadMedia(renderer, &mTiles, gTiles, &mZombie, gZombie, &mPlayer, gPlayer, &mBullet, gBullet);
-
+    int x =0,y=0;
     // set to 1 when window close button is pressed
     int close_requested = 0;
     //Game event
@@ -105,6 +105,9 @@ int WinMain(void){
                 case SDL_QUIT:
                     close_requested = 1;
                     break;
+                case SDL_MOUSEBUTTONDOWN:
+                    SDL_GetMouseState(&x, &y);
+                    printf("%d,%d ", x,y);
                 case SDL_KEYDOWN:
                     switch( event.key.keysym.sym ){
                         case SDLK_w:
@@ -268,6 +271,36 @@ int WinMain(void){
                     respawnPlayer(p[0], &pPosition[0]);
                 }
             }
+
+            //Border collision detection ZOMBIE
+            //TOP
+            if(zPosition[i].y < 15){
+                zPosition[i].y = 15;
+            }
+            //BOTTOM
+            if(zPosition[i].y > 1224) zPosition[i].y = 1224;
+            if(zPosition[i].y > 905 && (zPosition[i].x < 330 || zPosition[i].x > 455))
+                zPosition[i].y = 905;
+            else if(zPosition[i].y > 905 && zPosition[i].x < 335)
+                zPosition[i].x = 335;
+            else if(zPosition[i].y > 905 && zPosition[i].x > 450)
+                zPosition[i].x = 450;
+            //LEFT
+            if(zPosition[i].x < -200) zPosition[i].x = -200;
+            if(zPosition[i].x < 64 && (zPosition[i].y < 355 || zPosition[i].y > 430))
+                zPosition[i].x = 64;
+            else if(zPosition[i].x < 64 && zPosition[i].y < 360)
+                zPosition[i].y = 360;
+            else if(zPosition[i].x < 64 && zPosition[i].y > 425)
+                zPosition[i].y = 425;
+            //RIGHT
+            if(zPosition[i].x > 1224) zPosition[i].x = 1224;
+            if(zPosition[i].x > 930 && (zPosition[i].y < 355 || zPosition[i].y > 430))
+                zPosition[i].x = 930;
+            else if(zPosition[i].x > 930 && zPosition[i].y < 360)
+                zPosition[i].y = 360;
+            else if(zPosition[i].x > 930 && zPosition[i].y > 425)
+                zPosition[i].y = 425;
         }
 
         //Bullet positioning
@@ -276,10 +309,6 @@ int WinMain(void){
             bPosition.y = pPosition[0].y + 17;
         }
         else{
-            if(msTimer(&current, &last, 1000)){
-                printf(" %d ", shotpers);
-                shotpers=0;
-            }else shotpers++;
             if(!bVelY) bPosition.x += bVelX * 75;
             else bPosition.y += bVelY * 75;
             if(bPosition.x < 0 || bPosition.x > 1024 || bPosition.y < 0 || bPosition.y > 1024){
