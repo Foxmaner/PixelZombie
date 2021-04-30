@@ -58,17 +58,25 @@ void sendData(int x_cord, int y_cord, char selectedIp[100])
 	}
 }
 
-int reciveData(char selectedIp[100]){
+void reciveData(char selectedIp[100], int kordinater[2]){
 	if (sd != NULL){
 		if (SDLNet_UDP_Recv(sd, p2)){
 			int a, b;
 			sscanf((char *)p2->data, "%d %d\n", &a, &b);
 			
 			printf("UDP Packet incoming %d %d\n", a, b);
+			kordinater[0] = a;
+			kordinater[1] = b;
+			
+		}
+		else{
+			kordinater[0] = -1000;
+			kordinater[1] = -1000;
 		}
 	}
 	else{
 		createConnection(selectedIp);
-		reciveData(selectedIp);
+		reciveData(selectedIp, kordinater);
 	}
+	
 }

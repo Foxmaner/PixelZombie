@@ -68,7 +68,7 @@ int WinMain(void){
     //Player
     SDL_Texture *mPlayer = NULL;
     SDL_Rect gPlayer[9];
-    int nrOfPlayers=1;
+    int nrOfPlayers=2;
     Player p[nrOfPlayers];
     SDL_Rect pPosition[nrOfPlayers];
     for(int i = 0; i < nrOfPlayers; i++){
@@ -89,11 +89,19 @@ int WinMain(void){
 
     // set to 1 when window close button is pressed
     int close_requested = 0;
+    int kordLista[2];
     //Game event
     while (!close_requested){
         // process events
         ////
-        reciveData("192.168.56.1");
+        sendData(pPosition->x, pPosition->y, "192.168.56.1");
+
+        reciveData("192.168.56.1", kordLista);
+        if(kordLista[0] != -1000){
+            printf("Satta kordinater %d %d", kordLista[0], kordLista[1]);
+            pPosition[1].x = kordLista[0];
+            pPosition[1].y = kordLista[1];
+        }
         ///
         SDL_Event event;
         while (SDL_PollEvent(&event)){
@@ -103,7 +111,6 @@ int WinMain(void){
                     close_requested = 1;
                     break;
                 case SDL_KEYDOWN:
-                sendData(pPosition->x, pPosition->y, "192.168.56.1");
                     switch( event.key.keysym.sym ){
                         case SDLK_w:            
                             pPosition->y -= 6;
@@ -255,7 +262,9 @@ int WinMain(void){
             SDL_RenderCopyEx(renderer, mZombie, &gZombie[zFrame[i].frame], &zPosition[i], 0, NULL, SDL_FLIP_NONE);
         }
         //Renders player
-        SDL_RenderCopyEx(renderer, mPlayer, &gPlayer[pFrame], &pPosition[0], 0, NULL, flip);
+        for(int i = 0; i < nrOfPlayers; i++){
+            SDL_RenderCopyEx(renderer, mPlayer, &gPlayer[pFrame], &pPosition[i], 0, NULL, flip);
+        }
         SDL_RenderPresent(renderer);
         //Delay 1/60th second
         SDL_Delay(1000/60);

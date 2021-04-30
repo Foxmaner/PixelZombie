@@ -10,8 +10,8 @@ PRIVATE int PLAYER_HEIGTH = 54;
 
 PRIVATE int zSpawnPointX0 = 500;
 PRIVATE int zSpawnPointY0 = 500;
-PRIVATE int zSpawnPointX1 = 1040;
-PRIVATE int zSpawnPointY1 = 400;
+PRIVATE int zSpawnPointX1 = 600;
+PRIVATE int zSpawnPointY1 = 600;
 
 struct player_type{
     int PLAYER_POSITION_X;
