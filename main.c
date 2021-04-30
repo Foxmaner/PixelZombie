@@ -94,11 +94,11 @@ int WinMain(void){
     while (!close_requested){
         // process events
         ////
-        sendData(pPosition->x, pPosition->y, "192.168.56.1");
+        
 
         reciveData("192.168.56.1", kordLista);
         if(kordLista[0] != -1000){
-            printf("Satta kordinater %d %d", kordLista[0], kordLista[1]);
+            //printf("Satta kordinater %d %d \n", kordLista[0], kordLista[1]);
             pPosition[1].x = kordLista[0];
             pPosition[1].y = kordLista[1];
         }
@@ -111,6 +111,7 @@ int WinMain(void){
                     close_requested = 1;
                     break;
                 case SDL_KEYDOWN:
+                sendData(pPosition->x, pPosition->y, "192.168.56.1");
                     switch( event.key.keysym.sym ){
                         case SDLK_w:            
                             pPosition->y -= 6;

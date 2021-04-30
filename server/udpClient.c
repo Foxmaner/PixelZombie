@@ -61,10 +61,10 @@ void sendData(int x_cord, int y_cord, char selectedIp[100])
 void reciveData(char selectedIp[100], int kordinater[2]){
 	if (sd != NULL){
 		if (SDLNet_UDP_Recv(sd, p2)){
-			int a, b;
-			sscanf((char *)p2->data, "%d %d\n", &a, &b);
+			int i, a, b;
+			sscanf((char *)p2->data, "%d %d %d", &i, &a, &b);
 			
-			printf("UDP Packet incoming %d %d\n", a, b);
+			printf("Balle UDP Packet incoming %d %d %d\n", i, a, b);
 			kordinater[0] = a;
 			kordinater[1] = b;
 			
