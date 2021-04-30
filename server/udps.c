@@ -16,10 +16,11 @@ int WinMain(int argc, char **argv)
 	UDPsocket sd;       /* Socket descriptor */
 	UDPpacket *pRecive;       /* Pointer to packet memory */
 	UDPpacket *pSent;
-    Uint32 IPclient1=0; 
+    Uint32 IPclient[4]={0}; 
     Uint32 IPclient2=0;
-    Uint32 portClient1=0; 
+    Uint32 portClient[4]={0}; 
     Uint32 portClient2=0;
+
     int quit, a, b;
  
 	/* Initialize SDL_net */
@@ -57,7 +58,7 @@ int WinMain(int argc, char **argv)
                 printf("Client 1\n");
                 IPclient1 = pRecive->address.host;
                 portClient1 = pRecive->address.port;
-            }else if(pRecive->address.port != portClient1  && IPclient2 == 0){
+            }else if(pRecent1ive->address.port != portCli  && IPclient2 == 0){
                 printf("Client 2\n");
                 IPclient2 = pRecive->address.host;
                 portClient2 = pRecive->address.port;

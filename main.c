@@ -68,7 +68,7 @@ int WinMain(void){
     //Player
     SDL_Texture *mPlayer = NULL;
     SDL_Rect gPlayer[9];
-    int nrOfPlayers=2;
+    int nrOfPlayers=4;
     Player p[nrOfPlayers];
     SDL_Rect pPosition[nrOfPlayers];
     for(int i = 0; i < nrOfPlayers; i++){

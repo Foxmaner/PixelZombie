@@ -12,6 +12,10 @@ PRIVATE int zSpawnPointX0 = 500;
 PRIVATE int zSpawnPointY0 = 500;
 PRIVATE int zSpawnPointX1 = 600;
 PRIVATE int zSpawnPointY1 = 600;
+PRIVATE int zSpawnPointX2 = 700;
+PRIVATE int zSpawnPointY2 = 700;
+PRIVATE int zSpawnPointX3 = 800;
+PRIVATE int zSpawnPointY3 = 800;
 
 struct player_type{
     int PLAYER_POSITION_X;
@@ -67,8 +71,17 @@ PUBLIC int getSpawnPointX(int a){
 }
 
 PUBLIC int getSpawnPointY(int a){
-    if(a == 0)
+    if(a == 0){
         return zSpawnPointY0;
-    else if(a == 1)
+    }
+    else if (a == 1){
         return zSpawnPointY1;
+    }
+    else if(a==2){
+        return zSpawnPointY2;
+    }
+    else if(a==3){
+        return zSpawnPointY3;
+    }
+    
 }
