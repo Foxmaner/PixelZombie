@@ -12,12 +12,12 @@
 PRIVATE int ZOMBIE_WIDTH = 54;
 PRIVATE int ZOMBIE_HEIGTH = 54;
 
-PRIVATE int zSpawnPointX0 = 50;
-PRIVATE int zSpawnPointY0 = 425;
-PRIVATE int zSpawnPointX1 = 400;
-PRIVATE int zSpawnPointY1 = 925;
-PRIVATE int zSpawnPointX2 = 950;
-PRIVATE int zSpawnPointY2 = 425;
+PRIVATE int zSpawnPointX0 = -200;
+PRIVATE int zSpawnPointY0 = 360;
+PRIVATE int zSpawnPointX1 = 335;
+PRIVATE int zSpawnPointY1 = 1224;
+PRIVATE int zSpawnPointX2 = 1224;
+PRIVATE int zSpawnPointY2 = 360;
 
 PUBLIC Zombie createZombie(int x, int y){
     Zombie z = malloc(sizeof(struct zombie_type));
@@ -54,21 +54,23 @@ PUBLIC int getZombieHitPoint(Zombie a){
 }
 
 PUBLIC int getZSpawnPointX(int a){
+    srand((unsigned) time(NULL));
     if(a == 0)
         return zSpawnPointX0 + (rand() % 200);
     else if(a == 1)
-        return zSpawnPointX1 + (rand() % 50);
+        return zSpawnPointX1 + (rand() % 115);
     else if(a == 2)
-        return zSpawnPointX2 + (rand() % 200);
+        return zSpawnPointX2 - (rand() % 200);
 }
 
 PUBLIC int getZSpawnPointY(int a){
+    srand((unsigned) time(NULL));
     if(a == 0)
-        return zSpawnPointY0 + (rand() % 50);
+        return zSpawnPointY0 + (rand() % 65);
     else if(a == 1)
-        return zSpawnPointY1 + (rand() % 200);
+        return zSpawnPointY1 - (rand() % 200);
     else if(a == 2)
-        return zSpawnPointY2 + (rand() % 50);
+        return zSpawnPointY2 + (rand() % 65);
 }
 
 PUBLIC void changeZFrameX(int *pCurrentFrame, int frameA, int frameB, int *pFrameCounter, int *pDiagonal){
