@@ -13,8 +13,8 @@
 #include "zombie.h"
 #include "player.h"
 
-#define WINDOW_WIDTH (1024)
-#define WINDOW_HEIGHT (1024)
+#define WINDOW_WIDTH (700)
+#define WINDOW_HEIGHT (700)
 
 void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTile, SDL_Rect gTiles[]);
 void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[], SDL_Texture **mPlayer, SDL_Rect gPlayer[]);
@@ -87,47 +87,63 @@ int WinMain(void){
 
     // set to 1 when window close button is pressed
     int close_requested = 0;
+    int up_w,down_s,left_a,right_d;
     //Game event
     while (!close_requested){
         // process events
         SDL_Event event;
         while (SDL_PollEvent(&event)){
-            switch (event.type){
+           switch (event.type){
                 case SDL_QUIT:
-                    close_requested = 1;
-                    break;
-                case SDL_KEYDOWN:
-                if (pFrame==8)
-                pFrame=1;
-                    switch( event.key.keysym.sym ){
-                        case SDLK_w:            
-                            pPosition->y -= 6;
-                            pFrame++;
-                            break;
-                        case SDLK_s:
-                            pPosition->y += 6;
-                            pFrame++;
-                            break;
-                        case SDLK_a:
-                            pPosition->x -= 6;//2
-                            flip = SDL_FLIP_NONE; //If image should flip or not
-                            pFrame++;
-                            break;
-                        case SDLK_d:
-                            pPosition->x += 6;
-                            flip = SDL_FLIP_HORIZONTAL;
-                            pFrame++;
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
-                case SDL_KEYUP:
-                    pFrame=0;
-                    break;
-            }
-        }
+                close_requested = 1;
+                break;
 
+            case SDL_KEYDOWN:
+                if (pFrame==8){
+                pFrame=1;
+                }           
+                if (up_w==1){
+                    pPosition->y -= 6;
+                }
+                if (down_s==1){
+                    pPosition->y += 6;
+                }
+                if(left_a==1){
+                    pPosition->x -= 6;
+                }
+                if(right_d==1){
+                    pPosition->x += 6;
+                }
+
+                if (event.key.keysym.sym==SDLK_w){
+                    up_w=1;
+                    pFrame++;
+                }
+                if (event.key.keysym.sym==SDLK_s){
+                    down_s=1;
+                    pFrame++;
+                }
+                if(event.key.keysym.sym==SDLK_a){
+                    left_a=1;
+                    flip = SDL_FLIP_NONE;
+                    pFrame++;
+                }
+                if(event.key.keysym.sym==SDLK_d){
+                    right_d=1;
+                    flip = SDL_FLIP_HORIZONTAL;
+                    pFrame++;
+                }
+            break;
+            case SDL_KEYUP:
+            up_w=0;
+            down_s=0;
+            left_a=0;
+            right_d=0;
+            pFrame=0;
+            break;
+
+        }
+    }
         //Game logic 
         //SDL_GetMouseState(&mousex, &mousey);        //Simulate the survivor walking
 
