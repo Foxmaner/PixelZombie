@@ -13,8 +13,8 @@
 #include "zombie.h"
 #include "player.h"
 
-#define WINDOW_WIDTH (700)
-#define WINDOW_HEIGHT (700)
+#define WINDOW_WIDTH (1024)
+#define WINDOW_HEIGHT (1024)
 
 void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTile, SDL_Rect gTiles[]);
 void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[], SDL_Texture **mPlayer, SDL_Rect gPlayer[]);
@@ -92,58 +92,67 @@ int WinMain(void){
     while (!close_requested){
         // process events
         SDL_Event event;
-        while (SDL_PollEvent(&event)){
-           switch (event.type){
-                case SDL_QUIT:
+        while (SDL_PollEvent(&event)){ //GÖR DINA KEYS TILL EN ARRAAAAAAAAAAAAAAAYYY
+                if (event.type== SDL_QUIT){
                 close_requested = 1;
-                break;
+                }
+                    if (pFrame==8){
+                    pFrame=1;
+                    }           
+                    if (up_w==1){
+                        pPosition->y -= 6;
+                    }
+                    if (down_s==1){
+                        pPosition->y += 6;
+                    }
+                    if(left_a==1){
+                        pPosition->x -= 6;
+                    }
+                    if(right_d==1){
+                        pPosition->x += 6;
+                    }
 
-            case SDL_KEYDOWN:
-                if (pFrame==8){
-                pFrame=1;
-                }           
-                if (up_w==1){
-                    pPosition->y -= 6;
-                }
-                if (down_s==1){
-                    pPosition->y += 6;
-                }
-                if(left_a==1){
-                    pPosition->x -= 6;
-                }
-                if(right_d==1){
-                    pPosition->x += 6;
-                }
+                if (event.type== SDL_KEYDOWN){
 
-                if (event.key.keysym.sym==SDLK_w){
-                    up_w=1;
-                    pFrame++;
-                }
-                if (event.key.keysym.sym==SDLK_s){
-                    down_s=1;
-                    pFrame++;
-                }
-                if(event.key.keysym.sym==SDLK_a){
-                    left_a=1;
-                    flip = SDL_FLIP_NONE;
-                    pFrame++;
-                }
-                if(event.key.keysym.sym==SDLK_d){
-                    right_d=1;
-                    flip = SDL_FLIP_HORIZONTAL;
-                    pFrame++;
-                }
-            break;
-            case SDL_KEYUP:
-            up_w=0;
-            down_s=0;
-            left_a=0;
-            right_d=0;
-            pFrame=0;
-            break;
+                    if (event.key.keysym.sym==SDLK_w){
+                        up_w=1;
+                        pFrame++;
+                    }
 
+                    if (event.key.keysym.sym==SDLK_s){
+                        down_s=1;
+                        pFrame++;
+                    }
+                    if(event.key.keysym.sym==SDLK_a){
+                        left_a=1;
+                        flip = SDL_FLIP_NONE;
+                        pFrame++;
+                    }
+                    if(event.key.keysym.sym==SDLK_d){
+                        right_d=1;
+                        flip = SDL_FLIP_HORIZONTAL;
+                        pFrame++;
+                    }
+                }
+                if(event.type== SDL_KEYUP){
+
+                    printf("times up\n");
+                    if(event.key.keysym.sym==SDLK_w){
+                        up_w=0;
+                    }
+                    if(event.key.keysym.sym==SDLK_s){
+                        down_s=0;
+                    }
+                    if(event.key.keysym.sym==SDLK_a){
+                        left_a=0;
+                    }
+                    if(event.key.keysym.sym==SDLK_d){
+                        right_d=0;
+                    }
         }
     }
+
+
         //Game logic 
         //SDL_GetMouseState(&mousex, &mousey);        //Simulate the survivor walking
 
