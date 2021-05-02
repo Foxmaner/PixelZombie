@@ -97,7 +97,7 @@ int WinMain(void){
                 close_requested = 1;
                 }
                     if (pFrame==8){
-                    pFrame=1;
+                        pFrame=1;
                     }           
                     if (up_w==1){
                         pPosition->y -= 6;
@@ -136,19 +136,10 @@ int WinMain(void){
                 }
                 if(event.type== SDL_KEYUP){
 
-                    printf("times up\n");
-                    if(event.key.keysym.sym==SDLK_w){
-                        up_w=0;
-                    }
-                    if(event.key.keysym.sym==SDLK_s){
-                        down_s=0;
-                    }
-                    if(event.key.keysym.sym==SDLK_a){
-                        left_a=0;
-                    }
-                    if(event.key.keysym.sym==SDLK_d){
-                        right_d=0;
-                    }
+                    if(event.key.keysym.sym==SDLK_w) up_w=0;
+                    if(event.key.keysym.sym==SDLK_s) down_s=0;
+                    if(event.key.keysym.sym==SDLK_a) left_a=0;
+                    if(event.key.keysym.sym==SDLK_d) right_d=0;
         }
     }
 
