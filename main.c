@@ -9,6 +9,7 @@
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_image.h>
 
+
 #include "map.h"
 #include "zombie.h"
 #include "player.h"
@@ -84,53 +85,38 @@ int WinMain(void){
     // Start of continuing render-loop
 
     loadMedia(renderer, &mTiles, gTiles, &mZombie, gZombie, &mPlayer, gPlayer);
-
+    const Uint8 *state = SDL_GetKeyboardState(NULL); //Initierar hela skrivbordet. Det möjliggör att man konstant kan skanna in om en tangent är på eller av
     // set to 1 when window close button is pressed
     int close_requested = 0;
-    int up_w,down_s,left_a,right_d;
     //Game event
     while (!close_requested){
         // process events
         SDL_Event event;
         while (SDL_PollEvent(&event)){ 
-                if (event.type== SDL_QUIT){
+            if (event.type== SDL_QUIT){
                 close_requested = 1;
-                }
+            }
+            if (pFrame==8) pFrame=1; 
+            else pFrame++;            
+            if (state[SDL_SCANCODE_W]) { //Hela tangentbordet initierats i en array state[] som man kan lägga in olika tangenter.
+                pPosition->y -= 3;
+            }
+            if (state[SDL_SCANCODE_S]) {
+                pPosition->y += 3;
+            }
+            if (state[SDL_SCANCODE_A]) {
+                flip = SDL_FLIP_NONE;
+                pPosition->x -= 3;
+            }
+            if (state[SDL_SCANCODE_D]) {
+                flip = SDL_FLIP_HORIZONTAL;
+                pPosition->x += 3;
+            }
+            if(event.type== SDL_KEYUP){
+                pFrame=0;
+            }
 
-                    
-                if (event.type== SDL_KEYDOWN){
-                    if (pFrame==8) pFrame=1;
-                    else pFrame++;       
-                    if (up_w==1) pPosition->y -= 6;
-                    if (down_s==1) pPosition->y += 6;
-                    if(left_a==1) pPosition->x -= 6;
-                    if (right_d==1) pPosition->x += 6;
-
-                    if (event.key.keysym.sym==SDLK_w){
-                        up_w=1;
-                    }
-                    if (event.key.keysym.sym==SDLK_s){
-                        down_s=1;
-                    } 
-                    if(event.key.keysym.sym==SDLK_a){
-                        left_a=1;
-                        flip = SDL_FLIP_NONE;
-                    }
-                    if(event.key.keysym.sym==SDLK_d){
-                        right_d=1;
-                        flip = SDL_FLIP_HORIZONTAL;
-                    }
-                }
-                if(event.type== SDL_KEYUP){
-                    if(event.key.keysym.sym==SDLK_w) up_w=0; 
-                    if(event.key.keysym.sym==SDLK_s) down_s=0;
-                    if(event.key.keysym.sym==SDLK_a) left_a=0;
-                    if(event.key.keysym.sym==SDLK_d) right_d=0;
-                    pFrame=0;
-                }
         }
-
-
         //Game logic 
         //SDL_GetMouseState(&mousex, &mousey);        //Simulate the survivor walking
 
