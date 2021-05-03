@@ -18,7 +18,7 @@
 #define WINDOW_HEIGHT (1024)
 
 void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTile, SDL_Rect gTiles[]);
-void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[], SDL_Texture **mPlayer, SDL_Rect gPlayer[], SDL_Texture **mBullet, SDL_Rect gBullet[]);
+void loadMedia(SDL_Renderer *renderer, SDL_Window *win, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[], SDL_Texture **mPlayer, SDL_Rect gPlayer[], SDL_Texture **mBullet, SDL_Rect gBullet[]);
 
 int WinMain(void){
     
@@ -95,7 +95,7 @@ int WinMain(void){
     // End of Setup
     //-------------------------------------------
     // Start of continuing render-loop
-    loadMedia(renderer, &mTiles, gTiles, &mZombie, gZombie, &mPlayer, gPlayer, &mBullet, gBullet);
+    loadMedia(renderer, win, &mTiles, gTiles, &mZombie, gZombie, &mPlayer, gPlayer, &mBullet, gBullet);
 
     // set to 1 when window close button is pressed
     int close_requested = 0;
@@ -380,7 +380,7 @@ void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTiles, SDL_Rect gTil
     }
 }
 
-void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[], SDL_Texture **mPlayer, SDL_Rect gPlayer[], SDL_Texture **mBullet, SDL_Rect gBullet[]){
+void loadMedia(SDL_Renderer *renderer, SDL_Window *win, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[], SDL_Texture **mPlayer, SDL_Rect gPlayer[], SDL_Texture **mBullet, SDL_Rect gBullet[]){
     //Map
     SDL_Surface* gTilesSurface = IMG_Load("resources/Textur32x32V8.PNG");
     *mTiles = SDL_CreateTextureFromSurface(renderer, gTilesSurface);
@@ -464,4 +464,8 @@ void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], 
     gBullet[0].y = 0;
     gBullet[0].w = 15;
     gBullet[0].h = 5;
+
+    //Window Icon
+    SDL_Surface* gWindowIcon = IMG_Load("resources/icon.png");
+    SDL_SetWindowIcon(win, gWindowIcon);
 }
