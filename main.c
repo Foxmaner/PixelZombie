@@ -12,6 +12,7 @@
 #include "map.h"
 #include "zombie.h"
 #include "player.h"
+#include "server/udpClient.h"
 
 #define WINDOW_WIDTH (1024)
 #define WINDOW_HEIGHT (1024)
@@ -20,6 +21,7 @@ void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTile, SDL_Rect gTile
 void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[], SDL_Texture **mPlayer, SDL_Rect gPlayer[], SDL_Texture **mBullet, SDL_Rect gBullet[]);
 
 int WinMain(void){
+    
     // Setup
     //-------------------------------------------
     // Setup
@@ -60,11 +62,12 @@ int WinMain(void){
         zPosition[i].w = 43;
         zPosition[i].h = 54;
     }
-
+    
     //Player initilizer
+    int playerID=-1;
+    int nrOfPlayers=4;
     SDL_Texture *mPlayer = NULL;
     SDL_Rect gPlayer[10];
-    int nrOfPlayers=1;
     Player p[nrOfPlayers];
     SDL_Rect pPosition[nrOfPlayers];
     for(int i = 0; i < nrOfPlayers; i++){
@@ -96,16 +99,32 @@ int WinMain(void){
 
     // set to 1 when window close button is pressed
     int close_requested = 0;
+    int kordLista[2];
     //Game event
     while (!close_requested){
         // process events
+        ////
+
+        if(playerID == -1){
+        playerID = reciveID("192.168.56.1");
+        }
+        reciveData("192.168.56.1", kordLista);
+
+        if(kordLista[0] != -1000){
+            //printf("Satta kordinater %d %d \n", kordLista[0], kordLista[1]);
+            pPosition[1].x = kordLista[0];
+            pPosition[1].y = kordLista[1];
+        }
+        ///
         SDL_Event event;
         while (SDL_PollEvent(&event)){
+            
             switch (event.type){
                 case SDL_QUIT:
                     close_requested = 1;
                     break;
                 case SDL_KEYDOWN:
+                sendData(pPosition->x, pPosition->y, "192.168.56.1", playerID);
                     switch( event.key.keysym.sym ){
                         case SDLK_w:
                             pPosition->y -= 6;
@@ -331,7 +350,9 @@ int WinMain(void){
             SDL_RenderCopyEx(renderer, mZombie, &gZombie[zFrame[i].frame], &zPosition[i], 0, NULL, SDL_FLIP_NONE);
         }
         //Renders player
-        SDL_RenderCopyEx(renderer, mPlayer, &gPlayer[pFrame], &pPosition[0], 0, NULL, flip);
+        for(int i = 0; i < nrOfPlayers; i++){
+            SDL_RenderCopyEx(renderer, mPlayer, &gPlayer[pFrame], &pPosition[i], 0, NULL, flip);
+        }
         //Render bullet
         if(shot)
             SDL_RenderCopyEx(renderer, mBullet, &gBullet[0], &bPosition, bUpDown, NULL, SDL_FLIP_NONE);

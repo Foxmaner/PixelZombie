@@ -11,8 +11,12 @@ PRIVATE int PLAYER_HEIGTH = 54;
 
 PRIVATE int zSpawnPointX0 = 500;
 PRIVATE int zSpawnPointY0 = 500;
-PRIVATE int zSpawnPointX1 = 1040;
-PRIVATE int zSpawnPointY1 = 400;
+PRIVATE int zSpawnPointX1 = 600;
+PRIVATE int zSpawnPointY1 = 600;
+PRIVATE int zSpawnPointX2 = 700;
+PRIVATE int zSpawnPointY2 = 700;
+PRIVATE int zSpawnPointX3 = 800;
+PRIVATE int zSpawnPointY3 = 800;
 
 PUBLIC Player createPlayer(int x, int y){
     Player p = malloc(sizeof(struct player_type));
@@ -60,10 +64,18 @@ PUBLIC int getSpawnPointX(int a){
 }
 
 PUBLIC int getSpawnPointY(int a){
-    if(a == 0)
+    if(a == 0){
         return zSpawnPointY0;
-    else if(a == 1)
+    }
+    else if (a == 1){
         return zSpawnPointY1;
+    }
+    else if(a==2){
+        return zSpawnPointY2;
+    }
+    else if(a==3){
+        return zSpawnPointY3;
+    }
 }
 
 PUBLIC void respawnPlayer(Player a, SDL_Rect pPostion[]){
