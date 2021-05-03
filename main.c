@@ -20,7 +20,7 @@
 void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTile, SDL_Rect gTiles[]);
 void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[], SDL_Texture **mPlayer, SDL_Rect gPlayer[]);
 
-int main(void){
+int WinMain(void){
     // Setup
     //-------------------------------------------
     // Setup
@@ -66,7 +66,7 @@ int main(void){
     
     //Player
     SDL_Texture *mPlayer = NULL;
-    SDL_Rect gPlayer[9];
+    SDL_Rect gPlayer[15];
     int nrOfPlayers=1;
     Player p[nrOfPlayers];
     SDL_Rect pPosition[nrOfPlayers];
@@ -88,34 +88,70 @@ int main(void){
     const Uint8 *state = SDL_GetKeyboardState(NULL); //Initierar hela skrivbordet. Det möjliggör att man konstant kan skanna in om en tangent är på eller av
     // set to 1 when window close button is pressed
     int close_requested = 0;
+    int up_w,down_s,left_a,right_d;
     //Game event
     while (!close_requested){
         // process events
         SDL_Event event;
         while (SDL_PollEvent(&event)){ 
-            if (event.type== SDL_QUIT){
+                if (event.type== SDL_QUIT){
                 close_requested = 1;
-            }
-            if (pFrame==8) pFrame=1; 
-            else pFrame++;            
-            if (state[SDL_SCANCODE_W]) { //Hela tangentbordet initierats i en array state[] som man kan lägga in olika tangenter.
-                pPosition->y -= 3;
-            }
-            if (state[SDL_SCANCODE_S]) {
-                pPosition->y += 3;
-            }
-            if (state[SDL_SCANCODE_A]) {
-                flip = SDL_FLIP_NONE;
-                pPosition->x -= 3;
-            }
-            if (state[SDL_SCANCODE_D]) {
-                flip = SDL_FLIP_HORIZONTAL;
-                pPosition->x += 3;
-            }
-            if(event.type== SDL_KEYUP){
-                pFrame=0;
-            }
+                }                    
+                if (event.type== SDL_KEYDOWN){   
+                    if (up_w==1){
+                        pPosition->y -= 6;
+                        if (pFrame!=9 && pFrame>=10) pFrame=9;
+                        else pFrame++;    
+                    }
+                    if (down_s==1) {
+                        pPosition->y += 6;
+                        if (pFrame!=12 && pFrame>=13) pFrame=12;
+                        else pFrame++;    
+                    }
+                    if(left_a==1){ 
+                        pPosition->x -= 6;
+                        flip = SDL_FLIP_NONE;
+                        if (pFrame>=8) pFrame=1;
+                        else pFrame++;    
+                    }
+                    if (right_d==1){
+                        pPosition->x += 6;
+                        flip = SDL_FLIP_HORIZONTAL;                        
+                        if (pFrame>=8) pFrame=1;
+                        else pFrame++;  
+                    }
 
+                    if (event.key.keysym.sym==SDLK_w){
+                        up_w=1;
+                    }
+                    if (event.key.keysym.sym==SDLK_s){
+                        down_s=1;
+                    } 
+                    if(event.key.keysym.sym==SDLK_a){
+                        left_a=1;
+                    }
+                    if(event.key.keysym.sym==SDLK_d){
+                        right_d=1;
+                    }                   
+                }
+                if(event.type== SDL_KEYUP){
+                    if(event.key.keysym.sym==SDLK_w){
+                        up_w=0; 
+                        pFrame=11;
+                    } 
+                    if(event.key.keysym.sym==SDLK_s){
+                        down_s=0; 
+                        pFrame=14;
+                    }
+                    if(event.key.keysym.sym==SDLK_a){
+                        left_a=0; 
+                        pFrame=0;
+                    }
+                    if(event.key.keysym.sym==SDLK_d){
+                        right_d=0; 
+                        pFrame=0;
+                    }
+                }
         }
         //Game logic 
         //SDL_GetMouseState(&mousex, &mousey);        //Simulate the survivor walking
@@ -272,6 +308,7 @@ void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], 
     gPlayer[0].w = 64;
     gPlayer[0].h = 64;
 
+    //left and right
     gPlayer[1].x = 8; //Det är 96 mellan varje bild sidleds
     gPlayer[1].y = 210;//80 mellan varje rad
     gPlayer[1].w = 64;
@@ -312,13 +349,34 @@ void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], 
     gPlayer[8].w = 64;
     gPlayer[8].h = 64; 
 
-    gPlayer[9].x = 584;
-    gPlayer[9].y = 210;
+    //Up player
+    gPlayer[9].x = 488;
+    gPlayer[9].y = 16;
     gPlayer[9].w = 64;
     gPlayer[9].h = 64;
 
-    gPlayer[10].x = 680;
-    gPlayer[10].y = 210;
+    gPlayer[10].x = 565;
+    gPlayer[10].y = 16;
     gPlayer[10].w = 64;
     gPlayer[10].h = 64; 
+
+    gPlayer[11].x = 645;
+    gPlayer[11].y = 16;
+    gPlayer[11].w = 64;
+    gPlayer[11].h = 64; 
+
+    gPlayer[12].x = 565;
+    gPlayer[12].y = 111;
+    gPlayer[12].w = 64;
+    gPlayer[12].h = 64; 
+
+    gPlayer[13].x = 645;
+    gPlayer[13].y = 111;
+    gPlayer[13].w = 64;
+    gPlayer[13].h = 64; 
+
+    gPlayer[14].x = 645;
+    gPlayer[14].y = 111;
+    gPlayer[14].w = 64;
+    gPlayer[14].h = 64; 
 }
