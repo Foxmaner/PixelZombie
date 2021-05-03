@@ -8,6 +8,8 @@ UDPsocket sd;
 IPaddress srvadd;
 UDPpacket *p;
 UDPpacket *p2;
+int playerID;
+
 
 void createConnection(char selectedIp[100])
 {
@@ -78,5 +80,26 @@ void reciveData(char selectedIp[100], int kordinater[2]){
 		createConnection(selectedIp);
 		reciveData(selectedIp, kordinater);
 	}
+	
+}
+
+int reciveID(char selectedIp[100]){
+	if (sd != NULL){
+		if (SDLNet_UDP_Recv(sd, p2)){
+			int i;
+			sscanf((char *)p2->data, "%d", &i);
+			printf("BalleN UDP Packet incoming %d\n", i);
+			return i;
+		}
+		else{
+			printf("Inget id Mottaget! \n");
+		}
+	}
+	else{
+		printf("SD = null");
+		createConnection(selectedIp);
+		reciveID(selectedIp);
+	}
+	return -1;
 	
 }

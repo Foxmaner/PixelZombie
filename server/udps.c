@@ -10,12 +10,15 @@ exit
 #include <string.h>
  
 #include "SDL2/SDL_net.h"
- 
+
+UDPpacket *pSent;
+UDPsocket sd; /* Socket descriptor */
+UDPpacket *pRecive; /* Pointer to packet memory */
+
+void sendId(int playerId, Uint32 selectedIp, Uint32 selectedPort);
+
 int WinMain(int argc, char **argv)
 {
-	UDPsocket sd;       /* Socket descriptor */
-	UDPpacket *pRecive;       /* Pointer to packet memory */
-	UDPpacket *pSent;
     Uint32 IPclient[4]={0}; 
     Uint32 IPclient2=0;
     Uint32 portClient[4]={0}; 
@@ -59,21 +62,25 @@ int WinMain(int argc, char **argv)
                 IPclient[0] = pRecive->address.host;
                 portClient[0] = pRecive->address.port;
 				nrOfConnections =1;
+				sendId(0, pRecive->address.host, pRecive->address.port);
             }else if(pRecive->address.port != portClient[0]  && IPclient[1] == 0){
                 printf("Client 2\n");
                 IPclient[1] = pRecive->address.host;
                 portClient[1] = pRecive->address.port;
 				nrOfConnections =2;
+				sendId(1, pRecive->address.host, pRecive->address.port);
             }else if(pRecive->address.port != portClient[0] && pRecive->address.port != portClient[1]  && IPclient[2] == 0){
                 printf("Client 3\n");
                 IPclient[2] = pRecive->address.host;
                 portClient[2] = pRecive->address.port;
 				nrOfConnections = 3;
+				sendId(2, pRecive->address.host, pRecive->address.port);
             }else if(pRecive->address.port != portClient[0] && pRecive->address.port != portClient[1] && pRecive->address.port != portClient[2] && IPclient[3] == 0){
                 printf("Client 4\n");
                 IPclient[3] = pRecive->address.host;
                 portClient[3] = pRecive->address.port;
 				nrOfConnections =4;
+				sendId(3, pRecive->address.host, pRecive->address.port);
             }
 
 		if(nrOfConnections > 0){
@@ -115,4 +122,20 @@ int WinMain(int argc, char **argv)
     SDLNet_FreePacket(pRecive);
 	SDLNet_Quit();
 	return EXIT_SUCCESS;
-} 
+}
+
+
+void sendId(int playerId, Uint32 selectedIp, Uint32 selectedPort){
+	
+	printf("cool");
+	pSent->address.host = selectedIp;	/* Set the destination host */
+	pSent->address.port = selectedPort;
+	printf("cool2");
+	//sscanf((char * )pRecive->data, "%d", playerId);
+	printf("%d\n", playerId);
+	sprintf((char *)pSent->data, "%d\n", playerId);
+	pSent->len = strlen((char *)pSent->data) + 1;
+	SDLNet_UDP_Send(sd, -1, pSent);
+	
+
+}

@@ -66,6 +66,7 @@ int WinMain(void){
     //int mousex, mousey;         //For GetMouseState to simulate survivor walking
     
     //Player
+    int playerID=-1;
     SDL_Texture *mPlayer = NULL;
     SDL_Rect gPlayer[9];
     int nrOfPlayers=4;
@@ -94,9 +95,12 @@ int WinMain(void){
     while (!close_requested){
         // process events
         ////
-        
 
+        if(playerID == -1){
+        playerID = reciveID("192.168.56.1");
+        }
         reciveData("192.168.56.1", kordLista);
+
         if(kordLista[0] != -1000){
             //printf("Satta kordinater %d %d \n", kordLista[0], kordLista[1]);
             pPosition[1].x = kordLista[0];
