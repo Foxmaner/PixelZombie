@@ -20,7 +20,7 @@
 void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTile, SDL_Rect gTiles[]);
 void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[], SDL_Texture **mPlayer, SDL_Rect gPlayer[]);
 
-int WinMain(void){
+int main(void){
     // Setup
     //-------------------------------------------
     // Setup
@@ -263,7 +263,7 @@ void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], 
     gZombie[7].h = 54;
     
     //Player
-    SDL_Surface* gPlayerSurface = IMG_Load("resources/girlPlayer.png");
+    SDL_Surface* gPlayerSurface = IMG_Load("resources/pixel-768x768-31.png");
     *mPlayer = SDL_CreateTextureFromSurface(renderer, gPlayerSurface);
 
     //Ståendes med kroppen mot skärmen med pistol
@@ -311,4 +311,14 @@ void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], 
     gPlayer[8].y = 210;
     gPlayer[8].w = 64;
     gPlayer[8].h = 64; 
+
+    gPlayer[9].x = 584;
+    gPlayer[9].y = 210;
+    gPlayer[9].w = 64;
+    gPlayer[9].h = 64;
+
+    gPlayer[10].x = 680;
+    gPlayer[10].y = 210;
+    gPlayer[10].w = 64;
+    gPlayer[10].h = 64; 
 }
