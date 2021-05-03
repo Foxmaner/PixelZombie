@@ -18,15 +18,13 @@
 #define WINDOW_HEIGHT (1024)
 
 void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTile, SDL_Rect gTiles[]);
-void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[], SDL_Texture **mPlayer, SDL_Rect gPlayer[]);
+void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[], SDL_Texture **mPlayer, SDL_Rect gPlayer[], SDL_Texture **mBullet, SDL_Rect gBullet[]);
 
 int WinMain(void){
     
     // Setup
     //-------------------------------------------
     // Setup
-    SDL_RendererFlip flip = SDL_FLIP_NONE;
-
     if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER) != 0){
         printf("error initializing SDL: %s\n", SDL_GetError());
         return 1;
@@ -43,8 +41,9 @@ int WinMain(void){
     SDL_Renderer *renderer = NULL;
     renderer = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+    SDL_RendererFlip flip = SDL_FLIP_NONE;
 
-    // Initilize background
+    //Initilize background
     SDL_Texture *mTiles = NULL;
     SDL_Rect gTiles[32];
    
@@ -60,33 +59,43 @@ int WinMain(void){
         z[i] = createZombie(getZSpawnPointX(i % 3),getZSpawnPointY(i % 3));
         zPosition[i].x = getZombiePositionX(z[i]);
         zPosition[i].y = getZombiePositionY(z[i]);
-        zPosition[i].w = 54;
+        zPosition[i].w = 43;
         zPosition[i].h = 54;
     }
-    //int mousex, mousey;         //For GetMouseState to simulate survivor walking
     
-    //Player
+    //Player initilizer
     int playerID=-1;
-    SDL_Texture *mPlayer = NULL;
-    SDL_Rect gPlayer[9];
     int nrOfPlayers=4;
+    SDL_Texture *mPlayer = NULL;
+    SDL_Rect gPlayer[10];
     Player p[nrOfPlayers];
     SDL_Rect pPosition[nrOfPlayers];
     for(int i = 0; i < nrOfPlayers; i++){
         p[i] = createPlayer(getSpawnPointX(i),getSpawnPointY(i));
         pPosition[i].x = getPlayerPositionX(p[i]);
         pPosition[i].y = getPlayerPositionY(p[i]);
-        pPosition[i].w = 54;
-        pPosition[i].h = 54;
+        pPosition[i].w = 64;
+        pPosition[i].h = 64;
     }
-
+    unsigned int lastDmgTakenTime = 0, currentDmgTakenTime = 0; //Used to limit taken damage to 1hp/s
     int pFrame=0; //in gPlayer[] to show which state the player is in, which sprite is being used
+
+    //Bullet initilizer
+    SDL_Texture *mBullet;
+    SDL_Rect gBullet[1];
+    SDL_Rect bPosition;
+    bPosition.x = 100;
+    bPosition.y = 100;
+    bPosition.w = 15;
+    bPosition.h = 5;
+    bool shot = false;
+    int lastShotTime = 0, currentShotTime = 0;
+    int bVelX = 1, bVelY = 1, bUpDown = 0;
 
     // End of Setup
     //-------------------------------------------
     // Start of continuing render-loop
-
-    loadMedia(renderer, &mTiles, gTiles, &mZombie, gZombie, &mPlayer, gPlayer);
+    loadMedia(renderer, &mTiles, gTiles, &mZombie, gZombie, &mPlayer, gPlayer, &mBullet, gBullet);
 
     // set to 1 when window close button is pressed
     int close_requested = 0;
@@ -117,8 +126,11 @@ int WinMain(void){
                 case SDL_KEYDOWN:
                 sendData(pPosition->x, pPosition->y, "192.168.56.1", playerID);
                     switch( event.key.keysym.sym ){
-                        case SDLK_w:            
+                        case SDLK_w:
                             pPosition->y -= 6;
+                            bVelY = -1;
+                            bVelX = 0;
+                            bUpDown = 90;
                             if(pFrame == 0 || pFrame==8)//2
                                 pFrame = 1;//3
                             else if(pFrame==1)
@@ -138,6 +150,9 @@ int WinMain(void){
                             break;
                         case SDLK_s:
                             pPosition->y += 6;
+                            bVelY = 1;
+                            bVelX = 0;
+                            bUpDown = 90;
                             if(pFrame == 0 || pFrame==8)//2
                                 pFrame = 1;//3
                             else if(pFrame==1)
@@ -157,6 +172,9 @@ int WinMain(void){
                             break;
                         case SDLK_a:
                             pPosition->x -= 6;//2
+                            bVelX = -1;
+                            bVelY = 0;
+                            bUpDown = 0;
                             flip = SDL_FLIP_NONE; //If image should flip or not
                             if(pFrame == 0 || pFrame==8)//2
                                 pFrame = 1;//3
@@ -177,6 +195,9 @@ int WinMain(void){
                             break;
                         case SDLK_d:
                             pPosition->x += 6;
+                            bVelX = 1;
+                            bVelY = 0;
+                            bUpDown = 0;
                             flip = SDL_FLIP_HORIZONTAL;
                             if(pFrame == 0 || pFrame==8)//2
                                 pFrame = 1;//3
@@ -195,6 +216,10 @@ int WinMain(void){
                             else
                                 pFrame=8;
                             break;
+                        case SDLK_LCTRL:
+                            if(msTimer(&currentShotTime, &lastShotTime, 500))  //13 rps
+                                shot = true;
+                            break;
                         default:
                             break;
                     }
@@ -206,7 +231,6 @@ int WinMain(void){
         }
 
         //Game logic 
-        //SDL_GetMouseState(&mousex, &mousey);        //Simulate the survivor walking
 
         //Zombie following the Survivor X
         for(int i = 0; i < nrOfZombies; i++){
@@ -232,7 +256,7 @@ int WinMain(void){
                 changeZFrameY(&zFrame[i].frame, 0, 1, &zFrame[i].counter, &zFrame[i].diagonal);
             }
 
-            //Collision detection X
+            //Collision detection X with other zombies
             for(int j = 0; j < nrOfZombies; j++){
                 if(j==i){
                     break;
@@ -244,7 +268,7 @@ int WinMain(void){
                     zPosition[i].x -=1;
                 }
             }
-            //Collision detection Y
+            //Collision detection Y with other zombies
             for(int j = 0; j < nrOfZombies; j++){
                 if(j==i){
                     break;
@@ -256,8 +280,67 @@ int WinMain(void){
                     zPosition[i].y -=1;
                 }
             }
+            if(checkZCollisionWithP(zPosition[i],pPosition[0])){
+                if(msTimer(&currentDmgTakenTime, &lastDmgTakenTime, 1000)){
+                    respawnPlayer(p[0], &pPosition[0]);
+                }
+            }
+
+            //Map collision detection ZOMBIE
+            //TOP
+            if(zPosition[i].y < 15){
+                zPosition[i].y = 15;
+            }
+            //BOTTOM
+            if(zPosition[i].y > 1224) zPosition[i].y = 1224;
+            if(zPosition[i].y > 905 && (zPosition[i].x < 330 || zPosition[i].x > 455))
+                zPosition[i].y = 905;
+            else if(zPosition[i].y > 905 && zPosition[i].x < 335)
+                zPosition[i].x = 335;
+            else if(zPosition[i].y > 905 && zPosition[i].x > 450)
+                zPosition[i].x = 450;
+            //LEFT
+            if(zPosition[i].x < -200) zPosition[i].x = -200;
+            if(zPosition[i].x < 64 && (zPosition[i].y < 355 || zPosition[i].y > 430))
+                zPosition[i].x = 64;
+            else if(zPosition[i].x < 64 && zPosition[i].y < 360)
+                zPosition[i].y = 360;
+            else if(zPosition[i].x < 64 && zPosition[i].y > 425)
+                zPosition[i].y = 425;
+            //RIGHT
+            if(zPosition[i].x > 1224) zPosition[i].x = 1224;
+            if(zPosition[i].x > 930 && (zPosition[i].y < 355 || zPosition[i].y > 430))
+                zPosition[i].x = 930;
+            else if(zPosition[i].x > 930 && zPosition[i].y < 360)
+                zPosition[i].y = 360;
+            else if(zPosition[i].x > 930 && zPosition[i].y > 425)
+                zPosition[i].y = 425;
         }
 
+        //Map collision detection PLAYER
+        //TOP
+        if(pPosition[0].y < 15) pPosition[0].y = 15;
+        //BOTTOM
+        if(pPosition[0].y > 905) pPosition[0].y = 905;
+        //LEFT
+        if(pPosition[0].x < 30) pPosition[0].x = 30;
+        //RIGHT
+        if(pPosition[0].x > 930) pPosition[0].x = 930;
+
+        //Bullet positioning
+        if(!shot){
+            bPosition.x = pPosition[0].x + 20;
+            bPosition.y = pPosition[0].y + 17;
+        }
+        else{
+            if(!bVelY) bPosition.x += bVelX * 75;
+            else bPosition.y += bVelY * 75;
+            if(bPosition.x < 0 || bPosition.x > 1024 || bPosition.y < 0 || bPosition.y > 1024){
+                pFrame = 9;
+                shot = false;
+            }
+        }
+        
         //Game rendering
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
         SDL_RenderClear(renderer);
@@ -270,6 +353,9 @@ int WinMain(void){
         for(int i = 0; i < nrOfPlayers; i++){
             SDL_RenderCopyEx(renderer, mPlayer, &gPlayer[pFrame], &pPosition[i], 0, NULL, flip);
         }
+        //Render bullet
+        if(shot)
+            SDL_RenderCopyEx(renderer, mBullet, &gBullet[0], &bPosition, bUpDown, NULL, SDL_FLIP_NONE);
         SDL_RenderPresent(renderer);
         //Delay 1/60th second
         SDL_Delay(1000/60);
@@ -294,7 +380,8 @@ void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTiles, SDL_Rect gTil
     }
 }
 
-void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[], SDL_Texture **mPlayer, SDL_Rect gPlayer[]){
+void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[], SDL_Texture **mPlayer, SDL_Rect gPlayer[], SDL_Texture **mBullet, SDL_Rect gBullet[]){
+    //Map
     SDL_Surface* gTilesSurface = IMG_Load("resources/Textur32x32V8.PNG");
     *mTiles = SDL_CreateTextureFromSurface(renderer, gTilesSurface);
     for (int i = 0; i < 32; i++) {
@@ -307,51 +394,14 @@ void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], 
     //Zombie
     SDL_Surface* gZombieSurface = IMG_Load("resources/ZombieSheetSizeX2.png");
     *mZombie = SDL_CreateTextureFromSurface(renderer, gZombieSurface);
-    
-    //Down
-    gZombie[0].x = 0;
-    gZombie[0].y = 0;
-    gZombie[0].w = 54;
-    gZombie[0].h = 54;
+    for(int i = 0; i < 8; i++){
+        gZombie[i].x = 108 * (i % 2) + 6;
+        if(i % 2 == 0) gZombie[i].y = (54 * i) / 2;
+        else gZombie[i].y = gZombie[i-1].y;
+        gZombie[i].w = 43;
+        gZombie[i].h = 54;
+    }
 
-    gZombie[1].x = 108;
-    gZombie[1].y = 0;
-    gZombie[1].w = 54;
-    gZombie[1].h = 54;
-
-    //Left
-    gZombie[2].x = 0;
-    gZombie[2].y = 54;
-    gZombie[2].w = 54;
-    gZombie[2].h = 54;
-
-    gZombie[3].x = 108;
-    gZombie[3].y = 54;
-    gZombie[3].w = 54;
-    gZombie[3].h = 54;
-
-    //Right
-    gZombie[4].x = 0;
-    gZombie[4].y = 108;
-    gZombie[4].w = 54;
-    gZombie[4].h = 54;
-
-    gZombie[5].x = 108;
-    gZombie[5].y = 108;
-    gZombie[5].w = 54;
-    gZombie[5].h = 54;
-
-    //Up
-    gZombie[6].x = 0;
-    gZombie[6].y = 162;
-    gZombie[6].w = 54;
-    gZombie[6].h = 54;
-
-    gZombie[7].x = 108;
-    gZombie[7].y = 162;
-    gZombie[7].w = 54;
-    gZombie[7].h = 54;
-    
     //Player
     SDL_Surface* gPlayerSurface = IMG_Load("resources/girlPlayer.png");
     *mPlayer = SDL_CreateTextureFromSurface(renderer, gPlayerSurface);
@@ -400,5 +450,18 @@ void loadMedia(SDL_Renderer *renderer, SDL_Texture **mTiles, SDL_Rect gTiles[], 
     gPlayer[8].x = 680;
     gPlayer[8].y = 210;
     gPlayer[8].w = 64;
-    gPlayer[8].h = 64; 
+    gPlayer[8].h = 64;
+
+    gPlayer[9].x = 97;
+    gPlayer[9].y = 399;
+    gPlayer[9].w = 69;
+    gPlayer[9].h = 64;
+
+    //Bullet
+    SDL_Surface* gBulletSurface = IMG_Load("resources/bullet.png");
+    *mBullet = SDL_CreateTextureFromSurface(renderer, gBulletSurface);
+    gBullet[0].x = 0;
+    gBullet[0].y = 0;
+    gBullet[0].w = 15;
+    gBullet[0].h = 5;
 }
