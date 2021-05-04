@@ -9,6 +9,7 @@
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_image.h>
 
+
 #include "map.h"
 #include "zombie.h"
 #include "player.h"
@@ -67,7 +68,7 @@ int WinMain(void){
     int playerID=-1;
     int nrOfPlayers=4;
     SDL_Texture *mPlayer = NULL;
-    SDL_Rect gPlayer[10];
+    SDL_Rect gPlayer[16];
     Player p[nrOfPlayers];
     SDL_Rect pPosition[nrOfPlayers];
     for(int i = 0; i < nrOfPlayers; i++){
@@ -95,12 +96,16 @@ int WinMain(void){
     // End of Setup
     //-------------------------------------------
     // Start of continuing render-loop
-    loadMedia(renderer, win, &mTiles, gTiles, &mZombie, gZombie, &mPlayer, gPlayer, &mBullet, gBullet);
 
+    const Uint8 *state = SDL_GetKeyboardState(NULL); //Initierar hela skrivbordet. Det möjliggör att man konstant kan skanna in om en tangent är på eller av
     // set to 1 when window close button is pressed
     int close_requested = 0;
+    int up_w,down_s,left_a,right_d,lctrl;
     int kordLista[2];
-    //Game event
+    
+    loadMedia(renderer, win, &mTiles, gTiles, &mZombie, gZombie, &mPlayer, gPlayer, &mBullet, gBullet);
+    
+  //Game event
     while (!close_requested){
         // process events
         ////
@@ -117,119 +122,89 @@ int WinMain(void){
         }
         ///
         SDL_Event event;
-        while (SDL_PollEvent(&event)){
-            
-            switch (event.type){
-                case SDL_QUIT:
-                    close_requested = 1;
-                    break;
-                case SDL_KEYDOWN:
-                sendData(pPosition->x, pPosition->y, "192.168.56.1", playerID);
-                    switch( event.key.keysym.sym ){
-                        case SDLK_w:
-                            pPosition->y -= 6;
-                            bVelY = -1;
-                            bVelX = 0;
-                            bUpDown = 90;
-                            if(pFrame == 0 || pFrame==8)//2
-                                pFrame = 1;//3
-                            else if(pFrame==1)
-                                pFrame = 2;
-                            else if(pFrame==2)
-                                pFrame=3;
-                            else if(pFrame==3)
-                                pFrame=4;
-                            else if(pFrame==4)
-                                pFrame=5;
-                            else if(pFrame==5)
-                                pFrame=6;
-                            else if(pFrame==6)
-                                pFrame=7;
-                            else
-                                pFrame=8;
-                            break;
-                        case SDLK_s:
-                            pPosition->y += 6;
-                            bVelY = 1;
-                            bVelX = 0;
-                            bUpDown = 90;
-                            if(pFrame == 0 || pFrame==8)//2
-                                pFrame = 1;//3
-                            else if(pFrame==1)
-                                pFrame = 2;
-                            else if(pFrame==2)
-                                pFrame=3;
-                            else if(pFrame==3)
-                                pFrame=4;
-                            else if(pFrame==4)
-                                pFrame=5;
-                            else if(pFrame==5)
-                                pFrame=6;
-                            else if(pFrame==6)
-                                pFrame=7;
-                            else
-                                pFrame=8;
-                            break;
-                        case SDLK_a:
-                            pPosition->x -= 6;//2
-                            bVelX = -1;
-                            bVelY = 0;
-                            bUpDown = 0;
-                            flip = SDL_FLIP_NONE; //If image should flip or not
-                            if(pFrame == 0 || pFrame==8)//2
-                                pFrame = 1;//3
-                            else if(pFrame==1)
-                                pFrame = 2;
-                            else if(pFrame==2)
-                                pFrame=3;
-                            else if(pFrame==3)
-                                pFrame=4;
-                            else if(pFrame==4)
-                                pFrame=5;
-                            else if(pFrame==5)
-                                pFrame=6;
-                            else if(pFrame==6)
-                                pFrame=7;
-                            else
-                                pFrame=8;
-                            break;
-                        case SDLK_d:
-                            pPosition->x += 6;
-                            bVelX = 1;
-                            bVelY = 0;
-                            bUpDown = 0;
-                            flip = SDL_FLIP_HORIZONTAL;
-                            if(pFrame == 0 || pFrame==8)//2
-                                pFrame = 1;//3
-                            else if(pFrame==1)
-                                pFrame = 2;
-                            else if(pFrame==2)
-                                pFrame=3;
-                            else if(pFrame==3)
-                                pFrame=4;
-                            else if(pFrame==4)
-                                pFrame=5;
-                            else if(pFrame==5)
-                                pFrame=6;
-                            else if(pFrame==6)
-                                pFrame=7;
-                            else
-                                pFrame=8;
-                            break;
-                        case SDLK_LCTRL:
-                            if(msTimer(&currentShotTime, &lastShotTime, 500))  //13 rps
-                                shot = true;
-                            break;
-                        default:
-                            break;
+        while (SDL_PollEvent(&event)){ 
+                if (event.type== SDL_QUIT){
+                close_requested = 1;
+                }                    
+                if (event.type== SDL_KEYDOWN){
+                    sendData(pPosition->x, pPosition->y, "192.168.56.1", playerID);
+                    if (up_w==1){
+                        pPosition->y -= 6;
+                        bVelY = -1;
+                        bVelX = 0;
+                        bUpDown = 90;
+                        if (pFrame!=9 && pFrame>=10) pFrame=9;
+                        else pFrame++;    
                     }
-                    break;
-                case SDL_KEYUP:
-                    pFrame=0;
-                    break;
-            }
+                    if (down_s==1) {
+                        pPosition->y += 6;
+                        bVelY = 1;
+                        bVelX = 0;
+                        bUpDown = 90;
+                        if (pFrame!=12 && pFrame>=13) pFrame=12;
+                        else pFrame++;    
+                    }
+                    if(left_a==1){ 
+                        pPosition->x -= 6;
+                        bVelX = -1;
+                        bVelY = 0;
+                        bUpDown = 0;
+                        flip = SDL_FLIP_NONE;
+                        if (pFrame>=8) pFrame=1;
+                        else pFrame++;    
+                    }
+                    if (right_d==1){
+                        pPosition->x += 6;
+                        bVelX = 1;
+                        bVelY = 0;
+                        bUpDown = 0;
+                        flip = SDL_FLIP_HORIZONTAL;                        
+                        if (pFrame>=8) pFrame=1;
+                        else pFrame++;
+                    if(lctrl==1){
+                      if(msTimer(&currentShotTime, &lastShotTime, 500))  //13 rps
+                          shot = true;
+                    }
+                      
+                    if (event.key.keysym.sym==SDLK_w){
+                        up_w=1;
+                    }
+                    if (event.key.keysym.sym==SDLK_s){
+                        down_s=1;
+                    } 
+                    if(event.key.keysym.sym==SDLK_a){
+                        left_a=1;
+                    }
+                    if(event.key.keysym.sym==SDLK_d){
+                        right_d=1;
+                    }
+                    if(event.key.keysym.sym==SDLK_LCTRL){
+                        lctrl=1;
+                    }
+                }
+                if(event.type== SDL_KEYUP){
+                    if(event.key.keysym.sym==SDLK_w){
+                        up_w=0; 
+                        pFrame=11;
+                    } 
+                    if(event.key.keysym.sym==SDLK_s){
+                        down_s=0; 
+                        pFrame=14;
+                    }
+                    if(event.key.keysym.sym==SDLK_a){
+                        left_a=0; 
+                        pFrame=0;
+                    }
+                    if(event.key.keysym.sym==SDLK_d){
+                        right_d=0; 
+                        pFrame=0;
+                    }
+                    if(event.key.keysym.sym==SDLK_LCTRL){
+                        lctrl=0;
+                        pFrame = 0;
+                    }
+                }
         }
-
         //Game logic 
 
         //Zombie following the Survivor X
@@ -336,7 +311,7 @@ int WinMain(void){
             if(!bVelY) bPosition.x += bVelX * 75;
             else bPosition.y += bVelY * 75;
             if(bPosition.x < 0 || bPosition.x > 1024 || bPosition.y < 0 || bPosition.y > 1024){
-                pFrame = 9;
+                pFrame = 15;
                 shot = false;
             }
         }
@@ -403,7 +378,7 @@ void loadMedia(SDL_Renderer *renderer, SDL_Window *win, SDL_Texture **mTiles, SD
     }
 
     //Player
-    SDL_Surface* gPlayerSurface = IMG_Load("resources/girlPlayer.png");
+    SDL_Surface* gPlayerSurface = IMG_Load("resources/pixel-768x768-31.png");
     *mPlayer = SDL_CreateTextureFromSurface(renderer, gPlayerSurface);
 
     //Ståendes med kroppen mot skärmen med pistol
@@ -412,6 +387,7 @@ void loadMedia(SDL_Renderer *renderer, SDL_Window *win, SDL_Texture **mTiles, SD
     gPlayer[0].w = 64;
     gPlayer[0].h = 64;
 
+    //left and right
     gPlayer[1].x = 8; //Det är 96 mellan varje bild sidleds
     gPlayer[1].y = 210;//80 mellan varje rad
     gPlayer[1].w = 64;
@@ -450,12 +426,43 @@ void loadMedia(SDL_Renderer *renderer, SDL_Window *win, SDL_Texture **mTiles, SD
     gPlayer[8].x = 680;
     gPlayer[8].y = 210;
     gPlayer[8].w = 64;
-    gPlayer[8].h = 64;
+    gPlayer[8].h = 64; 
 
-    gPlayer[9].x = 97;
-    gPlayer[9].y = 399;
-    gPlayer[9].w = 69;
+    //Up player
+    gPlayer[9].x = 488;
+    gPlayer[9].y = 16;
+    gPlayer[9].w = 64;
     gPlayer[9].h = 64;
+
+    gPlayer[10].x = 565;
+    gPlayer[10].y = 16;
+    gPlayer[10].w = 64;
+    gPlayer[10].h = 64; 
+
+    gPlayer[11].x = 645;
+    gPlayer[11].y = 16;
+    gPlayer[11].w = 64;
+    gPlayer[11].h = 64; 
+
+    gPlayer[12].x = 565;
+    gPlayer[12].y = 111;
+    gPlayer[12].w = 64;
+    gPlayer[12].h = 64; 
+
+    gPlayer[13].x = 645;
+    gPlayer[13].y = 111;
+    gPlayer[13].w = 64;
+    gPlayer[13].h = 64; 
+
+    gPlayer[14].x = 645;
+    gPlayer[14].y = 111;
+    gPlayer[14].w = 64;
+    gPlayer[14].h = 64; 
+
+    gPlayer[15].x = 97;
+    gPlayer[15].y = 399;
+    gPlayer[15].w = 69;
+    gPlayer[15].h = 64;
 
     //Bullet
     SDL_Surface* gBulletSurface = IMG_Load("resources/bullet.png");
