@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include "player.h"
+#include <SDL2/SDL.h>
 
 
 #define PUBLIC /* empty */
@@ -10,33 +11,29 @@ PRIVATE int PLAYER_HEIGTH = 54;
 
 PRIVATE int zSpawnPointX0 = 500;
 PRIVATE int zSpawnPointY0 = 500;
-PRIVATE int zSpawnPointX1 = 1040;
-PRIVATE int zSpawnPointY1 = 400;
-
-struct player_type{
-    int PLAYER_POSITION_X;
-    int PLAYER_POSITION_Y;
-    int PLAYER_FRAME;
-    int slow;
-};
+PRIVATE int zSpawnPointX1 = 600;
+PRIVATE int zSpawnPointY1 = 600;
+PRIVATE int zSpawnPointX2 = 700;
+PRIVATE int zSpawnPointY2 = 700;
+PRIVATE int zSpawnPointX3 = 800;
+PRIVATE int zSpawnPointY3 = 800;
 
 PUBLIC Player createPlayer(int x, int y){
-    Player z = malloc(sizeof(struct player_type));
-    z->PLAYER_POSITION_Y = y;
-    z->PLAYER_POSITION_X = x;
-    z->PLAYER_FRAME = 0;
-    z->slow = 1;
-    return z;
+    Player p = malloc(sizeof(struct player_type));
+    p->PLAYER_POSITION_Y = y;
+    p->PLAYER_POSITION_X = x;
+    p->hitPoint = 3;
+    return p;
 }
-
-void setY(Player a, int y){
-    a->PLAYER_POSITION_Y = y;
-}
-
 
 PUBLIC void setPlayerPositionY(Player a, int y){
     a->PLAYER_POSITION_Y = y;
 }
+
+PUBLIC void setPlayerPositionX(Player a, int x){
+    a->PLAYER_POSITION_X = x;
+}
+
 
 PUBLIC int getPlayerPositionX(Player a){
     return a->PLAYER_POSITION_X;
@@ -55,8 +52,8 @@ PUBLIC int getPlayerHeight(){
     return PLAYER_HEIGTH;
 }
 
-PUBLIC int getPlayerFrame(Player a){
-    return a->PLAYER_FRAME;
+PUBLIC int getPlayerHitpoint(Player a){
+    return a->hitPoint;
 }
 
 PUBLIC int getSpawnPointX(int a){
@@ -67,8 +64,24 @@ PUBLIC int getSpawnPointX(int a){
 }
 
 PUBLIC int getSpawnPointY(int a){
-    if(a == 0)
+    if(a == 0){
         return zSpawnPointY0;
-    else if(a == 1)
+    }
+    else if (a == 1){
         return zSpawnPointY1;
+    }
+    else if(a==2){
+        return zSpawnPointY2;
+    }
+    else if(a==3){
+        return zSpawnPointY3;
+    }
+}
+
+PUBLIC void respawnPlayer(Player a, SDL_Rect pPostion[]){
+    if (!--a->hitPoint){
+        a->hitPoint=3;
+        pPostion->x=512;
+        pPostion->y=512;
+    }
 }
