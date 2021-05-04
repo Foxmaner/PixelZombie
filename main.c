@@ -9,14 +9,15 @@
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_image.h>
 
-
+#include "gameInit.h"
 #include "map.h"
 #include "zombie.h"
 #include "player.h"
 #include "server/udpClient.h"
 
-#define WINDOW_WIDTH (1024)
-#define WINDOW_HEIGHT (1024)
+
+//#define WINDOW_WIDTH (1024)
+//#define WINDOW_HEIGHT (1024)
 
 void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTile, SDL_Rect gTiles[]);
 void loadMedia(SDL_Renderer *renderer, SDL_Window *win, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[], SDL_Texture **mPlayer, SDL_Rect gPlayer[], SDL_Texture **mBullet, SDL_Rect gBullet[]);
@@ -26,7 +27,7 @@ int WinMain(void){
     // Setup
     //-------------------------------------------
     // Setup
-    if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER) != 0){
+  /*  if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER) != 0){
         printf("error initializing SDL: %s\n", SDL_GetError());
         return 1;
     }
@@ -104,7 +105,9 @@ int WinMain(void){
     int kordLista[2];
     
     loadMedia(renderer, win, &mTiles, gTiles, &mZombie, gZombie, &mPlayer, gPlayer, &mBullet, gBullet);
-    
+    */
+
+   initGame();
   //Game event
     while (!close_requested){
         // process events
