@@ -161,11 +161,7 @@ int WinMain(void){
                         flip = SDL_FLIP_HORIZONTAL;                        
                         if (pFrame>=8) pFrame=1;
                         else pFrame++;
-                    if(lctrl==1){
-                      if(msTimer(&currentShotTime, &lastShotTime, 500))  //13 rps
-                          shot = true;
                     }
-                      
                     if (event.key.keysym.sym==SDLK_w){
                         up_w=1;
                     }
@@ -179,7 +175,8 @@ int WinMain(void){
                         right_d=1;
                     }
                     if(event.key.keysym.sym==SDLK_LCTRL){
-                        lctrl=1;
+                        if(msTimer(&currentShotTime, &lastShotTime, 500))  //13 rps
+                            shot = true;
                     }
                 }
                 if(event.type== SDL_KEYUP){
@@ -201,7 +198,6 @@ int WinMain(void){
                     }
                     if(event.key.keysym.sym==SDLK_LCTRL){
                         lctrl=0;
-                        pFrame = 0;
                     }
                 }
         }
@@ -311,7 +307,6 @@ int WinMain(void){
             if(!bVelY) bPosition.x += bVelX * 75;
             else bPosition.y += bVelY * 75;
             if(bPosition.x < 0 || bPosition.x > 1024 || bPosition.y < 0 || bPosition.y > 1024){
-                pFrame = 15;
                 shot = false;
             }
         }
