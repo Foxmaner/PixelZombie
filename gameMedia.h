@@ -3,8 +3,9 @@
 
 #include <stdio.h>
 #include <SDL2/SDL.h>
-#include "gameInit.h"
+#include "zombie.h"
+#include "player.h"
 
-void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit, SDL_Texture **mPlayer, SDL_Rect gPlayer[], SDL_Texture **mBullet, SDL_Rect gBullet[]);
+void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit, Player_Init* PlayerInit, Bullet* b);
 
 #endif

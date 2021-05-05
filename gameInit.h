@@ -2,6 +2,7 @@
 #define gameInit_h
 
 #include <stdio.h>
+#include <stdbool.h>
 
 struct InitSDL{
     SDL_Window* win;
@@ -15,6 +16,17 @@ struct Background_Tiles{
 }; typedef struct Background_Tiles Background_Tiles;
 Background_Tiles backTiles;
 
+struct Bullet{
+    SDL_Texture *mBullet;
+    SDL_Rect gBullet[1];
+    SDL_Rect bPosition;
+    bool shot;
+    int lastShotTime , currentShotTime;
+    int bVelX, bVelY, bUpDown;
+};typedef struct Bullet Bullet;
+Bullet b;
+
+Bullet createBullet();
 void initSDL();
 void initWindow();
 void initRenderer(SDL_Window* pWin);

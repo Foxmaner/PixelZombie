@@ -56,6 +56,16 @@ PUBLIC int getPlayerHitpoint(Player a){
     return a->hitPoint;
 }
 
+PUBLIC void createAllPlayers(){
+    for(int i = 0; i <PlayerInit.nrOfPlayers; i++){
+        PlayerInit.p[i] = createPlayer(getSpawnPointX(i),getSpawnPointY(i));
+        PlayerInit.pPosition[i].x = getPlayerPositionX(PlayerInit.p[i]);
+        PlayerInit.pPosition[i].y = getPlayerPositionY(PlayerInit.p[i]);
+        PlayerInit.pPosition[i].w = 64;
+        PlayerInit.pPosition[i].h = 64;
+    }
+}
+
 PUBLIC int getSpawnPointX(int a){
     if(a == 0)
         return zSpawnPointX0;

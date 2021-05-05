@@ -72,24 +72,22 @@ int WinMain(void){
         ZombInit.zPosition[i].w = 43;
         ZombInit.zPosition[i].h = 54;
     }
-    */
+    
     //Player initilizer
     int playerID=-1;
     int nrOfPlayers=4;
     SDL_Texture *mPlayer = NULL;
     SDL_Rect gPlayer[16];
     Player p[nrOfPlayers];
-    SDL_Rect pPosition[nrOfPlayers];
+    SDL_Rect PlayerInit.pPosition[nrOfPlayers];
     for(int i = 0; i < nrOfPlayers; i++){
         p[i] = createPlayer(getSpawnPointX(i),getSpawnPointY(i));
-        pPosition[i].x = getPlayerPositionX(p[i]);
-        pPosition[i].y = getPlayerPositionY(p[i]);
-        pPosition[i].w = 64;
-        pPosition[i].h = 64;
+        PlayerInit.pPosition[i].x = getPlayerPositionX(p[i]);
+        PlayerInit.pPosition[i].y = getPlayerPositionY(p[i]);
+        PlayerInit.pPosition[i].w = 64;
+        PlayerInit.pPosition[i].h = 64;
     }
-    unsigned int lastDmgTakenTime = 0, currentDmgTakenTime = 0; //Used to limit taken damage to 1hp/s
-    int pFrame=0; //in gPlayer[] to show which state the player is in, which sprite is being used
-    SDL_RendererFlip flip = SDL_FLIP_NONE;
+    
     
     //Bullet initilizer
     SDL_Texture *mBullet;
@@ -102,18 +100,20 @@ int WinMain(void){
     bool shot = false;
     int lastShotTime = 0, currentShotTime = 0;
     int bVelX = 1, bVelY = 1, bUpDown = 0;
-
+*/
     // End of Setup
     //-------------------------------------------
     // Start of continuing render-loop
-
+    unsigned int lastDmgTakenTime = 0, currentDmgTakenTime = 0; //Used to limit taken damage to 1hp/s
+    int pFrame=0; //in gPlayer[] to show which state the player is in, which sprite is being used
+    SDL_RendererFlip flip = SDL_FLIP_NONE;
     const Uint8 *state = SDL_GetKeyboardState(NULL); //Initierar hela skrivbordet. Det möjliggör att man konstant kan skanna in om en tangent är på eller av
     // set to 1 when window close button is pressed
     int close_requested = 0;
     int up_w,down_s,left_a,right_d,lctrl;
     int kordLista[2];
-    
-    loadMedia(&iSDL, &backTiles, &ZombInit, &mPlayer, gPlayer, &mBullet, gBullet);
+    int playerID=-1;
+    loadMedia(&iSDL, &backTiles, &ZombInit, &PlayerInit, &b);
     
   //Game event
     while (!close_requested){
@@ -127,8 +127,8 @@ int WinMain(void){
 
         if(kordLista[0] != -1000){
             //printf("Satta kordinater %d %d \n", kordLista[0], kordLista[1]);
-            pPosition[1].x = kordLista[0];
-            pPosition[1].y = kordLista[1];
+            PlayerInit.pPosition[1].x = kordLista[0];
+            PlayerInit.pPosition[1].y = kordLista[1];
         }
         ///
         SDL_Event event;
@@ -137,37 +137,37 @@ int WinMain(void){
                 close_requested = 1;
                 }                    
                 if (event.type== SDL_KEYDOWN){
-                    sendData(pPosition->x, pPosition->y, "192.168.56.1", playerID);
+                    sendData(PlayerInit.pPosition->x, PlayerInit.pPosition->y, "192.168.56.1", playerID);
                     if (up_w==1){
-                        pPosition->y -= 6;
-                        bVelY = -1;
-                        bVelX = 0;
-                        bUpDown = 90;
+                        PlayerInit.pPosition->y -= 6;
+                        b.bVelY = -1;
+                        b.bVelX = 0;
+                        b.bUpDown = 90;
                         if (pFrame!=9 && pFrame>=10) pFrame=9;
                         else pFrame++;    
                     }
                     if (down_s==1) {
-                        pPosition->y += 6;
-                        bVelY = 1;
-                        bVelX = 0;
-                        bUpDown = 90;
+                        PlayerInit.pPosition->y += 6;
+                        b.bVelY = 1;
+                        b.bVelX = 0;
+                        b.bUpDown = 90;
                         if (pFrame!=12 && pFrame>=13) pFrame=12;
                         else pFrame++;    
                     }
                     if(left_a==1){ 
-                        pPosition->x -= 6;
-                        bVelX = -1;
-                        bVelY = 0;
-                        bUpDown = 0;
+                        PlayerInit.pPosition->x -= 6;
+                        b.bVelX = -1;
+                        b.bVelY = 0;
+                        b.bUpDown = 0;
                         flip = SDL_FLIP_NONE;
                         if (pFrame>=8) pFrame=1;
                         else pFrame++;    
                     }
                     if (right_d==1){
-                        pPosition->x += 6;
-                        bVelX = 1;
-                        bVelY = 0;
-                        bUpDown = 0;
+                        PlayerInit.pPosition->x += 6;
+                        b.bVelX = 1;
+                        b.bVelY = 0;
+                        b.bUpDown = 0;
                         flip = SDL_FLIP_HORIZONTAL;                        
                         if (pFrame>=8) pFrame=1;
                         else pFrame++;
@@ -185,8 +185,8 @@ int WinMain(void){
                         right_d=1;
                     }
                     if(event.key.keysym.sym==SDLK_LCTRL){
-                        if(msTimer(&currentShotTime, &lastShotTime, 500))  //13 rps
-                            shot = true;
+                        if(msTimer(&b.currentShotTime, &b.lastShotTime, 500))  //13 rps
+                            b.shot = true;
                     }
                 }
                 if(event.type== SDL_KEYUP){
@@ -215,23 +215,23 @@ int WinMain(void){
 
         //Zombie following the Survivor X
         for(int i = 0; i < ZombInit.nrOfZombies; i++){
-            if((ZombInit.zPosition[i].x - pPosition->x) > 20){
+            if((ZombInit.zPosition[i].x - PlayerInit.pPosition->x) > 20){
                 ZombInit.zPosition[i].x -= 1;
                 //Frame change LEFT
                 changeZFrameX(&zFrame[i].frame, 2, 3, &zFrame[i].counter, &zFrame[i].diagonal);
             }
-            else if((ZombInit.zPosition[i].x - pPosition->x) < -20){
+            else if((ZombInit.zPosition[i].x - PlayerInit.pPosition->x) < -20){
                 ZombInit.zPosition[i].x += 1;
                 //Frame change RIGHT
                 changeZFrameX(&zFrame[i].frame, 4, 5, &zFrame[i].counter, &zFrame[i].diagonal);
             }
             //Zombie following the Survivor Y
-            if((ZombInit.zPosition[i].y - pPosition->y) > 20){
+            if((ZombInit.zPosition[i].y - PlayerInit.pPosition->y) > 20){
                 ZombInit.zPosition[i].y -= 1;
                 //Frame change UP
                 changeZFrameY(&zFrame[i].frame, 6, 7, &zFrame[i].counter, &zFrame[i].diagonal);
             }
-            else if ((ZombInit.zPosition[i].y - pPosition->y) < -20){
+            else if ((ZombInit.zPosition[i].y - PlayerInit.pPosition->y) < -20){
                 ZombInit.zPosition[i].y += 1;
                 //Frame change DOWN
                 changeZFrameY(&zFrame[i].frame, 0, 1, &zFrame[i].counter, &zFrame[i].diagonal);
@@ -261,9 +261,9 @@ int WinMain(void){
                     ZombInit.zPosition[i].y -=1;
                 }
             }
-            if(checkZCollisionWithP(ZombInit.zPosition[i],pPosition[0])){
+            if(checkZCollisionWithP(ZombInit.zPosition[i],PlayerInit.pPosition[0])){
                 if(msTimer(&currentDmgTakenTime, &lastDmgTakenTime, 1000)){
-                    respawnPlayer(p[0], &pPosition[0]);
+                    respawnPlayer(PlayerInit.p[0], &PlayerInit.pPosition[0]);
                 }
             }
 
@@ -300,24 +300,24 @@ int WinMain(void){
 
         //Map collision detection PLAYER
         //TOP
-        if(pPosition[0].y < 15) pPosition[0].y = 15;
+        if(PlayerInit.pPosition[0].y < 15) PlayerInit.pPosition[0].y = 15;
         //BOTTOM
-        if(pPosition[0].y > 905) pPosition[0].y = 905;
+        if(PlayerInit.pPosition[0].y > 905) PlayerInit.pPosition[0].y = 905;
         //LEFT
-        if(pPosition[0].x < 30) pPosition[0].x = 30;
+        if(PlayerInit.pPosition[0].x < 30) PlayerInit.pPosition[0].x = 30;
         //RIGHT
-        if(pPosition[0].x > 930) pPosition[0].x = 930;
+        if(PlayerInit.pPosition[0].x > 930) PlayerInit.pPosition[0].x = 930;
 
         //Bullet positioning
-        if(!shot){
-            bPosition.x = pPosition[0].x + 20;
-            bPosition.y = pPosition[0].y + 17;
+        if(!b.shot){
+            b.bPosition.x = PlayerInit.pPosition[0].x + 20;
+            b.bPosition.y = PlayerInit.pPosition[0].y + 17;
         }
         else{
-            if(!bVelY) bPosition.x += bVelX * 75;
-            else bPosition.y += bVelY * 75;
-            if(bPosition.x < 0 || bPosition.x > 1024 || bPosition.y < 0 || bPosition.y > 1024){
-                shot = false;
+            if(!b.bVelY) b.bPosition.x += b.bVelX * 75;
+            else b.bPosition.y += b.bVelY * 75;
+            if(b.bPosition.x < 0 || b.bPosition.x > 1024 || b.bPosition.y < 0 || b.bPosition.y > 1024){
+                b.shot = false;
             }
         }
         
@@ -330,12 +330,12 @@ int WinMain(void){
             SDL_RenderCopyEx(iSDL.renderer, ZombInit.mZombie, &ZombInit.gZombie[zFrame[i].frame], &ZombInit.zPosition[i], 0, NULL, SDL_FLIP_NONE);
         }
         //Renders player
-        for(int i = 0; i < nrOfPlayers; i++){
-            SDL_RenderCopyEx(iSDL.renderer, mPlayer, &gPlayer[pFrame], &pPosition[i], 0, NULL, flip);
+        for(int i = 0; i < PlayerInit.nrOfPlayers; i++){
+            SDL_RenderCopyEx(iSDL.renderer, PlayerInit.mPlayer, &PlayerInit.gPlayer[pFrame], &PlayerInit.pPosition[i], 0, NULL, flip);
         }
         //Render bullet
-        if(shot)
-            SDL_RenderCopyEx(iSDL.renderer, mBullet, &gBullet[0], &bPosition, bUpDown, NULL, SDL_FLIP_NONE);
+        if(b.shot)
+            SDL_RenderCopyEx(iSDL.renderer, b.mBullet, &b.gBullet[0], &b.bPosition, b.bUpDown, NULL, SDL_FLIP_NONE);
         SDL_RenderPresent(iSDL.renderer);
         //Delay 1/60th second
         SDL_Delay(1000/60);

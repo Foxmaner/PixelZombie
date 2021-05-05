@@ -13,6 +13,16 @@
 #define WINDOW_WIDTH (1024)
 #define WINDOW_HEIGHT (1024)
 
+Bullet createBullet(){
+    b.bPosition.x = 100;
+    b.bPosition.y = 100;
+    b.bPosition.w = 15;
+    b.bPosition.h = 5;
+    b.shot = false;
+    b.lastShotTime = 0, b.currentShotTime = 0;
+    b.bVelX = 1, b.bVelY = 1, b.bUpDown = 0;
+}
+
 void initSDL(){
     if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER) != 0){
         printf("error initializing SDL: %s\n", SDL_GetError());
@@ -38,4 +48,7 @@ void initGame(){
     initWindow();
     ZombInit.nrOfZombies =6;
     createAllZombies();
+    PlayerInit.nrOfPlayers = 4;
+    createAllPlayers();
+    createBullet();
 }
