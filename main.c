@@ -10,6 +10,7 @@
 #include <SDL2/SDL_image.h>
 
 #include "gameInit.h"
+#include "gameRender.h"
 #include "map.h"
 #include "zombie.h"
 #include "player.h"
@@ -19,8 +20,8 @@
 //#define WINDOW_WIDTH (1024)
 //#define WINDOW_HEIGHT (1024)
 
-void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTile, SDL_Rect gTiles[]);
-void loadMedia(SDL_Renderer *renderer, SDL_Window *win, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[], SDL_Texture **mPlayer, SDL_Rect gPlayer[], SDL_Texture **mBullet, SDL_Rect gBullet[]);
+//void renderBackground(InitSDL* iSDL, SDL_Texture *mTile, SDL_Rect gTiles[]);
+//void loadMedia(InitSDL* iSDL, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[], SDL_Texture **mPlayer, SDL_Rect gPlayer[], SDL_Texture **mBullet, SDL_Rect gBullet[]);
 
 int WinMain(void){
     
@@ -43,6 +44,10 @@ int WinMain(void){
     SDL_Renderer *renderer = NULL;
     renderer = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+    */
+
+    initGame();
+
     SDL_RendererFlip flip = SDL_FLIP_NONE;
 
     //Initilize background
@@ -104,10 +109,8 @@ int WinMain(void){
     int up_w,down_s,left_a,right_d,lctrl;
     int kordLista[2];
     
-    loadMedia(renderer, win, &mTiles, gTiles, &mZombie, gZombie, &mPlayer, gPlayer, &mBullet, gBullet);
-    */
-
-   initGame();
+    loadMedia(&iSDL, &mTiles, gTiles, &mZombie, gZombie, &mPlayer, gPlayer, &mBullet, gBullet);
+    
   //Game event
     while (!close_requested){
         // process events
@@ -315,29 +318,29 @@ int WinMain(void){
         }
         
         //Game rendering
-        SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-        SDL_RenderClear(renderer);
-        renderBackground(renderer, mTiles, gTiles);
+        SDL_SetRenderDrawColor(iSDL.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+        SDL_RenderClear(iSDL.renderer);
+        renderBackground(&iSDL, mTiles, gTiles);
         //Renders all zombies
         for(int i = 0; i < nrOfZombies; i++){
-            SDL_RenderCopyEx(renderer, mZombie, &gZombie[zFrame[i].frame], &zPosition[i], 0, NULL, SDL_FLIP_NONE);
+            SDL_RenderCopyEx(iSDL.renderer, mZombie, &gZombie[zFrame[i].frame], &zPosition[i], 0, NULL, SDL_FLIP_NONE);
         }
         //Renders player
         for(int i = 0; i < nrOfPlayers; i++){
-            SDL_RenderCopyEx(renderer, mPlayer, &gPlayer[pFrame], &pPosition[i], 0, NULL, flip);
+            SDL_RenderCopyEx(iSDL.renderer, mPlayer, &gPlayer[pFrame], &pPosition[i], 0, NULL, flip);
         }
         //Render bullet
         if(shot)
-            SDL_RenderCopyEx(renderer, mBullet, &gBullet[0], &bPosition, bUpDown, NULL, SDL_FLIP_NONE);
-        SDL_RenderPresent(renderer);
+            SDL_RenderCopyEx(iSDL.renderer, mBullet, &gBullet[0], &bPosition, bUpDown, NULL, SDL_FLIP_NONE);
+        SDL_RenderPresent(iSDL.renderer);
         //Delay 1/60th second
         SDL_Delay(1000/60);
     }
    // SDL_DestroyWindow(win);
    // SDL_Quit();
 }
-
-void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTiles, SDL_Rect gTiles[]){
+/*
+void renderBackground(InitSDL* iSDL, SDL_Texture *mTiles, SDL_Rect gTiles[]){
     SDL_Rect position;
     position.y = 0;
     position.x = 0;
@@ -348,15 +351,15 @@ void renderBackground(SDL_Renderer *renderer, SDL_Texture *mTiles, SDL_Rect gTil
         for (int j = 0; j<getTileRows(); j++){
             position.y = i*getTileHeight();
             position.x = j*getTileWidth();
-            SDL_RenderCopyEx(renderer, mTiles, &gTiles[getTileGrid(i,j)],&position , 0, NULL, SDL_FLIP_NONE);
+            SDL_RenderCopyEx(iSDL->renderer, mTiles, &gTiles[getTileGrid(i,j)],&position , 0, NULL, SDL_FLIP_NONE);
         }
     }
 }
 
-void loadMedia(SDL_Renderer *renderer, SDL_Window *win, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[], SDL_Texture **mPlayer, SDL_Rect gPlayer[], SDL_Texture **mBullet, SDL_Rect gBullet[]){
+void loadMedia(InitSDL* iSDL, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[], SDL_Texture **mPlayer, SDL_Rect gPlayer[], SDL_Texture **mBullet, SDL_Rect gBullet[]){
     //Map
     SDL_Surface* gTilesSurface = IMG_Load("resources/Textur32x32V8.PNG");
-    *mTiles = SDL_CreateTextureFromSurface(renderer, gTilesSurface);
+    *mTiles = SDL_CreateTextureFromSurface(iSDL->renderer, gTilesSurface);
     for (int i = 0; i < 32; i++) {
         gTiles[i].x = i*getTileWidth();
         gTiles[i].y = 0;
@@ -366,7 +369,7 @@ void loadMedia(SDL_Renderer *renderer, SDL_Window *win, SDL_Texture **mTiles, SD
 
     //Zombie
     SDL_Surface* gZombieSurface = IMG_Load("resources/ZombieSheetSizeX2.png");
-    *mZombie = SDL_CreateTextureFromSurface(renderer, gZombieSurface);
+    *mZombie = SDL_CreateTextureFromSurface(iSDL->renderer, gZombieSurface);
     for(int i = 0; i < 8; i++){
         gZombie[i].x = 108 * (i % 2) + 6;
         if(i % 2 == 0) gZombie[i].y = (54 * i) / 2;
@@ -377,7 +380,7 @@ void loadMedia(SDL_Renderer *renderer, SDL_Window *win, SDL_Texture **mTiles, SD
 
     //Player
     SDL_Surface* gPlayerSurface = IMG_Load("resources/pixel-768x768-31.png");
-    *mPlayer = SDL_CreateTextureFromSurface(renderer, gPlayerSurface);
+    *mPlayer = SDL_CreateTextureFromSurface(iSDL->renderer, gPlayerSurface);
 
     //Ståendes med kroppen mot skärmen med pistol
     gPlayer[0].x = 8;
@@ -464,7 +467,7 @@ void loadMedia(SDL_Renderer *renderer, SDL_Window *win, SDL_Texture **mTiles, SD
 
     //Bullet
     SDL_Surface* gBulletSurface = IMG_Load("resources/bullet.png");
-    *mBullet = SDL_CreateTextureFromSurface(renderer, gBulletSurface);
+    *mBullet = SDL_CreateTextureFromSurface(iSDL->renderer, gBulletSurface);
     gBullet[0].x = 0;
     gBullet[0].y = 0;
     gBullet[0].w = 15;
@@ -472,5 +475,6 @@ void loadMedia(SDL_Renderer *renderer, SDL_Window *win, SDL_Texture **mTiles, SD
 
     //Window Icon
     SDL_Surface* gWindowIcon = IMG_Load("resources/icon.png");
-    SDL_SetWindowIcon(win, gWindowIcon);
+    SDL_SetWindowIcon(iSDL->win, gWindowIcon);
 }
+*/
