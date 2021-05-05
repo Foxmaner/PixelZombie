@@ -6,7 +6,6 @@
 #include <SDL2/SDL_image.h>
 
 #include "gameInit.h"
-#include "map.h"
 #include "zombie.h"
 #include "player.h"
 
@@ -46,7 +45,7 @@ void initRenderer(SDL_Window* pWin){
 void initGame(){
     initSDL();
     initWindow();
-    ZombInit.nrOfZombies =6;
+    ZombInit.nrOfZombies = 6;
     createAllZombies();
     PlayerInit.nrOfPlayers = 4;
     createAllPlayers();

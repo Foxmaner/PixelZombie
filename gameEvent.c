@@ -9,4 +9,9 @@
 #include "player.h"
 #include "server/udpClient.h"
 
-    
+void gameEvent(){
+    /*PlayerInit.pFrame = 0;
+    PlayerInit.flip = SDL_FLIP_NONE; Is not really needed*/ 
+
+
+}

@@ -12,6 +12,14 @@
 #include "player.h"
 #include "server/udpClient.h"
 
+void SetRenderDrawColor(){
+    SDL_SetRenderDrawColor(iSDL.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+}
+
+void clearRenderer(){
+    SDL_RenderClear(iSDL.renderer);
+}
+
 void renderBackground(InitSDL* iSDL, Background_Tiles backTiles){
     SDL_Rect position;
     position.y = 0;
@@ -27,30 +35,22 @@ void renderBackground(InitSDL* iSDL, Background_Tiles backTiles){
         }
     }
 }
-/*
-void SetRenderDrawColor(){
-    SDL_SetRenderDrawColor(iSDL.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-}
-
-void clearRenderer(){
-    SDL_RenderClear(iSDL.renderer);
-}
 
 void renderAllZombies(){
-    for(int i = 0; i < nrOfZombies; i++){
-        SDL_RenderCopyEx(iSDL.renderer, mZombie, &gZombie[zFrame[i].frame], &zPosition[i], 0, NULL, SDL_FLIP_NONE);
+    for(int i = 0; i < ZombInit.nrOfZombies; i++){
+        SDL_RenderCopyEx(iSDL.renderer, ZombInit.mZombie, &ZombInit.gZombie[zFrame[i].frame], &ZombInit.zPosition[i], 0, NULL, SDL_FLIP_NONE);
     }
 }
 
 void renderAllPlayers(){
-    for(int i = 0; i < nrOfPlayers; i++){
-        SDL_RenderCopyEx(iSDL.renderer, mPlayer, &gPlayer[pFrame], &pPosition[i], 0, NULL, flip);
+    for(int i = 0; i < PlayerInit.nrOfPlayers; i++){
+        SDL_RenderCopyEx(iSDL.renderer, PlayerInit.mPlayer, &PlayerInit.gPlayer[PlayerInit.pFrame], &PlayerInit.pPosition[i], 0, NULL, PlayerInit.flip);
     }
 }
 
 void renderBullet(){
-    if(shot)
-        SDL_RenderCopyEx(iSDL.renderer, mBullet, &gBullet[0], &bPosition, bUpDown, NULL, SDL_FLIP_NONE);
+    if(b.shot)
+        SDL_RenderCopyEx(iSDL.renderer, b.mBullet, &b.gBullet[0], &b.bPosition, b.bUpDown, NULL, SDL_FLIP_NONE);
 }
 
 void renderPreset(){
@@ -61,7 +61,7 @@ void renderPreset(){
 void renderEverything(){
     SetRenderDrawColor();
     clearRenderer();
-    renderBackground(&iSDL, mTiles, gTiles);
+    renderBackground(&iSDL, backTiles);
     renderAllZombies();
     renderAllPlayers();
     renderBullet();
@@ -69,4 +69,3 @@ void renderEverything(){
 
     SDL_Delay(1000/60);
 }
-*/

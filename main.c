@@ -46,12 +46,7 @@ int WinMain(void){
     SDL_Renderer *renderer = NULL;
     renderer = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
-    */
 
-    initGame();
-
-    
-    /*
     //Initilize background
     SDL_Texture *mTiles = NULL;
     SDL_Rect gTiles[32];
@@ -100,15 +95,20 @@ int WinMain(void){
     bool shot = false;
     int lastShotTime = 0, currentShotTime = 0;
     int bVelX = 1, bVelY = 1, bUpDown = 0;
-*/
+
     // End of Setup
     //-------------------------------------------
     // Start of continuing render-loop
-    unsigned int lastDmgTakenTime = 0, currentDmgTakenTime = 0; //Used to limit taken damage to 1hp/s
-    int pFrame=0; //in gPlayer[] to show which state the player is in, which sprite is being used
+    
+    int PlayerInit.pFrame=0;
     SDL_RendererFlip flip = SDL_FLIP_NONE;
+*/
+    initGame();
+    gameEvent();
+
     const Uint8 *state = SDL_GetKeyboardState(NULL); //Initierar hela skrivbordet. Det möjliggör att man konstant kan skanna in om en tangent är på eller av
     // set to 1 when window close button is pressed
+    unsigned int lastDmgTakenTime = 0, currentDmgTakenTime = 0; //Used to limit taken damage to 1hp/s
     int close_requested = 0;
     int up_w,down_s,left_a,right_d,lctrl;
     int kordLista[2];
@@ -143,34 +143,34 @@ int WinMain(void){
                         b.bVelY = -1;
                         b.bVelX = 0;
                         b.bUpDown = 90;
-                        if (pFrame!=9 && pFrame>=10) pFrame=9;
-                        else pFrame++;    
+                        if (PlayerInit.pFrame!=9 && PlayerInit.pFrame>=10) PlayerInit.pFrame=9;
+                        else PlayerInit.pFrame++;    
                     }
                     if (down_s==1) {
                         PlayerInit.pPosition->y += 6;
                         b.bVelY = 1;
                         b.bVelX = 0;
                         b.bUpDown = 90;
-                        if (pFrame!=12 && pFrame>=13) pFrame=12;
-                        else pFrame++;    
+                        if (PlayerInit.pFrame!=12 && PlayerInit.pFrame>=13) PlayerInit.pFrame=12;
+                        else PlayerInit.pFrame++;    
                     }
                     if(left_a==1){ 
                         PlayerInit.pPosition->x -= 6;
                         b.bVelX = -1;
                         b.bVelY = 0;
                         b.bUpDown = 0;
-                        flip = SDL_FLIP_NONE;
-                        if (pFrame>=8) pFrame=1;
-                        else pFrame++;    
+                        PlayerInit.flip = SDL_FLIP_NONE;
+                        if (PlayerInit.pFrame>=8) PlayerInit.pFrame=1;
+                        else PlayerInit.pFrame++;    
                     }
                     if (right_d==1){
                         PlayerInit.pPosition->x += 6;
                         b.bVelX = 1;
                         b.bVelY = 0;
                         b.bUpDown = 0;
-                        flip = SDL_FLIP_HORIZONTAL;                        
-                        if (pFrame>=8) pFrame=1;
-                        else pFrame++;
+                        PlayerInit.flip = SDL_FLIP_HORIZONTAL;
+                        if (PlayerInit.pFrame>=8) PlayerInit.pFrame=1;
+                        else PlayerInit.pFrame++;
                     }
                     if (event.key.keysym.sym==SDLK_w){
                         up_w=1;
@@ -192,19 +192,19 @@ int WinMain(void){
                 if(event.type== SDL_KEYUP){
                     if(event.key.keysym.sym==SDLK_w){
                         up_w=0; 
-                        pFrame=11;
+                        PlayerInit.pFrame=11;
                     } 
                     if(event.key.keysym.sym==SDLK_s){
                         down_s=0; 
-                        pFrame=14;
+                        PlayerInit.pFrame=14;
                     }
                     if(event.key.keysym.sym==SDLK_a){
                         left_a=0; 
-                        pFrame=0;
+                        PlayerInit.pFrame=0;
                     }
                     if(event.key.keysym.sym==SDLK_d){
                         right_d=0; 
-                        pFrame=0;
+                        PlayerInit.pFrame=0;
                     }
                     if(event.key.keysym.sym==SDLK_LCTRL){
                         lctrl=0;
@@ -321,6 +321,8 @@ int WinMain(void){
             }
         }
         
+        renderEverything();
+/*        
         //Game rendering
         SDL_SetRenderDrawColor(iSDL.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
         SDL_RenderClear(iSDL.renderer);
@@ -331,7 +333,7 @@ int WinMain(void){
         }
         //Renders player
         for(int i = 0; i < PlayerInit.nrOfPlayers; i++){
-            SDL_RenderCopyEx(iSDL.renderer, PlayerInit.mPlayer, &PlayerInit.gPlayer[pFrame], &PlayerInit.pPosition[i], 0, NULL, flip);
+            SDL_RenderCopyEx(iSDL.renderer, PlayerInit.mPlayer, &PlayerInit.gPlayer[PlayerInit.pFrame], &PlayerInit.pPosition[i], 0, NULL, flip);
         }
         //Render bullet
         if(b.shot)
@@ -339,6 +341,7 @@ int WinMain(void){
         SDL_RenderPresent(iSDL.renderer);
         //Delay 1/60th second
         SDL_Delay(1000/60);
+*/
     }
    // SDL_DestroyWindow(win);
    // SDL_Quit();
