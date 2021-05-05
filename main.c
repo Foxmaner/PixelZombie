@@ -30,7 +30,6 @@ int WinMain(void){
     initGame();
     do{
     close = mainGameEvent();
-
     renderEverything();
     }while(close != 1);
 
