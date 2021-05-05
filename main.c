@@ -26,7 +26,16 @@
 //void loadMedia(InitSDL* iSDL, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[], SDL_Texture **mPlayer, SDL_Rect gPlayer[], SDL_Texture **mBullet, SDL_Rect gBullet[]);
 
 int WinMain(void){
-    
+    int close;
+    initGame();
+    do{
+    close = mainGameEvent();
+
+    renderEverything();
+    }while(close != 1);
+
+    SDL_Quit();
+}
     // Setup
     //-------------------------------------------
     // Setup
@@ -102,18 +111,19 @@ int WinMain(void){
     
     int PlayerInit.pFrame=0;
     SDL_RendererFlip flip = SDL_FLIP_NONE;
-*/
-    initGame();
-    gameEvent();
+ 
+    loadMedia(&iSDL, &backTiles, &ZombInit, &PlayerInit, &b);
 
-    const Uint8 *state = SDL_GetKeyboardState(NULL); //Initierar hela skrivbordet. Det möjliggör att man konstant kan skanna in om en tangent är på eller av
+
+    //const Uint8 *state = SDL_GetKeyboardState(NULL); //Initierar hela skrivbordet. Det möjliggör att man konstant kan skanna in om en tangent är på eller av
     // set to 1 when window close button is pressed
-    unsigned int lastDmgTakenTime = 0, currentDmgTakenTime = 0; //Used to limit taken damage to 1hp/s
-    int close_requested = 0;
-    int up_w,down_s,left_a,right_d,lctrl;
+    //unsigned int lastDmgTakenTime = 0, currentDmgTakenTime = 0; //Used to limit taken damage to 1hp/s
+    //int close_requested = 0;
+    //int up_w,down_s,left_a,right_d,lctrl;
+
     int kordLista[2];
     int playerID=-1;
-    loadMedia(&iSDL, &backTiles, &ZombInit, &PlayerInit, &b);
+ 
     
   //Game event
     while (!close_requested){
@@ -131,13 +141,16 @@ int WinMain(void){
             PlayerInit.pPosition[1].y = kordLista[1];
         }
         ///
+
         SDL_Event event;
         while (SDL_PollEvent(&event)){ 
                 if (event.type== SDL_QUIT){
                 close_requested = 1;
-                }                    
+                }      
+
                 if (event.type== SDL_KEYDOWN){
                     sendData(PlayerInit.pPosition->x, PlayerInit.pPosition->y, "192.168.56.1", playerID);
+
                     if (up_w==1){
                         PlayerInit.pPosition->y -= 6;
                         b.bVelY = -1;
@@ -189,6 +202,7 @@ int WinMain(void){
                             b.shot = true;
                     }
                 }
+
                 if(event.type== SDL_KEYUP){
                     if(event.key.keysym.sym==SDLK_w){
                         up_w=0; 
@@ -211,6 +225,7 @@ int WinMain(void){
                     }
                 }
         }
+
         //Game logic 
 
         //Zombie following the Survivor X
@@ -261,6 +276,7 @@ int WinMain(void){
                     ZombInit.zPosition[i].y -=1;
                 }
             }
+
             if(checkZCollisionWithP(ZombInit.zPosition[i],PlayerInit.pPosition[0])){
                 if(msTimer(&currentDmgTakenTime, &lastDmgTakenTime, 1000)){
                     respawnPlayer(PlayerInit.p[0], &PlayerInit.pPosition[0]);
@@ -320,9 +336,10 @@ int WinMain(void){
                 b.shot = false;
             }
         }
+
         
-        renderEverything();
-/*        
+    
+        
         //Game rendering
         SDL_SetRenderDrawColor(iSDL.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
         SDL_RenderClear(iSDL.renderer);
@@ -341,12 +358,12 @@ int WinMain(void){
         SDL_RenderPresent(iSDL.renderer);
         //Delay 1/60th second
         SDL_Delay(1000/60);
-*/
+
     }
    // SDL_DestroyWindow(win);
    // SDL_Quit();
 }
-/*
+
 void renderBackground(InitSDL* iSDL, SDL_Texture *mTiles, SDL_Rect gTiles[]){
     SDL_Rect position;
     position.y = 0;

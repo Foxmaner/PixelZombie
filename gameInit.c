@@ -6,6 +6,7 @@
 #include <SDL2/SDL_image.h>
 
 #include "gameInit.h"
+#include "gameRender.h"
 #include "zombie.h"
 #include "player.h"
 
@@ -50,4 +51,5 @@ void initGame(){
     PlayerInit.nrOfPlayers = 4;
     createAllPlayers();
     createBullet();
+    loadMedia(&iSDL, &backTiles, &ZombInit, &PlayerInit, &b);
 }
