@@ -29,7 +29,6 @@ void initWindow(){
 }
 
 void initRenderer(SDL_Window* pWin){
-    //iSDL.renderer = NULL;
     iSDL.renderer = SDL_CreateRenderer(pWin, -1, SDL_RENDERER_ACCELERATED);
     SDL_SetRenderDrawColor(iSDL.renderer, 0, 0, 0, 0);
 }
@@ -37,4 +36,6 @@ void initRenderer(SDL_Window* pWin){
 void initGame(){
     initSDL();
     initWindow();
+    ZombInit.nrOfZombies =6;
+    createAllZombies();
 }

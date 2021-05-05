@@ -10,7 +10,9 @@
 #include <SDL2/SDL_image.h>
 
 #include "gameInit.h"
+#include "gameEvent.h"
 #include "gameRender.h"
+#include "gameMedia.h"
 #include "map.h"
 #include "zombie.h"
 #include "player.h"
@@ -48,28 +50,29 @@ int WinMain(void){
 
     initGame();
 
-    SDL_RendererFlip flip = SDL_FLIP_NONE;
-
+    
+    /*
     //Initilize background
     SDL_Texture *mTiles = NULL;
     SDL_Rect gTiles[32];
-   
-    //Alien Initilizers
+    
+    //Zombie Initilizers
     SDL_Texture *mZombie = NULL;
     SDL_Rect gZombie[8];  //8 sprites per zombie
     int nrOfZombies=6;
     ZombieFrame zFrame[nrOfZombies];
     Zombie z[nrOfZombies];
     SDL_Rect zPosition[nrOfZombies];
+    
     //Creates the zombies
     for(int i = 0; i < nrOfZombies; i++){
         z[i] = createZombie(getZSpawnPointX(i % 3),getZSpawnPointY(i % 3));
-        zPosition[i].x = getZombiePositionX(z[i]);
-        zPosition[i].y = getZombiePositionY(z[i]);
-        zPosition[i].w = 43;
-        zPosition[i].h = 54;
+        ZombInit.zPosition[i].x = getZombiePositionX(z[i]);
+        ZombInit.zPosition[i].y = getZombiePositionY(z[i]);
+        ZombInit.zPosition[i].w = 43;
+        ZombInit.zPosition[i].h = 54;
     }
-    
+    */
     //Player initilizer
     int playerID=-1;
     int nrOfPlayers=4;
@@ -86,7 +89,8 @@ int WinMain(void){
     }
     unsigned int lastDmgTakenTime = 0, currentDmgTakenTime = 0; //Used to limit taken damage to 1hp/s
     int pFrame=0; //in gPlayer[] to show which state the player is in, which sprite is being used
-
+    SDL_RendererFlip flip = SDL_FLIP_NONE;
+    
     //Bullet initilizer
     SDL_Texture *mBullet;
     SDL_Rect gBullet[1];
@@ -109,7 +113,7 @@ int WinMain(void){
     int up_w,down_s,left_a,right_d,lctrl;
     int kordLista[2];
     
-    loadMedia(&iSDL, &mTiles, gTiles, &mZombie, gZombie, &mPlayer, gPlayer, &mBullet, gBullet);
+    loadMedia(&iSDL, &backTiles, &ZombInit, &mPlayer, gPlayer, &mBullet, gBullet);
     
   //Game event
     while (!close_requested){
@@ -210,54 +214,54 @@ int WinMain(void){
         //Game logic 
 
         //Zombie following the Survivor X
-        for(int i = 0; i < nrOfZombies; i++){
-            if((zPosition[i].x - pPosition->x) > 20){
-                zPosition[i].x -= 1;
+        for(int i = 0; i < ZombInit.nrOfZombies; i++){
+            if((ZombInit.zPosition[i].x - pPosition->x) > 20){
+                ZombInit.zPosition[i].x -= 1;
                 //Frame change LEFT
                 changeZFrameX(&zFrame[i].frame, 2, 3, &zFrame[i].counter, &zFrame[i].diagonal);
             }
-            else if((zPosition[i].x - pPosition->x) < -20){
-                zPosition[i].x += 1;
+            else if((ZombInit.zPosition[i].x - pPosition->x) < -20){
+                ZombInit.zPosition[i].x += 1;
                 //Frame change RIGHT
                 changeZFrameX(&zFrame[i].frame, 4, 5, &zFrame[i].counter, &zFrame[i].diagonal);
             }
             //Zombie following the Survivor Y
-            if((zPosition[i].y - pPosition->y) > 20){
-                zPosition[i].y -= 1;
+            if((ZombInit.zPosition[i].y - pPosition->y) > 20){
+                ZombInit.zPosition[i].y -= 1;
                 //Frame change UP
                 changeZFrameY(&zFrame[i].frame, 6, 7, &zFrame[i].counter, &zFrame[i].diagonal);
             }
-            else if ((zPosition[i].y - pPosition->y) < -20){
-                zPosition[i].y += 1;
+            else if ((ZombInit.zPosition[i].y - pPosition->y) < -20){
+                ZombInit.zPosition[i].y += 1;
                 //Frame change DOWN
                 changeZFrameY(&zFrame[i].frame, 0, 1, &zFrame[i].counter, &zFrame[i].diagonal);
             }
 
             //Collision detection X with other zombies
-            for(int j = 0; j < nrOfZombies; j++){
+            for(int j = 0; j < ZombInit.nrOfZombies; j++){
                 if(j==i){
                     break;
                 }
-                else if((zPosition[i].x - zPosition[j].x) <= 19 && (zPosition[i].x - zPosition[j].x) >=0){
-                    zPosition[j].x -= 1;
+                else if((ZombInit.zPosition[i].x - ZombInit.zPosition[j].x) <= 19 && (ZombInit.zPosition[i].x - ZombInit.zPosition[j].x) >=0){
+                    ZombInit.zPosition[j].x -= 1;
                 }
-                else if((zPosition[i].x - zPosition[j].x) >= -19 && (zPosition[i].x - zPosition[j].x) <=0){
-                    zPosition[i].x -=1;
+                else if((ZombInit.zPosition[i].x - ZombInit.zPosition[j].x) >= -19 && (ZombInit.zPosition[i].x - ZombInit.zPosition[j].x) <=0){
+                    ZombInit.zPosition[i].x -=1;
                 }
             }
             //Collision detection Y with other zombies
-            for(int j = 0; j < nrOfZombies; j++){
+            for(int j = 0; j < ZombInit.nrOfZombies; j++){
                 if(j==i){
                     break;
                 }
-                else if((zPosition[i].y - zPosition[j].y) <= 27 && (zPosition[i].y - zPosition[j].y) >= 0){
-                    zPosition[j].y -= 1;
+                else if((ZombInit.zPosition[i].y - ZombInit.zPosition[j].y) <= 27 && (ZombInit.zPosition[i].y - ZombInit.zPosition[j].y) >= 0){
+                    ZombInit.zPosition[j].y -= 1;
                 }
-                else if((zPosition[i].y - zPosition[j].y) >= -27 && (zPosition[i].y - zPosition[j].y) <= 0){
-                    zPosition[i].y -=1;
+                else if((ZombInit.zPosition[i].y - ZombInit.zPosition[j].y) >= -27 && (ZombInit.zPosition[i].y - ZombInit.zPosition[j].y) <= 0){
+                    ZombInit.zPosition[i].y -=1;
                 }
             }
-            if(checkZCollisionWithP(zPosition[i],pPosition[0])){
+            if(checkZCollisionWithP(ZombInit.zPosition[i],pPosition[0])){
                 if(msTimer(&currentDmgTakenTime, &lastDmgTakenTime, 1000)){
                     respawnPlayer(p[0], &pPosition[0]);
                 }
@@ -265,33 +269,33 @@ int WinMain(void){
 
             //Map collision detection ZOMBIE
             //TOP
-            if(zPosition[i].y < 15){
-                zPosition[i].y = 15;
+            if(ZombInit.zPosition[i].y < 15){
+                ZombInit.zPosition[i].y = 15;
             }
             //BOTTOM
-            if(zPosition[i].y > 1224) zPosition[i].y = 1224;
-            if(zPosition[i].y > 905 && (zPosition[i].x < 330 || zPosition[i].x > 455))
-                zPosition[i].y = 905;
-            else if(zPosition[i].y > 905 && zPosition[i].x < 335)
-                zPosition[i].x = 335;
-            else if(zPosition[i].y > 905 && zPosition[i].x > 450)
-                zPosition[i].x = 450;
+            if(ZombInit.zPosition[i].y > 1224) ZombInit.zPosition[i].y = 1224;
+            if(ZombInit.zPosition[i].y > 905 && (ZombInit.zPosition[i].x < 330 || ZombInit.zPosition[i].x > 455))
+                ZombInit.zPosition[i].y = 905;
+            else if(ZombInit.zPosition[i].y > 905 && ZombInit.zPosition[i].x < 335)
+                ZombInit.zPosition[i].x = 335;
+            else if(ZombInit.zPosition[i].y > 905 && ZombInit.zPosition[i].x > 450)
+                ZombInit.zPosition[i].x = 450;
             //LEFT
-            if(zPosition[i].x < -200) zPosition[i].x = -200;
-            if(zPosition[i].x < 64 && (zPosition[i].y < 355 || zPosition[i].y > 430))
-                zPosition[i].x = 64;
-            else if(zPosition[i].x < 64 && zPosition[i].y < 360)
-                zPosition[i].y = 360;
-            else if(zPosition[i].x < 64 && zPosition[i].y > 425)
-                zPosition[i].y = 425;
+            if(ZombInit.zPosition[i].x < -200) ZombInit.zPosition[i].x = -200;
+            if(ZombInit.zPosition[i].x < 64 && (ZombInit.zPosition[i].y < 355 || ZombInit.zPosition[i].y > 430))
+                ZombInit.zPosition[i].x = 64;
+            else if(ZombInit.zPosition[i].x < 64 && ZombInit.zPosition[i].y < 360)
+                ZombInit.zPosition[i].y = 360;
+            else if(ZombInit.zPosition[i].x < 64 && ZombInit.zPosition[i].y > 425)
+                ZombInit.zPosition[i].y = 425;
             //RIGHT
-            if(zPosition[i].x > 1224) zPosition[i].x = 1224;
-            if(zPosition[i].x > 930 && (zPosition[i].y < 355 || zPosition[i].y > 430))
-                zPosition[i].x = 930;
-            else if(zPosition[i].x > 930 && zPosition[i].y < 360)
-                zPosition[i].y = 360;
-            else if(zPosition[i].x > 930 && zPosition[i].y > 425)
-                zPosition[i].y = 425;
+            if(ZombInit.zPosition[i].x > 1224) ZombInit.zPosition[i].x = 1224;
+            if(ZombInit.zPosition[i].x > 930 && (ZombInit.zPosition[i].y < 355 || ZombInit.zPosition[i].y > 430))
+                ZombInit.zPosition[i].x = 930;
+            else if(ZombInit.zPosition[i].x > 930 && ZombInit.zPosition[i].y < 360)
+                ZombInit.zPosition[i].y = 360;
+            else if(ZombInit.zPosition[i].x > 930 && ZombInit.zPosition[i].y > 425)
+                ZombInit.zPosition[i].y = 425;
         }
 
         //Map collision detection PLAYER
@@ -320,10 +324,10 @@ int WinMain(void){
         //Game rendering
         SDL_SetRenderDrawColor(iSDL.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
         SDL_RenderClear(iSDL.renderer);
-        renderBackground(&iSDL, mTiles, gTiles);
+        renderBackground(&iSDL, backTiles);
         //Renders all zombies
-        for(int i = 0; i < nrOfZombies; i++){
-            SDL_RenderCopyEx(iSDL.renderer, mZombie, &gZombie[zFrame[i].frame], &zPosition[i], 0, NULL, SDL_FLIP_NONE);
+        for(int i = 0; i < ZombInit.nrOfZombies; i++){
+            SDL_RenderCopyEx(iSDL.renderer, ZombInit.mZombie, &ZombInit.gZombie[zFrame[i].frame], &ZombInit.zPosition[i], 0, NULL, SDL_FLIP_NONE);
         }
         //Renders player
         for(int i = 0; i < nrOfPlayers; i++){

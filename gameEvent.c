@@ -11,10 +11,11 @@
 #include "player.h"
 #include "server/udpClient.h"
 
+    /*
     //Initilize background
-    SDL_Texture *mTiles = NULL;
-    SDL_Rect gTiles[32];
-   
+    //SDL_Texture *mTiles = NULL;
+    //SDL_Rect gTiles[32];
+    
     //Alien Initilizers
     SDL_Texture *mZombie = NULL;
     SDL_Rect gZombie[8];  //8 sprites per zombie
@@ -72,4 +73,4 @@
     int kordLista[2];
     
     loadMedia(renderer, win, &mTiles, gTiles, &mZombie, gZombie, &mPlayer, gPlayer, &mBullet, gBullet);
-}
+    */

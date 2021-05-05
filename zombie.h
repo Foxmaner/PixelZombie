@@ -10,12 +10,22 @@ struct zombie_type{
     int hitPoint;
     bool alive;
 };typedef struct zombie_type *Zombie;
+Zombie z[100];
 
 struct zombie_frame{
     int frame;
     int diagonal;
     int counter;
 }; typedef struct zombie_frame ZombieFrame;
+ZombieFrame zFrame[100];
+
+struct Zombie_Init{
+    SDL_Texture *mZombie;
+    SDL_Rect gZombie[8];
+    int nrOfZombies;
+    SDL_Rect zPosition[100];
+}; typedef struct Zombie_Init ZombieInit;
+ZombieInit ZombInit;
 
 int getZombiePositionX(Zombie a);
 int getZombiePositionY(Zombie a);
@@ -24,6 +34,7 @@ void setZombiePositionY(Zombie a, int y);
 int getZombieWidth();
 int getZombieHeight();
 int getZombieHP(Zombie a);
+void createAllZombies();
 int getZSpawnPointX(int a);
 int getZSpawnPointY(int a);
 void changeZFrameX(int *pCurrentFrame, int frameA, int frameB, int *pFrameCounter, int *pDiagonal);
@@ -33,4 +44,3 @@ void killZombie(Zombie a);
 int msTimer(int *pCurrentTime, int *pLastRecordedTime, int ms);
 
 #endif /* Zombie_h */
-

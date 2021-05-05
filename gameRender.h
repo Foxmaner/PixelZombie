@@ -2,9 +2,15 @@
 #define gameRender_h
 
 #include <stdio.h>
-#include <SDL2/SDL.h>
-#include "gameInit.h"
 
-void renderBackground(InitSDL* iSDL, SDL_Texture *mTile, SDL_Rect gTiles[]);
+void renderBackground(InitSDL* iSDL, Background_Tiles backTiles);
+void SetRenderDrawColor();
+void clearRenderer();
+void renderAllZombies();
+void renderAllPlayers();
+void renderBullet();
+void renderPreset();
+
+void renderEverything();
 
 #endif

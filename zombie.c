@@ -5,6 +5,7 @@
 #include <SDL2/SDL.h>
 
 #include "zombie.h"
+#include "gameInit.h"
 
 #define PUBLIC /* empty */
 #define PRIVATE static
@@ -51,6 +52,16 @@ PUBLIC int getZombieHeight(){
 
 PUBLIC int getZombieHitPoint(Zombie a){
     return a->hitPoint;
+}
+
+PUBLIC void createAllZombies(){
+    for(int i = 0; i < ZombInit.nrOfZombies; i++){
+        z[i] = createZombie(getZSpawnPointX(i % 3),getZSpawnPointY(i % 3));
+        ZombInit.zPosition[i].x = getZombiePositionX(z[i]);
+        ZombInit.zPosition[i].y = getZombiePositionY(z[i]);
+        ZombInit.zPosition[i].w = 43;
+        ZombInit.zPosition[i].h = 54;
+    }
 }
 
 PUBLIC int getZSpawnPointX(int a){

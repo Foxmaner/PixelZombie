@@ -6,31 +6,32 @@
 #include <SDL2/SDL_image.h>
 
 #include "gameInit.h"
+#include "gameEvent.h"
 #include "map.h"
 #include "zombie.h"
 #include "player.h"
 #include "server/udpClient.h"
 
-void loadMedia(InitSDL* iSDL, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[], SDL_Texture **mPlayer, SDL_Rect gPlayer[], SDL_Texture **mBullet, SDL_Rect gBullet[]){
+void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit, SDL_Texture **mPlayer, SDL_Rect gPlayer[], SDL_Texture **mBullet, SDL_Rect gBullet[]){
     //Map
     SDL_Surface* gTilesSurface = IMG_Load("resources/Textur32x32V8.PNG");
-    *mTiles = SDL_CreateTextureFromSurface(iSDL->renderer, gTilesSurface);
+    backTiles->mTiles = SDL_CreateTextureFromSurface(iSDL->renderer, gTilesSurface);
     for (int i = 0; i < 32; i++) {
-        gTiles[i].x = i*getTileWidth();
-        gTiles[i].y = 0;
-        gTiles[i].w = getTileWidth();
-        gTiles[i].h = getTileHeight();
+        backTiles->gTiles[i].x = i*getTileWidth();
+        backTiles->gTiles[i].y = 0;
+        backTiles->gTiles[i].w = getTileWidth();
+        backTiles->gTiles[i].h = getTileHeight();
     }
 
     //Zombie
     SDL_Surface* gZombieSurface = IMG_Load("resources/ZombieSheetSizeX2.png");
-    *mZombie = SDL_CreateTextureFromSurface(iSDL->renderer, gZombieSurface);
+    ZombInit->mZombie = SDL_CreateTextureFromSurface(iSDL->renderer, gZombieSurface);
     for(int i = 0; i < 8; i++){
-        gZombie[i].x = 108 * (i % 2) + 6;
-        if(i % 2 == 0) gZombie[i].y = (54 * i) / 2;
-        else gZombie[i].y = gZombie[i-1].y;
-        gZombie[i].w = 43;
-        gZombie[i].h = 54;
+        ZombInit->gZombie[i].x = 108 * (i % 2) + 6;
+        if(i % 2 == 0) ZombInit->gZombie[i].y = (54 * i) / 2;
+        else ZombInit->gZombie[i].y = ZombInit->gZombie[i-1].y;
+        ZombInit->gZombie[i].w = 43;
+        ZombInit->gZombie[i].h = 54;
     }
 
     //Player
