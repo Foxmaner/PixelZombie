@@ -11,13 +11,13 @@
 #include "server/udpClient.h"
 
 int lastDmgTakenTime = 0, currentDmgTakenTime = 0;
-int kordLista[2];
+int kordLista[3];
 int playerID=-1;
 int up_w,down_s,left_a,right_d,lctrl;
 
 void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lctrl, SDL_Event event){
     if (*up_w==1){
-        PlayerInit.pPosition->y -= 6;
+        PlayerInit.pPosition[playerID].y -= 6;
         b.bVelY = -1;
         b.bVelX = 0;
         b.bUpDown = 90;
@@ -25,7 +25,7 @@ void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lct
         else PlayerInit.pFrame++;
         }
         if (*down_s==1){
-            PlayerInit.pPosition->y += 6;
+            PlayerInit.pPosition[playerID].y += 6;
             b.bVelY = 1;
             b.bVelX = 0;
             b.bUpDown = 90;
@@ -33,7 +33,7 @@ void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lct
             else PlayerInit.pFrame++;
         }
         if(*left_a==1){
-            PlayerInit.pPosition->x -= 6;
+            PlayerInit.pPosition[playerID].x -= 6;
             b.bVelX = -1;
             b.bVelY = 0;
             b.bUpDown = 0;
@@ -42,7 +42,7 @@ void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lct
             else PlayerInit.pFrame++;
         }
         if (*right_d==1){
-            PlayerInit.pPosition->x += 6;
+            PlayerInit.pPosition[playerID].x += 6;
             b.bVelX = 1;
             b.bVelY = 0;
             b.bUpDown = 0;
@@ -140,9 +140,9 @@ void zombieCollisionWithZombie(int i){
 }
 
 void zombieCollisionWithPlayer(int i, int *currentDmgTakenTime,int *lastDmgTakenTime){
-    if(checkZCollisionWithP(ZombInit.zPosition[i],PlayerInit.pPosition[0])){
+    if(checkZCollisionWithP(ZombInit.zPosition[i],PlayerInit.pPosition[playerID])){
         if(msTimer(currentDmgTakenTime, lastDmgTakenTime, 1000)){
-            respawnPlayer(PlayerInit.p[0], &PlayerInit.pPosition[0]);
+           //respawnPlayer(PlayerInit.p[playerID], &PlayerInit.pPosition[playerID], playerID);
         }
     }
 }
@@ -180,19 +180,19 @@ void zombieCollisionWithMap(int i){
 
 void playerCollisionWithMap(){
     //TOP
-    if(PlayerInit.pPosition[0].y < 15) PlayerInit.pPosition[0].y = 15;
+    if(PlayerInit.pPosition[playerID].y < 15) PlayerInit.pPosition[playerID].y = 15;
     //BOTTOM
-    if(PlayerInit.pPosition[0].y > 905) PlayerInit.pPosition[0].y = 905;
+    if(PlayerInit.pPosition[playerID].y > 905) PlayerInit.pPosition[playerID].y = 905;
     //LEFT
-    if(PlayerInit.pPosition[0].x < 30) PlayerInit.pPosition[0].x = 30;
+    if(PlayerInit.pPosition[playerID].x < 30) PlayerInit.pPosition[playerID].x = 30;
     //RIGHT
-    if(PlayerInit.pPosition[0].x > 930) PlayerInit.pPosition[0].x = 930;
+    if(PlayerInit.pPosition[playerID].x > 930) PlayerInit.pPosition[playerID].x = 930;
 }
 
 void bulletPositioning(){
     if(!b.shot){
-        b.bPosition.x = PlayerInit.pPosition[0].x + 20;
-        b.bPosition.y = PlayerInit.pPosition[0].y + 17;
+        b.bPosition.x = PlayerInit.pPosition[playerID].x + 20;
+        b.bPosition.y = PlayerInit.pPosition[playerID].y + 17;
     }
     else{
         if(!b.bVelY) b.bPosition.x += b.bVelX * 75;
@@ -210,10 +210,10 @@ int mainGameEvent(){
         playerID = reciveID("192.168.56.1");
     }
     reciveData("192.168.56.1", kordLista);
-    if(kordLista[0] != -1000){
+    if(kordLista[1] != -1000){
         //printf("Satta kordinater %d %d \n", kordLista[0], kordLista[1]);
-        PlayerInit.pPosition[1].x = kordLista[0];
-        PlayerInit.pPosition[1].y = kordLista[1];
+        PlayerInit.pPosition[kordLista[0]].x = kordLista[1];
+        PlayerInit.pPosition[kordLista[0]].y = kordLista[2];
     }
     //receiveCoordData(&kordLista, &playerID);
     SDL_Event event;
@@ -223,7 +223,7 @@ int mainGameEvent(){
             return close_requested;
         }
         if (event.type== SDL_KEYDOWN){
-            sendData(PlayerInit.pPosition->x, PlayerInit.pPosition->y, "192.168.56.1", playerID);
+            sendData(PlayerInit.pPosition[playerID].x, PlayerInit.pPosition[playerID].y, "192.168.56.1", playerID);
             pressedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
         }
         if(event.type== SDL_KEYUP){

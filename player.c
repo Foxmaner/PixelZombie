@@ -71,6 +71,10 @@ PUBLIC int getSpawnPointX(int a){
         return zSpawnPointX0;
     else if(a == 1)
         return zSpawnPointX1;
+    else if(a == 2)
+        return zSpawnPointX2;
+    else if(a == 3)
+        return zSpawnPointX3;
 }
 
 PUBLIC int getSpawnPointY(int a){
@@ -88,10 +92,10 @@ PUBLIC int getSpawnPointY(int a){
     }
 }
 
-PUBLIC void respawnPlayer(Player a, SDL_Rect pPostion[]){
+PUBLIC void respawnPlayer(Player a, SDL_Rect pPostion[], int playerID){
     if (!--a->hitPoint){
         a->hitPoint=3;
-        pPostion->x=512;
-        pPostion->y=512;
+        pPostion[playerID].x=512;
+        pPostion[playerID].y=512;
     }
 }

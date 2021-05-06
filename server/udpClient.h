@@ -5,7 +5,7 @@
 
 
 void sendData(int x_cord, int y_cord, char selectedIp[100], int playerID);
-void reciveData(char selectedIp[100], int kordinater[2]);
+void reciveData(char selectedIp[100], int kordinater[3]);
 int reciveID(char selectedIp[100]);
 
 #endif

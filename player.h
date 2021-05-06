@@ -32,7 +32,7 @@ int getPlayerHitpoint(Player a);
 void createAllPlayers();
 int getSpawnPointX(int a);
 int getSpawnPointY(int a);
-void respawnPlayer(Player a, SDL_Rect pPostion[]);
+void respawnPlayer(Player a, SDL_Rect pPostion[], int playerID);
 
 
 #endif /* Player_h */
