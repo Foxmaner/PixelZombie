@@ -15,18 +15,6 @@ int kordLista[2];
 int playerID=-1;
 int up_w,down_s,left_a,right_d,lctrl;
 
-/*void receiveCoordData(int *kordLista[], int *playerID){
-    if(*playerID == -1){
-        *playerID = reciveID("192.168.56.1");
-    }
-    reciveData("192.168.56.1", *kordLista);
-    if(*kordLista[0] != -1000){
-        //printf("Satta kordinater %d %d \n", kordLista[0], kordLista[1]);
-        PlayerInit.pPosition[1].x = *kordLista[0];
-        PlayerInit.pPosition[1].y = *kordLista[1];
-    }
-}*/
-
 void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lctrl, SDL_Event event){
     if (*up_w==1){
         PlayerInit.pPosition->y -= 6;
