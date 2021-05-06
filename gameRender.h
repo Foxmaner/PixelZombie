@@ -11,6 +11,6 @@ void renderAllPlayers();
 void renderBullet();
 void renderPreset();
 
-void renderEverything();
+void renderGame();
 
 #endif

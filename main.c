@@ -4,7 +4,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_image.h>
@@ -12,12 +11,12 @@
 #include "gameInit.h"
 #include "gameEvent.h"
 #include "gameRender.h"
-#include "gameMedia.h"
+/*#include "gameMedia.h"
 #include "map.h"
 #include "zombie.h"
 #include "player.h"
 #include "server/udpClient.h"
-
+*/
 
 //#define WINDOW_WIDTH (1024)
 //#define WINDOW_HEIGHT (1024)
@@ -26,11 +25,11 @@
 //void loadMedia(InitSDL* iSDL, SDL_Texture **mTiles, SDL_Rect gTiles[], SDL_Texture **mZombie, SDL_Rect gZombie[], SDL_Texture **mPlayer, SDL_Rect gPlayer[], SDL_Texture **mBullet, SDL_Rect gBullet[]);
 
 int WinMain(void){
-    int close;
+    int close=0;
     initGame();
     do{
     close = mainGameEvent();
-    renderEverything();
+    renderGame();
     }while(close != 1);
 
     SDL_Quit();

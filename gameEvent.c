@@ -5,7 +5,7 @@
 #include <SDL2/SDL_image.h>
 
 #include "gameInit.h"
-#include "map.h"
+#include "gameEvent.h"
 #include "zombie.h"
 #include "player.h"
 #include "server/udpClient.h"
@@ -148,7 +148,7 @@ void zombieCollisionWithZombie(int i){
 
 void zombieCollisionWithPlayer(int i, int *currentDmgTakenTime,int *lastDmgTakenTime){
     if(checkZCollisionWithP(ZombInit.zPosition[i],PlayerInit.pPosition[0])){
-        if(msTimer(&currentDmgTakenTime, &lastDmgTakenTime, 1000)){
+        if(msTimer(currentDmgTakenTime, lastDmgTakenTime, 1000)){
             respawnPlayer(PlayerInit.p[0], &PlayerInit.pPosition[0]);
         }
     }
@@ -212,43 +212,37 @@ void bulletPositioning(){
 
 int mainGameEvent(){
     const Uint8 *state = SDL_GetKeyboardState(NULL);
-    int lastDmgTakenTime = 0, currentDmgTakenTime = 0;
-    int kordLista[2];
-    int playerID=-1;
-    int up_w,down_s,left_a,right_d,lctrl;
     int close_requested = 0;
-    while (!close_requested){
-        if(playerID == -1){
-            playerID = reciveID("192.168.56.1");
-        }
-        reciveData("192.168.56.1", kordLista);
-        if(kordLista[0] != -1000){
-            //printf("Satta kordinater %d %d \n", kordLista[0], kordLista[1]);
-            PlayerInit.pPosition[1].x = kordLista[0];
-            PlayerInit.pPosition[1].y = kordLista[1];
-        }
-        //receiveCoordData(&kordLista, &playerID);
-        SDL_Event event;
-        while (SDL_PollEvent(&event)){ 
-            if (event.type== SDL_QUIT){
-                close_requested = 1;
-                return 1;
-            }
-            if (event.type== SDL_KEYDOWN){
-                sendData(PlayerInit.pPosition->x, PlayerInit.pPosition->y, "192.168.56.1", playerID);
-                pressedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
-            }
-            if(event.type== SDL_KEYUP){
-                releasedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
-            }
-        }
-        for(int i = 0; i < ZombInit.nrOfZombies; i++){
-            zombieTrackingPlayer(i);
-            zombieCollisionWithZombie(i);
-            zombieCollisionWithPlayer(i, &currentDmgTakenTime, &lastDmgTakenTime);
-            zombieCollisionWithMap(i);
-        }
-        playerCollisionWithMap();
-        bulletPositioning();
+    if(playerID == -1){
+        playerID = reciveID("192.168.56.1");
     }
+    reciveData("192.168.56.1", kordLista);
+    if(kordLista[0] != -1000){
+        //printf("Satta kordinater %d %d \n", kordLista[0], kordLista[1]);
+        PlayerInit.pPosition[1].x = kordLista[0];
+        PlayerInit.pPosition[1].y = kordLista[1];
+    }
+    //receiveCoordData(&kordLista, &playerID);
+    SDL_Event event;
+    while (SDL_PollEvent(&event)){ 
+        if (event.type== SDL_QUIT){
+            close_requested = 1;
+            return close_requested;
+        }
+        if (event.type== SDL_KEYDOWN){
+            sendData(PlayerInit.pPosition->x, PlayerInit.pPosition->y, "192.168.56.1", playerID);
+            pressedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
+        }
+        if(event.type== SDL_KEYUP){
+            releasedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
+        }
+    }
+    for(int i = 0; i < ZombInit.nrOfZombies; i++){
+        zombieTrackingPlayer(i);
+        zombieCollisionWithZombie(i);
+        zombieCollisionWithPlayer(i, &currentDmgTakenTime, &lastDmgTakenTime);
+        zombieCollisionWithMap(i);
+    }
+    playerCollisionWithMap();
+    bulletPositioning();
 }

@@ -1,12 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_image.h>
 
 #include "gameInit.h"
-#include "gameRender.h"
+#include "gameMedia.h"
 #include "zombie.h"
 #include "player.h"
 
@@ -48,7 +46,7 @@ void initGame(){
     initWindow();
     ZombInit.nrOfZombies = 6;
     createAllZombies();
-    PlayerInit.nrOfPlayers = 4;
+    PlayerInit.nrOfPlayers = 1;
     createAllPlayers();
     createBullet();
     loadMedia(&iSDL, &backTiles, &ZombInit, &PlayerInit, &b);

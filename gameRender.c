@@ -6,7 +6,6 @@
 #include <SDL2/SDL_image.h>
 
 #include "gameInit.h"
-#include "gameEvent.h"
 #include "map.h"
 #include "zombie.h"
 #include "player.h"
@@ -58,7 +57,7 @@ void renderPreset(){
 }
 
 
-void renderEverything(){
+void renderGame(){
     SetRenderDrawColor();
     clearRenderer();
     renderBackground(&iSDL, backTiles);
