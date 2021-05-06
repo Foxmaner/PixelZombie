@@ -29,7 +29,7 @@ void createConnection(char selectedIp[100])
 	/* Resolve server name  */
 	if (SDLNet_ResolveHost(&srvadd, "127.0.0.1", 2000) == -1)
 	{
-		fprintf(stderr, "SDLNet_ResolveHost(81.230.227.193 2000) : % s\n ", SDLNet_GetError());
+		fprintf(stderr, "SDLNet_ResolveHost(81.230.227.193 Detta är eskils ip ba fuck han 2000) : % s\n ", SDLNet_GetError());
 		//exit(EXIT_FAILURE);
 	}
 }

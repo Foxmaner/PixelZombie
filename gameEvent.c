@@ -207,9 +207,9 @@ int mainGameEvent(){
     const Uint8 *state = SDL_GetKeyboardState(NULL);
     int close_requested = 0;
     if(playerID == -1){
-        playerID = reciveID("192.168.56.1");
+        playerID = reciveID("127.0.0.1");
     }
-    reciveData("192.168.56.1", kordLista);
+    reciveData("127.0.0.1", kordLista);
     if(kordLista[1] != -1000){
         //printf("Satta kordinater %d %d \n", kordLista[0], kordLista[1]);
         PlayerInit.pPosition[kordLista[0]].x = kordLista[1];
@@ -223,7 +223,7 @@ int mainGameEvent(){
             return close_requested;
         }
         if (event.type== SDL_KEYDOWN){
-            sendData(PlayerInit.pPosition[playerID].x, PlayerInit.pPosition[playerID].y, "192.168.56.1", playerID);
+            sendData(PlayerInit.pPosition[playerID].x, PlayerInit.pPosition[playerID].y, "127.0.0.1", playerID);
             pressedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
         }
         if(event.type== SDL_KEYUP){
