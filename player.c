@@ -1,7 +1,7 @@
 #include <stdlib.h>
-#include "player.h"
 #include <SDL2/SDL.h>
 
+#include "player.h"
 
 #define PUBLIC /* empty */
 #define PRIVATE static

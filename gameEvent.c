@@ -10,6 +10,11 @@
 #include "player.h"
 #include "server/udpClient.h"
 
+int lastDmgTakenTime = 0, currentDmgTakenTime = 0;
+int kordLista[2];
+int playerID=-1;
+int up_w,down_s,left_a,right_d,lctrl;
+
 /*void receiveCoordData(int *kordLista[], int *playerID){
     if(*playerID == -1){
         *playerID = reciveID("192.168.56.1");
