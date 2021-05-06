@@ -60,20 +60,22 @@ void sendData(int x_cord, int y_cord, char selectedIp[100], int playerID)
 	}
 }
 
-void reciveData(char selectedIp[100], int kordinater[2]){
+void reciveData(char selectedIp[100], int kordinater[3]){
 	if (sd != NULL){
 		if (SDLNet_UDP_Recv(sd, p2)){
 			int i, a, b;
 			sscanf((char *)p2->data, "%d %d %d", &i, &a, &b);
 			
 			printf("Balle UDP Packet incoming %d %d %d\n", i, a, b);
-			kordinater[0] = a;
-			kordinater[1] = b;
+			kordinater[0] = i;
+			kordinater[1] = a;
+			kordinater[2] = b;
 			
 		}
 		else{
 			kordinater[0] = -1000;
 			kordinater[1] = -1000;
+			kordinater[2] = -1000;
 		}
 	}
 	else{
