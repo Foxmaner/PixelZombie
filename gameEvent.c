@@ -140,9 +140,9 @@ void zombieCollisionWithZombie(int i){
 }
 
 void zombieCollisionWithPlayer(int i, int *currentDmgTakenTime,int *lastDmgTakenTime){
-    if(checkZCollisionWithP(ZombInit.zPosition[i],PlayerInit.pPosition[0])){
+    if(checkZCollisionWithP(ZombInit.zPosition[i],PlayerInit.pPosition[playerID])){
         if(msTimer(currentDmgTakenTime, lastDmgTakenTime, 1000)){
-            respawnPlayer(PlayerInit.p[0], &PlayerInit.pPosition[0]);
+           //respawnPlayer(PlayerInit.p[playerID], &PlayerInit.pPosition[playerID], playerID);
         }
     }
 }
