@@ -11,6 +11,7 @@ void zombieCollisionWithPlayer(int i, int *currentDmgTakenTime,int *lastDmgTaken
 void zombieCollisionWithMap(int i);
 void playerCollisionWithMap();
 void bulletPositioning();
+void bulletCollisionWithZombie(int i);
 
 int mainGameEvent();
 

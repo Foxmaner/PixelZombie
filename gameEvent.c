@@ -203,6 +203,16 @@ void bulletPositioning(){
     }
 }
 
+void bulletCollisionWithZombie(int i){
+    if(b.shot){
+        //RIGHT
+        if((b.bVelX == 1) && (b.bPosition.y >= ZombInit.zPosition[i].y) && (b.bPosition.y <= (ZombInit.zPosition[i].y + ZombInit.gZombie->h)) && (b.bPosition.x < ZombInit.zPosition[i].x)){
+            printf("en skytt nedkampad %d\n", i);
+            b.shot = false; //renderar inte då bshot =falase. skjuter igenom om inte bshot = false
+        }
+    }
+}
+
 int mainGameEvent(){
     const Uint8 *state = SDL_GetKeyboardState(NULL);
     int close_requested = 0;
@@ -235,6 +245,7 @@ int mainGameEvent(){
         zombieCollisionWithZombie(i);
         zombieCollisionWithPlayer(i, &currentDmgTakenTime, &lastDmgTakenTime);
         zombieCollisionWithMap(i);
+        bulletCollisionWithZombie(i);
     }
     playerCollisionWithMap();
     bulletPositioning();
