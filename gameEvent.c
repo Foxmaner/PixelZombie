@@ -36,7 +36,7 @@ void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lct
         if (PlayerInit.pFrame!=9 && PlayerInit.pFrame>=10) PlayerInit.pFrame=9;
         else PlayerInit.pFrame++;
         }
-        if (*down_s==1) {
+        if (*down_s==1){
             PlayerInit.pPosition->y += 6;
             b.bVelY = 1;
             b.bVelX = 0;
@@ -44,7 +44,7 @@ void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lct
             if (PlayerInit.pFrame!=12 && PlayerInit.pFrame>=13) PlayerInit.pFrame=12;
             else PlayerInit.pFrame++;
         }
-        if(*left_a==1){ 
+        if(*left_a==1){
             PlayerInit.pPosition->x -= 6;
             b.bVelX = -1;
             b.bVelY = 0;
@@ -82,19 +82,19 @@ void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lct
 
 void releasedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lctrl, SDL_Event event){
     if(event.key.keysym.sym==SDLK_w){
-        up_w=0;
+        *up_w=0;
         PlayerInit.pFrame=11;
     }
     if(event.key.keysym.sym==SDLK_s){
-        down_s=0;
+        *down_s=0;
         PlayerInit.pFrame=14;
     }
     if(event.key.keysym.sym==SDLK_a){
-        left_a=0;
+        *left_a=0;
         PlayerInit.pFrame=0;
     }
     if(event.key.keysym.sym==SDLK_d){
-        right_d=0;
+        *right_d=0;
         PlayerInit.pFrame=0;
     }
     if(event.key.keysym.sym==SDLK_LCTRL){
