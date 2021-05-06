@@ -1,9 +1,0 @@
-{
-    "files.associations": {
-        "sdl.h": "c",
-        "gameinit.h": "c",
-        "stdio.h": "c",
-        "math.h": "c",
-        "gamerender.h": "c"
-    }
-}
