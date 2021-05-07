@@ -34,7 +34,7 @@ void createConnection(char selectedIp[100])
 	}
 }
 
-void sendData(int x_cord, int y_cord, char selectedIp[100], int playerID)
+void sendData(int flag, int x_cord, int y_cord, char selectedIp[100], int playerID)
 {
 
 	if (sd != NULL){
@@ -46,7 +46,7 @@ void sendData(int x_cord, int y_cord, char selectedIp[100], int playerID)
 
 		// send and retrive positions
 
-		sprintf((char *)p->data, "%d %d %d %d\n", (int)0, (int)playerID, (int)x_cord, (int)y_cord);
+		sprintf((char *)p->data, "%d %d %d %d\n", (int)flag, (int)playerID, (int)x_cord, (int)y_cord);
 		p->address.host = srvadd.host; /* Set the destination host */
 		p->address.port = srvadd.port; /* And destination port */
 		p->len = strlen((char *)p->data) + 1;
@@ -56,7 +56,7 @@ void sendData(int x_cord, int y_cord, char selectedIp[100], int playerID)
 	}
 	else{
 		createConnection(selectedIp);
-		sendData(x_cord, y_cord, selectedIp,playerID);
+		sendData(flag, x_cord, y_cord, selectedIp,playerID);
 	}
 }
 
@@ -75,7 +75,7 @@ void reciveData(char selectedIp[100], int kordinater[3]){
 				kordinater[1] = a;
 				kordinater[2] = b;
 			}else if(flag == 1){
-				
+				printf("Skott avfyrades av spelare: %d ", recivedID);
 			}
 			
 			

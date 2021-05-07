@@ -63,8 +63,11 @@ void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lct
             *right_d=1;
         }
         if(event.key.keysym.sym==SDLK_LCTRL){
-            if(msTimer(&b.currentShotTime, &b.lastShotTime, 500))  //13 rps
+            if(msTimer(&b.currentShotTime, &b.lastShotTime, 500)){
                 b.shot = true;
+                sendData(1, 0,  0, "127.0.0.1", playerID);
+            }  //13 rps
+                
     }
 }
 
@@ -251,7 +254,7 @@ int mainGameEvent(){
             return close_requested;
         }
         if (event.type== SDL_KEYDOWN){
-            sendData(PlayerInit.pPosition[playerID].x, PlayerInit.pPosition[playerID].y, "192.168.56.1", playerID);
+            sendData(0, PlayerInit.pPosition[playerID].x, PlayerInit.pPosition[playerID].y, "192.168.56.1", playerID);
             pressedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
         }
         if(event.type== SDL_KEYUP){
