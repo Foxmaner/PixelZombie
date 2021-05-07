@@ -10,8 +10,9 @@ void zombieTrackingPlayer(int i);
 void zombieCollisionWithPlayer(int i, int *currentDmgTakenTime,int *lastDmgTakenTime);
 void zombieCollisionWithMap(int i);
 void playerCollisionWithMap();
-void bulletPositioning();
-void bulletCollisionWithZombie(int i);
+void bulletPositioning(int i);
+void bulletCollisionWithZombieX(int i);
+void bulletCollisionWithZombieY(int i);
 
 int mainGameEvent();
 

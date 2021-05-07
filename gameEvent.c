@@ -189,26 +189,56 @@ void playerCollisionWithMap(){
     if(PlayerInit.pPosition[playerID].x > 930) PlayerInit.pPosition[playerID].x = 930;
 }
 
-void bulletPositioning(){
+void bulletPositioning(int i){
     if(!b.shot){
-        b.bPosition.x = PlayerInit.pPosition[playerID].x + 20;
-        b.bPosition.y = PlayerInit.pPosition[playerID].y + 17;
+        b.bPosition.x = PlayerInit.pPosition[playerID].x + 25;
+        b.bPosition.y = PlayerInit.pPosition[playerID].y + 20;
     }
     else{
-        if(!b.bVelY) b.bPosition.x += b.bVelX * 75;
-        else b.bPosition.y += b.bVelY * 75;
+        if(!b.bVelY){
+            b.bPosition.x += b.bVelX * 10;
+            bulletCollisionWithZombieX(i);
+        }
+        else{
+            b.bPosition.y += b.bVelY * 10;
+            bulletCollisionWithZombieY(i);
+        }
         if(b.bPosition.x < 0 || b.bPosition.x > 1024 || b.bPosition.y < 0 || b.bPosition.y > 1024){
             b.shot = false;
         }
     }
 }
 
-void bulletCollisionWithZombie(int i){
-    if(b.shot){
-        //RIGHT
-        if((b.bVelX == 1) && (b.bPosition.y >= ZombInit.zPosition[i].y) && (b.bPosition.y <= (ZombInit.zPosition[i].y + ZombInit.gZombie->h)) && (b.bPosition.x < ZombInit.zPosition[i].x)){
-            printf("en skytt nedkampad %d\n", i);
-            b.shot = false; //renderar inte då bshot =falase. skjuter igenom om inte bshot = false
+void bulletCollisionWithZombieX(int i){
+    //RIGHT
+    if((b.bVelX == 1) && (b.bPosition.y >= ZombInit.zPosition[i].y) && (b.bPosition.y <= (ZombInit.zPosition[i].y + ZombInit.gZombie->h) && (PlayerInit.pPosition[playerID].x + 25 < ZombInit.zPosition[i].x))){
+        if(msTimer(&b.currentShotTime, &b.lastShotTime, 50)){
+            killZombie(z[i]);
+            b.shot = false;
+        }
+    }
+    //LEFT
+    if((b.bVelX == -1) && (b.bPosition.y >= ZombInit.zPosition[i].y) && (b.bPosition.y <= (ZombInit.zPosition[i].y + ZombInit.gZombie->h) && (PlayerInit.pPosition[playerID].x + 25 > ZombInit.zPosition[i].x))){
+        if(msTimer(&b.currentShotTime, &b.lastShotTime, 50)){
+            killZombie(z[i]);
+            b.shot = false;
+        }
+    }
+}
+
+void bulletCollisionWithZombieY(int i){
+    //UP
+    if((b.bVelY == 1) && (b.bPosition.x >= ZombInit.zPosition[i].x) && (b.bPosition.x <= (ZombInit.zPosition[i].x + ZombInit.gZombie->w) && (PlayerInit.pPosition[playerID].y + 25 < ZombInit.zPosition[i].y))){
+        if(msTimer(&b.currentShotTime, &b.lastShotTime, 50)){
+            killZombie(z[i]);
+            b.shot = false;
+        }
+    }
+    //DOWN
+    if((b.bVelY == -1) && (b.bPosition.x >= ZombInit.zPosition[i].x) && (b.bPosition.x <= (ZombInit.zPosition[i].x + ZombInit.gZombie->w) && (PlayerInit.pPosition[playerID].y + 25 > ZombInit.zPosition[i].y))){
+        if(msTimer(&b.currentShotTime, &b.lastShotTime, 50)){
+            killZombie(z[i]);
+            b.shot = false;
         }
     }
 }
@@ -245,8 +275,8 @@ int mainGameEvent(){
         zombieCollisionWithZombie(i);
         zombieCollisionWithPlayer(i, &currentDmgTakenTime, &lastDmgTakenTime);
         zombieCollisionWithMap(i);
-        bulletCollisionWithZombie(i);
+        bulletPositioning(i);
     }
     playerCollisionWithMap();
-    bulletPositioning();
+    
 }

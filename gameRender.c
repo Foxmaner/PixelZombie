@@ -48,8 +48,7 @@ void renderAllPlayers(){
 }
 
 void renderBullet(){
-    if(b.shot)
-        SDL_RenderCopyEx(iSDL.renderer, b.mBullet, &b.gBullet[0], &b.bPosition, b.bUpDown, NULL, SDL_FLIP_NONE);
+    if(b.shot) SDL_RenderCopyEx(iSDL.renderer, b.mBullet, &b.gBullet[0], &b.bPosition, b.bUpDown, NULL, SDL_FLIP_NONE);
 }
 
 void renderPreset(){
@@ -62,8 +61,8 @@ void renderGame(){
     clearRenderer();
     renderBackground(&iSDL, backTiles);
     renderAllZombies();
-    renderAllPlayers();
     renderBullet();
+    renderAllPlayers();
     renderPreset();
 
     SDL_Delay(1000/60);
