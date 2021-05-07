@@ -46,7 +46,7 @@ void sendData(int x_cord, int y_cord, char selectedIp[100], int playerID)
 
 		// send and retrive positions
 
-		sprintf((char *)p->data, "%d %d %d\n", (int)playerID, (int)x_cord, (int)y_cord);
+		sprintf((char *)p->data, "%d %d %d %d\n", (int)0, (int)playerID, (int)x_cord, (int)y_cord);
 		p->address.host = srvadd.host; /* Set the destination host */
 		p->address.port = srvadd.port; /* And destination port */
 		p->len = strlen((char *)p->data) + 1;
@@ -63,13 +63,21 @@ void sendData(int x_cord, int y_cord, char selectedIp[100], int playerID)
 void reciveData(char selectedIp[100], int kordinater[3]){
 	if (sd != NULL){
 		if (SDLNet_UDP_Recv(sd, p2)){
-			int i, a, b;
-			sscanf((char *)p2->data, "%d %d %d", &i, &a, &b);
+			int flag, recivedID, a, b;
+			sscanf((char *)p2->data, "%d %d %d %d", &flag, &recivedID, &a, &b);
+
+			printf("UDP Packet incoming %d %d %d %d\n", flag, recivedID, a, b);
+			//Flag = 0 == Player reporting possition
+			//Flag = 1 == Player reporting gunshot
+			//Flag = 2 == Player reporting zombieDeath
+			if(flag == 0){
+				kordinater[0] = recivedID;
+				kordinater[1] = a;
+				kordinater[2] = b;
+			}else if(flag == 1){
+				
+			}
 			
-			printf("Balle UDP Packet incoming %d %d %d\n", i, a, b);
-			kordinater[0] = i;
-			kordinater[1] = a;
-			kordinater[2] = b;
 			
 		}
 		else{
@@ -90,11 +98,11 @@ int reciveID(char selectedIp[100]){
 		if (SDLNet_UDP_Recv(sd, p2)){
 			int i;
 			sscanf((char *)p2->data, "%d", &i);
-			printf("BalleN UDP Packet incoming %d\n", i);
+			printf("UDP Packet incoming with ID %d\n", i);
 			return i;
 		}
 		else{
-			printf("Inget id Mottaget! \n");
+			//printf("Inget id Mottaget! \n");
 		}
 	}
 	else{
