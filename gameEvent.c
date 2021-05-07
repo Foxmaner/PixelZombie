@@ -90,24 +90,52 @@ void releasedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lc
     }
 }
 
+double distance( int x1, int y1, int x2, int y2 )
+{
+    //Return the distance between the two points
+    return sqrt( pow( x2 - x1, 2 ) + pow( y2 - y1, 2 ) );
+}
+
+int closestPlayerToZombie(int zombieNr){
+    int closestPlayerId = 0;
+    double closestPlayerIdDistance;
+    double distancePlayer;
+    for (int i = 0; i < PlayerInit.nrOfPlayers; i++)
+    {
+        closestPlayerIdDistance=distance(PlayerInit.pPosition[closestPlayerId].x, PlayerInit.pPosition[closestPlayerId].y, ZombInit.zPosition[zombieNr].x, ZombInit.zPosition[zombieNr].y);
+        distancePlayer=distance(PlayerInit.pPosition[i].x, PlayerInit.pPosition[i].y, ZombInit.zPosition[zombieNr].x, ZombInit.zPosition[zombieNr].y);
+        if(closestPlayerIdDistance>distancePlayer){
+            closestPlayerId=i;
+        };
+    }
+    return closestPlayerId;
+    
+
+}
+
+
+
+
 void zombieTrackingPlayer(int i){
-    if((ZombInit.zPosition[i].x - PlayerInit.pPosition->x) > 20){
+    int playerToTrack=0;    
+   playerToTrack = closestPlayerToZombie(i);
+    if((ZombInit.zPosition[i].x - PlayerInit.pPosition[playerToTrack].x) > 20){
         ZombInit.zPosition[i].x -= 1;
         //Frame change LEFT
         changeZFrameX(&zFrame[i].frame, 2, 3, &zFrame[i].counter, &zFrame[i].diagonal);
     }
-    else if((ZombInit.zPosition[i].x - PlayerInit.pPosition->x) < -20){
+    else if((ZombInit.zPosition[i].x - PlayerInit.pPosition[playerToTrack].x) < -20){
         ZombInit.zPosition[i].x += 1;
         //Frame change RIGHT
         changeZFrameX(&zFrame[i].frame, 4, 5, &zFrame[i].counter, &zFrame[i].diagonal);
     }
     //Zombie following the Survivor Y
-    if((ZombInit.zPosition[i].y - PlayerInit.pPosition->y) > 20){
+    if((ZombInit.zPosition[i].y - PlayerInit.pPosition[playerToTrack].y) > 20){
         ZombInit.zPosition[i].y -= 1;
         //Frame change UP
         changeZFrameY(&zFrame[i].frame, 6, 7, &zFrame[i].counter, &zFrame[i].diagonal);
     }
-    else if ((ZombInit.zPosition[i].y - PlayerInit.pPosition->y) < -20){
+    else if ((ZombInit.zPosition[i].y - PlayerInit.pPosition[playerToTrack].y) < -20){
         ZombInit.zPosition[i].y += 1;
         //Frame change DOWN
         changeZFrameY(&zFrame[i].frame, 0, 1, &zFrame[i].counter, &zFrame[i].diagonal);
@@ -232,7 +260,7 @@ int mainGameEvent(){
     }
     for(int i = 0; i < ZombInit.nrOfZombies; i++){
         zombieTrackingPlayer(i);
-        zombieCollisionWithZombie(i);
+        //zombieCollisionWithZombie(i);
         zombieCollisionWithPlayer(i, &currentDmgTakenTime, &lastDmgTakenTime);
         zombieCollisionWithMap(i);
     }
