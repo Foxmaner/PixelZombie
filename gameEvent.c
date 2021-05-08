@@ -21,16 +21,16 @@ void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lct
         b.bVelY = -1;
         b.bVelX = 0;
         b.bUpDown = 90;
-        /*if (PlayerInit.pFrame!=9 && PlayerInit.pFrame>=10) PlayerInit.pFrame=9;
-        else*/ PlayerInit.pFrame[playerID]++;
+        if (PlayerInit.pFrame[playerID]!=9 && PlayerInit.pFrame[playerID]>=10) PlayerInit.pFrame[playerID]=9;
+        else PlayerInit.pFrame[playerID]++;
         }
         if (*down_s==1){
             PlayerInit.pPosition[playerID].y += 6;
             b.bVelY = 1;
             b.bVelX = 0;
             b.bUpDown = 90;
-            /*if (PlayerInit.pFrame!=12 && PlayerInit.pFrame>=13) PlayerInit.pFrame=12;
-            else*/ PlayerInit.pFrame[0]++;
+            if (PlayerInit.pFrame[playerID]!=12 && PlayerInit.pFrame[playerID]>=13) PlayerInit.pFrame[playerID]=12;
+            else PlayerInit.pFrame[playerID]++;
         }
         if(*left_a==1){
             PlayerInit.pPosition[playerID].x -= 6;
@@ -38,17 +38,17 @@ void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lct
             b.bVelY = 0;
             b.bUpDown = 0;
             PlayerInit.flip = SDL_FLIP_NONE;
-            /*if (PlayerInit.pFrame>=8) PlayerInit.pFrame=1;
-            else*/ PlayerInit.pFrame[0]++;
+            if (PlayerInit.pFrame[playerID]>=8) PlayerInit.pFrame[playerID]=1;
+            else PlayerInit.pFrame[playerID]++;
         }
         if (*right_d==1){
-            PlayerInit.pPosition[0].x += 6;
+            PlayerInit.pPosition[playerID].x += 6;
             b.bVelX = 1;
             b.bVelY = 0;
             b.bUpDown = 0;
             PlayerInit.flip = SDL_FLIP_HORIZONTAL;
-            /*if (PlayerInit.pFrame>=8) PlayerInit.pFrame=1;
-            else*/ PlayerInit.pFrame[0]++;
+            if (PlayerInit.pFrame[playerID]>=8) PlayerInit.pFrame[playerID]=1;
+            else PlayerInit.pFrame[playerID]++;
         }
         if (event.key.keysym.sym==SDLK_w){
             *up_w=1;
@@ -71,19 +71,19 @@ void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lct
 void releasedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lctrl, SDL_Event event){
     if(event.key.keysym.sym==SDLK_w){
         *up_w=0;
-        PlayerInit.pFrame[0]=11;
+        PlayerInit.pFrame[playerID]=11;
     }
     if(event.key.keysym.sym==SDLK_s){
         *down_s=0;
-        PlayerInit.pFrame[0]=14;
+        PlayerInit.pFrame[playerID]=14;
     }
     if(event.key.keysym.sym==SDLK_a){
         *left_a=0;
-        PlayerInit.pFrame[0]=0;
+        PlayerInit.pFrame[playerID]=0;
     }
     if(event.key.keysym.sym==SDLK_d){
         *right_d=0;
-        PlayerInit.pFrame[0]=0;
+        PlayerInit.pFrame[playerID]=0;
     }
     if(event.key.keysym.sym==SDLK_LCTRL){
         lctrl=0;
