@@ -37,7 +37,7 @@ void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lct
             b.bVelX = -1;
             b.bVelY = 0;
             b.bUpDown = 0;
-            PlayerInit.flip = SDL_FLIP_NONE;
+            PlayerInit.flip[playerID] = SDL_FLIP_NONE;
             if (PlayerInit.pFrame[playerID]>=8) PlayerInit.pFrame[playerID]=1;
             else PlayerInit.pFrame[playerID]++;
         }
@@ -46,7 +46,7 @@ void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lct
             b.bVelX = 1;
             b.bVelY = 0;
             b.bUpDown = 0;
-            PlayerInit.flip = SDL_FLIP_HORIZONTAL;
+            PlayerInit.flip[playerID] = SDL_FLIP_HORIZONTAL;
             if (PlayerInit.pFrame[playerID]>=8) PlayerInit.pFrame[playerID]=1;
             else PlayerInit.pFrame[playerID]++;
         }

@@ -17,7 +17,7 @@ struct Player_Init{
     Player p[4];
     SDL_Rect pPosition[4];
     int pFrame[4];
-    SDL_RendererFlip flip;
+    SDL_RendererFlip flip[4];
 };typedef struct Player_Init Player_Init;
 Player_Init PlayerInit;
 
