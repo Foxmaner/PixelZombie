@@ -16,12 +16,13 @@ struct zombie_frame{
     int frame;
     int diagonal;
     int counter;
+    int skin;
 }; typedef struct zombie_frame ZombieFrame;
 ZombieFrame zFrame[100];
 
 struct Zombie_Init{
     SDL_Texture *mZombie;
-    SDL_Rect gZombie[8];
+    SDL_Rect gZombie[32];
     int nrOfZombies;
     SDL_Rect zPosition[100];
 }; typedef struct Zombie_Init ZombieInit;

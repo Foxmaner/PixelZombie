@@ -25,6 +25,8 @@ void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit,
     //Zombie
     SDL_Surface* gZombieSurface = IMG_Load("resources/ZombieSheetSizeX2.png");
     ZombInit->mZombie = SDL_CreateTextureFromSurface(iSDL->renderer, gZombieSurface);
+    //X O O O   <---Where in the sprite
+    //O O O O
     for(int i = 0; i < 8; i++){
         ZombInit->gZombie[i].x = 108 * (i % 2) + 6;
         if(i % 2 == 0) ZombInit->gZombie[i].y = (54 * i) / 2;
@@ -32,6 +34,61 @@ void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit,
         ZombInit->gZombie[i].w = 43;
         ZombInit->gZombie[i].h = 54;
     }
+    //O X O O
+    //O O O O
+    for(int i = 8; i < 16; i++){
+        //ZombInit->gZombie[i].x = (108 * (i % 2)) + 166;       This line does not work for some fucking reason, even though the exakt same line reoccurs at line 57
+        if(i % 2 == 0) ZombInit->gZombie[i].y = (54 * i) / 2;
+        else ZombInit->gZombie[i].y = ZombInit->gZombie[i-1].y;
+        ZombInit->gZombie[i].w = 43;
+        ZombInit->gZombie[i].h = 54;
+    }
+    ZombInit->gZombie[8].x = 166;            //Because line 40 does not work, it had to be manually inputed...
+    ZombInit->gZombie[9].x = 274;
+    ZombInit->gZombie[10].x = 166;
+    ZombInit->gZombie[11].x = 274;
+    ZombInit->gZombie[12].x = 166;
+    ZombInit->gZombie[13].x = 274;
+    ZombInit->gZombie[14].x = 166;
+    ZombInit->gZombie[15].x = 274;
+    //O O O O
+    //O X O O
+    for(int i = 16; i < 24; i++){
+        ZombInit->gZombie[i].x = (108 * (i % 2)) + 166;
+        if(i % 2 == 0) ZombInit->gZombie[i].y = ((54 * i) / 2) + 213;
+        else ZombInit->gZombie[i].y = ZombInit->gZombie[i-1].y;
+        ZombInit->gZombie[i].w = 43;
+        ZombInit->gZombie[i].h = 54;
+    }
+    //O O O O
+    //O O X O       DOWN            It is possible to refine this code, not willing to spend that time now.
+    for(int i = 24; i < 32; i++){
+        ZombInit->gZombie[i].w = 45;
+        ZombInit->gZombie[i].h = 54;
+    }
+    ZombInit->gZombie[24].x = 327;
+    ZombInit->gZombie[24].y = 214;
+
+    ZombInit->gZombie[25].x = 434;
+    ZombInit->gZombie[25].y = 214;
+    //LEFT
+    ZombInit->gZombie[26].x = 327;
+    ZombInit->gZombie[26].y = 267; //or 268
+
+    ZombInit->gZombie[27].x = 434;
+    ZombInit->gZombie[27].y = 267; //or 268
+    //RIGHT
+    ZombInit->gZombie[28].x = 322;
+    ZombInit->gZombie[28].y = 320;
+
+    ZombInit->gZombie[29].x = 429;
+    ZombInit->gZombie[29].y = 320;
+    //UP
+    ZombInit->gZombie[30].x = 322;
+    ZombInit->gZombie[30].y = 374;
+
+    ZombInit->gZombie[31].x = 429;
+    ZombInit->gZombie[31].y = 374;
 
     //Player
     SDL_Surface* gPlayerSurface = IMG_Load("resources/pixel-768x768-31.png");

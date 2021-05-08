@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_image.h>
@@ -13,6 +14,7 @@
 #include "gameRender.h"
 
 int WinMain(void){
+    srand(time(NULL));
     int close=0;
     initGame();
     do{

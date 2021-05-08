@@ -61,11 +61,11 @@ PUBLIC void createAllZombies(){
         ZombInit.zPosition[i].y = getZombiePositionY(z[i]);
         ZombInit.zPosition[i].w = 43;
         ZombInit.zPosition[i].h = 54;
+        zFrame[i].skin = ((rand() % 4 + 1) * 8) - 8;
     }
 }
 
 PUBLIC int getZSpawnPointX(int a){
-    srand((unsigned) time(NULL));
     if(a == 0)
         return zSpawnPointX0 + (rand() % 200);
     else if(a == 1)
@@ -75,7 +75,6 @@ PUBLIC int getZSpawnPointX(int a){
 }
 
 PUBLIC int getZSpawnPointY(int a){
-    srand((unsigned) time(NULL));
     if(a == 0)
         return zSpawnPointY0 + (rand() % 65);
     else if(a == 1)

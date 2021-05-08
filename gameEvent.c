@@ -94,23 +94,23 @@ void zombieTrackingPlayer(int i){
     if((ZombInit.zPosition[i].x - PlayerInit.pPosition->x) > 20){
         ZombInit.zPosition[i].x -= 1;
         //Frame change LEFT
-        changeZFrameX(&zFrame[i].frame, 2, 3, &zFrame[i].counter, &zFrame[i].diagonal);
+        changeZFrameX(&zFrame[i].frame, 2 + zFrame[i].skin, 3 + zFrame[i].skin, &zFrame[i].counter, &zFrame[i].diagonal);
     }
     else if((ZombInit.zPosition[i].x - PlayerInit.pPosition->x) < -20){
         ZombInit.zPosition[i].x += 1;
         //Frame change RIGHT
-        changeZFrameX(&zFrame[i].frame, 4, 5, &zFrame[i].counter, &zFrame[i].diagonal);
+        changeZFrameX(&zFrame[i].frame, 4 + zFrame[i].skin, 5 + zFrame[i].skin, &zFrame[i].counter, &zFrame[i].diagonal);
     }
     //Zombie following the Survivor Y
     if((ZombInit.zPosition[i].y - PlayerInit.pPosition->y) > 20){
         ZombInit.zPosition[i].y -= 1;
         //Frame change UP
-        changeZFrameY(&zFrame[i].frame, 6, 7, &zFrame[i].counter, &zFrame[i].diagonal);
+        changeZFrameY(&zFrame[i].frame, 6 + zFrame[i].skin, 7 + zFrame[i].skin, &zFrame[i].counter, &zFrame[i].diagonal);
     }
     else if ((ZombInit.zPosition[i].y - PlayerInit.pPosition->y) < -20){
         ZombInit.zPosition[i].y += 1;
         //Frame change DOWN
-        changeZFrameY(&zFrame[i].frame, 0, 1, &zFrame[i].counter, &zFrame[i].diagonal);
+        changeZFrameY(&zFrame[i].frame, 0 + zFrame[i].skin, 1 + zFrame[i].skin, &zFrame[i].counter, &zFrame[i].diagonal);
     }
 }
 
