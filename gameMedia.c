@@ -37,8 +37,8 @@ void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit,
     //O X O O
     //O O O O
     for(int i = 8; i < 16; i++){
-        //ZombInit->gZombie[i].x = (108 * (i % 2)) + 166;       This line does not work for some fucking reason, even though the exakt same line reoccurs at line 57
-        if(i % 2 == 0) ZombInit->gZombie[i].y = (54 * i) / 2;
+        //ZombInit->gZombie[i].x = (108 * (i % 2)) + 166;       This line does not work for some fucking reason, even though the exact same line reoccurs at line 57
+        if(i % 2 == 0) ZombInit->gZombie[i].y = (54 * (i % 8)) / 2;
         else ZombInit->gZombie[i].y = ZombInit->gZombie[i-1].y;
         ZombInit->gZombie[i].w = 43;
         ZombInit->gZombie[i].h = 54;
@@ -55,7 +55,7 @@ void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit,
     //O X O O
     for(int i = 16; i < 24; i++){
         ZombInit->gZombie[i].x = (108 * (i % 2)) + 166;
-        if(i % 2 == 0) ZombInit->gZombie[i].y = ((54 * i) / 2) + 213;
+        if(i % 2 == 0) ZombInit->gZombie[i].y = ((54 * (i % 8)) / 2) + 212;
         else ZombInit->gZombie[i].y = ZombInit->gZombie[i-1].y;
         ZombInit->gZombie[i].w = 43;
         ZombInit->gZombie[i].h = 54;

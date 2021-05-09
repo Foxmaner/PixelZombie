@@ -83,41 +83,41 @@ PUBLIC int getZSpawnPointY(int a){
         return zSpawnPointY2 + (rand() % 65);
 }
 
-PUBLIC void changeZFrameX(int *pCurrentFrame, int frameA, int frameB, int *pFrameCounter, int *pDiagonal){
-    *pDiagonal = 0;
-    if(*pCurrentFrame == frameA && *pFrameCounter >= 25){
-        *pCurrentFrame = frameB;
-        *pFrameCounter = 0;
+PUBLIC void changeZFrameX(int frameA, int frameB, int i){
+    zFrame[i].diagonal = 0;
+    if(zFrame[i].frame == frameA && zFrame[i].counter >= 25){
+        zFrame[i].frame = frameB;
+        zFrame[i].counter = 0;
     }
-    else if(*pCurrentFrame == frameB){
-        if(*pFrameCounter >= 25){
-            *pCurrentFrame = frameA;
-            *pFrameCounter = 0;
+    else if(zFrame[i].frame == frameB){
+        if(zFrame[i].counter >= 25){
+            zFrame[i].frame = frameA;
+            zFrame[i].counter = 0;
         }
-        else (*pFrameCounter)++;
+        else (zFrame[i].counter)++;
     }
     else{
-        *pCurrentFrame = frameA;
-        (*pFrameCounter)++;
+        zFrame[i].frame = frameA;
+        (zFrame[i].counter)++;
     }
 }
 
-PUBLIC void changeZFrameY(int *pCurrentFrame, int frameA, int frameB, int *pFrameCounter, int *pDiagonal){
-    if((*pDiagonal)++ > 0){
-        if(*pCurrentFrame == frameA && *pFrameCounter >= 25){
-            *pCurrentFrame = frameB;
-            *pFrameCounter = 0;
+PUBLIC void changeZFrameY(int frameA, int frameB, int i){
+    if((zFrame[i].diagonal)++ > 0){
+        if(zFrame[i].frame == frameA && zFrame[i].counter >= 25){
+            zFrame[i].frame = frameB;
+            zFrame[i].counter = 0;
         }
-        else if(*pCurrentFrame == frameB){
-            if(*pFrameCounter >= 25){
-                *pCurrentFrame = frameA;
-                *pFrameCounter = 0;
+        else if(zFrame[i].frame == frameB){
+            if(zFrame[i].counter >= 25){
+                zFrame[i].frame = frameA;
+                zFrame[i].counter = 0;
             }
-            else (*pFrameCounter)++;
+            else (zFrame[i].counter)++;
         }
         else{
-            *pCurrentFrame = frameA;
-            (*pFrameCounter)++;
+            zFrame[i].frame = frameA;
+            (zFrame[i].counter)++;
         }
     }
 }
