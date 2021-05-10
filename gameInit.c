@@ -2,11 +2,14 @@
 #include <stdlib.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h>
 
+#include "gameEvent.h"
 #include "gameInit.h"
 #include "gameMedia.h"
 #include "zombie.h"
 #include "player.h"
+#include "menu.h"
 
 #define WINDOW_WIDTH (1024)
 #define WINDOW_HEIGHT (1024)
@@ -22,7 +25,7 @@ Bullet createBullet(){
 }
 
 void initSDL(){
-    if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER) != 0){
+    if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER|SDL_INIT_AUDIO) != 0){
         printf("error initializing SDL: %s\n", SDL_GetError());
     }
 }
@@ -41,13 +44,20 @@ void initRenderer(SDL_Window* pWin){
     SDL_SetRenderDrawColor(iSDL.renderer, 0, 0, 0, 0);
 }
 
+void initAudio(){
+    if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0 )
+        printf("Error: %s", Mix_GetError());
+}
+
 void initGame(){
     initSDL();
     initWindow();
+    initAudio();
     ZombInit.nrOfZombies = 6;
     createAllZombies();
-    PlayerInit.nrOfPlayers = 4;
+    PlayerInit.nrOfPlayers = 1;
     createAllPlayers();
     createBullet();
-    loadMedia(&iSDL, &backTiles, &ZombInit, &PlayerInit, &b);
+    loadMedia(&iSDL, &backTiles, &ZombInit, &PlayerInit, &b, &StartInit);
+    playBgMusic();
 }

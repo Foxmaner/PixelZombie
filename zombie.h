@@ -16,12 +16,13 @@ struct zombie_frame{
     int frame;
     int diagonal;
     int counter;
+    int skin;
 }; typedef struct zombie_frame ZombieFrame;
 ZombieFrame zFrame[100];
 
 struct Zombie_Init{
     SDL_Texture *mZombie;
-    SDL_Rect gZombie[8];
+    SDL_Rect gZombie[32];
     int nrOfZombies;
     SDL_Rect zPosition[100];
 }; typedef struct Zombie_Init ZombieInit;
@@ -37,8 +38,8 @@ int getZombieHP(Zombie a);
 void createAllZombies();
 int getZSpawnPointX(int a);
 int getZSpawnPointY(int a);
-void changeZFrameX(int *pCurrentFrame, int frameA, int frameB, int *pFrameCounter, int *pDiagonal);
-void changeZFrameY(int *pCurrentFrame, int frameA, int frameB, int *pFrameCounter, int *pDiagonal);
+void changeZFrameX(int frameA, int frameB, int i);
+void changeZFrameY(int frameA, int frameB, int i);
 bool checkZCollisionWithP(SDL_Rect zombie, SDL_Rect player);
 void killZombie(Zombie a);
 int msTimer(int *pCurrentTime, int *pLastRecordedTime, int ms);
