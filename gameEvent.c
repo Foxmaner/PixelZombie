@@ -140,7 +140,7 @@ void zombieCollisionWithZombie(int i){
 }
 
 void zombieCollisionWithPlayer(int i, int *currentDmgTakenTime,int *lastDmgTakenTime){
-    if(checkZCollisionWithP(ZombInit.zPosition[i],PlayerInit.pPosition[playerID])){
+    if(z[i]->alive && checkZCollisionWithP(ZombInit.zPosition[i],PlayerInit.pPosition[playerID])){
         if(msTimer(currentDmgTakenTime, lastDmgTakenTime, 1000)){
            //respawnPlayer(PlayerInit.p[playerID], &PlayerInit.pPosition[playerID], playerID);
         }
@@ -211,14 +211,14 @@ void bulletPositioning(int i){
 
 void bulletCollisionWithZombieX(int i){
     //RIGHT
-    if((b.bVelX == 1) && (b.bPosition.y >= ZombInit.zPosition[i].y) && (b.bPosition.y <= (ZombInit.zPosition[i].y + ZombInit.gZombie->h) && (PlayerInit.pPosition[playerID].x + 25 < ZombInit.zPosition[i].x))){
+    if((z[i]->alive) && (b.bVelX == 1) && (b.bPosition.y >= ZombInit.zPosition[i].y) && (b.bPosition.y <= (ZombInit.zPosition[i].y + ZombInit.gZombie->h) && (PlayerInit.pPosition[playerID].x + 25 < ZombInit.zPosition[i].x))){
         if(msTimer(&b.currentShotTime, &b.lastShotTime, 50)){
             killZombie(z[i]);
             b.shot = false;
         }
     }
     //LEFT
-    if((b.bVelX == -1) && (b.bPosition.y >= ZombInit.zPosition[i].y) && (b.bPosition.y <= (ZombInit.zPosition[i].y + ZombInit.gZombie->h) && (PlayerInit.pPosition[playerID].x + 25 > ZombInit.zPosition[i].x))){
+    if((z[i]->alive) && (b.bVelX == -1) && (b.bPosition.y >= ZombInit.zPosition[i].y) && (b.bPosition.y <= (ZombInit.zPosition[i].y + ZombInit.gZombie->h) && (PlayerInit.pPosition[playerID].x + 25 > ZombInit.zPosition[i].x))){
         if(msTimer(&b.currentShotTime, &b.lastShotTime, 50)){
             killZombie(z[i]);
             b.shot = false;
@@ -228,14 +228,14 @@ void bulletCollisionWithZombieX(int i){
 
 void bulletCollisionWithZombieY(int i){
     //UP
-    if((b.bVelY == 1) && (b.bPosition.x >= ZombInit.zPosition[i].x) && (b.bPosition.x <= (ZombInit.zPosition[i].x + ZombInit.gZombie->w) && (PlayerInit.pPosition[playerID].y + 25 < ZombInit.zPosition[i].y))){
+    if((z[i]->alive) && (b.bVelY == 1) && (b.bPosition.x >= ZombInit.zPosition[i].x) && (b.bPosition.x <= (ZombInit.zPosition[i].x + ZombInit.gZombie->w) && (PlayerInit.pPosition[playerID].y + 25 < ZombInit.zPosition[i].y))){
         if(msTimer(&b.currentShotTime, &b.lastShotTime, 50)){
             killZombie(z[i]);
             b.shot = false;
         }
     }
     //DOWN
-    if((b.bVelY == -1) && (b.bPosition.x >= ZombInit.zPosition[i].x) && (b.bPosition.x <= (ZombInit.zPosition[i].x + ZombInit.gZombie->w) && (PlayerInit.pPosition[playerID].y + 25 > ZombInit.zPosition[i].y))){
+    if((z[i]->alive) && (b.bVelY == -1) && (b.bPosition.x >= ZombInit.zPosition[i].x) && (b.bPosition.x <= (ZombInit.zPosition[i].x + ZombInit.gZombie->w) && (PlayerInit.pPosition[playerID].y + 25 > ZombInit.zPosition[i].y))){
         if(msTimer(&b.currentShotTime, &b.lastShotTime, 50)){
             killZombie(z[i]);
             b.shot = false;
