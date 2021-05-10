@@ -48,20 +48,16 @@ void renderBackground(InitSDL* iSDL, Background_Tiles backTiles){
 void renderAllPlayers(){
     for(int i = 0; i < PlayerInit.nrOfPlayers; i++){
         SDL_RenderCopyEx(iSDL.renderer, PlayerInit.mPlayer, &PlayerInit.gPlayer[PlayerInit.pFrame[i]], &PlayerInit.pPosition[i], 0, NULL, PlayerInit.flip[i]);
-    }
 }
 
 void renderAllZombies(){
     for(int i = 0; i < ZombInit.nrOfZombies; i++){
-        SDL_RenderCopyEx(iSDL.renderer, ZombInit.mZombie, &ZombInit.gZombie[zFrame[i].frame],&ZombInit.zPosition[i], 0, NULL, SDL_FLIP_NONE);
-    }
+        if(z[i]->alive)
+            SDL_RenderCopyEx(iSDL.renderer, ZombInit.mZombie, &ZombInit.gZombie[zFrame[i].frame], &ZombInit.zPosition[i], 0, NULL, SDL_FLIP_NONE);
 }
 
-
-
 void renderBullet(){
-    if(b.shot)
-        SDL_RenderCopyEx(iSDL.renderer, b.mBullet, &b.gBullet[0], &b.bPosition, b.bUpDown, NULL, SDL_FLIP_NONE);
+    if(b.shot) SDL_RenderCopyEx(iSDL.renderer, b.mBullet, &b.gBullet[0], &b.bPosition, b.bUpDown, NULL, SDL_FLIP_NONE);
 }
 
 void renderPreset(){
@@ -78,12 +74,12 @@ void renderGame(){
     clearRenderer();
     renderMenu();
     if (menuintiaited!=2){
-    SDL_PumpEvents();
-    renderBackground(&iSDL, backTiles);
-    renderAllZombies();
-    renderAllPlayers();
-    renderBullet();
+      SDL_PumpEvents();
+      renderBackground(&iSDL, backTiles);
+      renderAllZombies();
+      renderBullet();
     }
+    renderAllPlayers();
     renderPreset();
     SDL_Delay(1000/60);
 }

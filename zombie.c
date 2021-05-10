@@ -61,11 +61,11 @@ PUBLIC void createAllZombies(){
         ZombInit.zPosition[i].y = getZombiePositionY(z[i]);
         ZombInit.zPosition[i].w = 43;
         ZombInit.zPosition[i].h = 54;
+        zFrame[i].skin = ((rand() % 4 + 1) * 8) - 8;
     }
 }
 
 PUBLIC int getZSpawnPointX(int a){
-    srand((unsigned) time(NULL));
     if(a == 0)
         return zSpawnPointX0 + (rand() % 200);
     else if(a == 1)
@@ -75,7 +75,6 @@ PUBLIC int getZSpawnPointX(int a){
 }
 
 PUBLIC int getZSpawnPointY(int a){
-    srand((unsigned) time(NULL));
     if(a == 0)
         return zSpawnPointY0 + (rand() % 65);
     else if(a == 1)
@@ -84,41 +83,41 @@ PUBLIC int getZSpawnPointY(int a){
         return zSpawnPointY2 + (rand() % 65);
 }
 
-PUBLIC void changeZFrameX(int *pCurrentFrame, int frameA, int frameB, int *pFrameCounter, int *pDiagonal){
-    *pDiagonal = 0;
-    if(*pCurrentFrame == frameA && *pFrameCounter >= 25){
-        *pCurrentFrame = frameB;
-        *pFrameCounter = 0;
+PUBLIC void changeZFrameX(int frameA, int frameB, int i){
+    zFrame[i].diagonal = 0;
+    if(zFrame[i].frame == frameA && zFrame[i].counter >= 25){
+        zFrame[i].frame = frameB;
+        zFrame[i].counter = 0;
     }
-    else if(*pCurrentFrame == frameB){
-        if(*pFrameCounter >= 25){
-            *pCurrentFrame = frameA;
-            *pFrameCounter = 0;
+    else if(zFrame[i].frame == frameB){
+        if(zFrame[i].counter >= 25){
+            zFrame[i].frame = frameA;
+            zFrame[i].counter = 0;
         }
-        else (*pFrameCounter)++;
+        else (zFrame[i].counter)++;
     }
     else{
-        *pCurrentFrame = frameA;
-        (*pFrameCounter)++;
+        zFrame[i].frame = frameA;
+        (zFrame[i].counter)++;
     }
 }
 
-PUBLIC void changeZFrameY(int *pCurrentFrame, int frameA, int frameB, int *pFrameCounter, int *pDiagonal){
-    if((*pDiagonal)++ > 0){
-        if(*pCurrentFrame == frameA && *pFrameCounter >= 25){
-            *pCurrentFrame = frameB;
-            *pFrameCounter = 0;
+PUBLIC void changeZFrameY(int frameA, int frameB, int i){
+    if((zFrame[i].diagonal)++ > 0){
+        if(zFrame[i].frame == frameA && zFrame[i].counter >= 25){
+            zFrame[i].frame = frameB;
+            zFrame[i].counter = 0;
         }
-        else if(*pCurrentFrame == frameB){
-            if(*pFrameCounter >= 25){
-                *pCurrentFrame = frameA;
-                *pFrameCounter = 0;
+        else if(zFrame[i].frame == frameB){
+            if(zFrame[i].counter >= 25){
+                zFrame[i].frame = frameA;
+                zFrame[i].counter = 0;
             }
-            else (*pFrameCounter)++;
+            else (zFrame[i].counter)++;
         }
         else{
-            *pCurrentFrame = frameA;
-            (*pFrameCounter)++;
+            zFrame[i].frame = frameA;
+            (zFrame[i].counter)++;
         }
     }
 }

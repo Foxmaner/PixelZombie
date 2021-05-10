@@ -4,8 +4,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
-
+#include <SDL2/SDL_mixer.h>
 
 #include "gameInit.h"
 #include "map.h"
@@ -14,8 +13,15 @@
 #include "menu.h"
 #include "server/udpClient.h"
 
+Mix_Music *bgMusic;
+Mix_Chunk *sfxPistolShot;
+Mix_Chunk *sfxPlayerHurt;
+Mix_Chunk *sfxPlayerDie;
+Mix_Chunk *sfxZombieDie;
+Mix_Chunk *sfxZombieAttack;
+Mix_Chunk *sfxZombieBrain;
+
 void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit, Player_Init* PlayerInit, Bullet* b,  Start_Init* StartInit){
-TTF_Init();
     //Startbutton
     SDL_Surface* gButtonsurface = IMG_Load("resources/startbutton.png");
     StartInit->mstartbutton = SDL_CreateTextureFromSurface(iSDL->renderer, gButtonsurface);
@@ -23,7 +29,7 @@ TTF_Init();
     StartInit->gstartbutton[0].y = 0;
     StartInit->gstartbutton[0].w = 200;
     StartInit->gstartbutton[0].h = 62;
-
+  
     //Map
     SDL_Surface* gTilesSurface = IMG_Load("resources/Textur32x32V8.PNG");
     backTiles->mTiles = SDL_CreateTextureFromSurface(iSDL->renderer, gTilesSurface);
@@ -37,6 +43,8 @@ TTF_Init();
     //Zombie
     SDL_Surface* gZombieSurface = IMG_Load("resources/ZombieSheetSizeX2.png");
     ZombInit->mZombie = SDL_CreateTextureFromSurface(iSDL->renderer, gZombieSurface);
+    //X O O O   <---Where in the sprite
+    //O O O O
     for(int i = 0; i < 8; i++){
         ZombInit->gZombie[i].x = 108 * (i % 2) + 6;
         if(i % 2 == 0) ZombInit->gZombie[i].y = (54 * i) / 2;
@@ -44,6 +52,61 @@ TTF_Init();
         ZombInit->gZombie[i].w = 43;
         ZombInit->gZombie[i].h = 54;
     }
+    //O X O O
+    //O O O O
+    for(int i = 8; i < 16; i++){
+        //ZombInit->gZombie[i].x = (108 * (i % 2)) + 166;       This line does not work for some fucking reason, even though the exact same line reoccurs at line 57
+        if(i % 2 == 0) ZombInit->gZombie[i].y = (54 * (i % 8)) / 2;
+        else ZombInit->gZombie[i].y = ZombInit->gZombie[i-1].y;
+        ZombInit->gZombie[i].w = 43;
+        ZombInit->gZombie[i].h = 54;
+    }
+    ZombInit->gZombie[8].x = 166;            //Because line 40 does not work, it had to be manually inputed...
+    ZombInit->gZombie[9].x = 274;
+    ZombInit->gZombie[10].x = 166;
+    ZombInit->gZombie[11].x = 274;
+    ZombInit->gZombie[12].x = 166;
+    ZombInit->gZombie[13].x = 274;
+    ZombInit->gZombie[14].x = 166;
+    ZombInit->gZombie[15].x = 274;
+    //O O O O
+    //O X O O
+    for(int i = 16; i < 24; i++){
+        ZombInit->gZombie[i].x = (108 * (i % 2)) + 166;
+        if(i % 2 == 0) ZombInit->gZombie[i].y = ((54 * (i % 8)) / 2) + 212;
+        else ZombInit->gZombie[i].y = ZombInit->gZombie[i-1].y;
+        ZombInit->gZombie[i].w = 43;
+        ZombInit->gZombie[i].h = 54;
+    }
+    //O O O O
+    //O O X O       DOWN            It is possible to refine this code, not willing to spend that time now.
+    for(int i = 24; i < 32; i++){
+        ZombInit->gZombie[i].w = 45;
+        ZombInit->gZombie[i].h = 54;
+    }
+    ZombInit->gZombie[24].x = 327;
+    ZombInit->gZombie[24].y = 214;
+
+    ZombInit->gZombie[25].x = 434;
+    ZombInit->gZombie[25].y = 214;
+    //LEFT
+    ZombInit->gZombie[26].x = 327;
+    ZombInit->gZombie[26].y = 267; //or 268
+
+    ZombInit->gZombie[27].x = 434;
+    ZombInit->gZombie[27].y = 267; //or 268
+    //RIGHT
+    ZombInit->gZombie[28].x = 322;
+    ZombInit->gZombie[28].y = 320;
+
+    ZombInit->gZombie[29].x = 429;
+    ZombInit->gZombie[29].y = 320;
+    //UP
+    ZombInit->gZombie[30].x = 322;
+    ZombInit->gZombie[30].y = 374;
+
+    ZombInit->gZombie[31].x = 429;
+    ZombInit->gZombie[31].y = 374;
 
     //Player
     SDL_Surface* gPlayerSurface = IMG_Load("resources/pixel-768x768-31.png");
@@ -145,6 +208,47 @@ TTF_Init();
     //Window Icon
     SDL_Surface* gWindowIcon = IMG_Load("resources/icon.png");
     SDL_SetWindowIcon(iSDL->win, gWindowIcon);
+ 
+    //Music
+    //Background Music
+    bgMusic = Mix_LoadMUS("resources/music/bgMusic.mp3");
+    //Sound Effects
+    sfxPistolShot = Mix_LoadWAV("resources/music/sfxPistolShot.wav");
+    sfxPlayerHurt = Mix_LoadWAV("resources/music/sfxPlayerHurt.wav");
+    sfxPlayerDie = Mix_LoadWAV("resources/music/sfxPlayerDie.wav");
+    sfxZombieDie = Mix_LoadWAV("resources/music/sfxZombieDie.wav");
+    sfxZombieAttack = Mix_LoadWAV("resources/music/sfxZombieAttack.wav");
+    sfxZombieBrain = Mix_LoadWAV("resources/music/sfxZombieBrain.wav");
+}
 
-    
+void playBgMusic(){
+    if(!Mix_PlayingMusic())
+        Mix_PlayMusic(bgMusic, -1);
+    else if(Mix_PausedMusic())
+        Mix_ResumeMusic();
+}
+
+void playPistolShot(){
+    Mix_PlayChannel(-1, sfxPistolShot, 0);
+}
+
+void playPlayerHurt(){
+    Mix_PlayChannel(-1, sfxPlayerHurt, 0);
+}
+
+void playPlayerDie(){
+    Mix_PlayChannel(-1, sfxPlayerDie, 0);
+}
+
+void playZombieDie(){
+    Mix_PlayChannel(-1, sfxZombieDie, 0);
+}
+
+void playZombieAttack(){
+    Mix_PlayChannel(-1, sfxZombieAttack, 0);
+}
+
+void playZombieBrain(){
+    if(rand() % 250 == 0) 
+        Mix_PlayChannel(-1, sfxZombieBrain, 0);
 }

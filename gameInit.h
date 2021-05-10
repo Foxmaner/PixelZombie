@@ -26,11 +26,12 @@ struct Bullet{
     int bVelX, bVelY, bUpDown;
 };typedef struct Bullet Bullet;
 Bullet b;
-
 Bullet createBullet();
+
 void initSDL();
 void initWindow();
 void initRenderer(SDL_Window* pWin);
+void initAudio();
 void initGame();
 
 #endif

@@ -23,7 +23,7 @@ int WinMain(int argc, char **argv)
     Uint32 IPclient2=0;
     Uint32 portClient[4]={0}; 
     Uint32 portClient2=0;
-    int quit, a, b, id;
+    int quit, a, b, reciveID, flag;
 	int nrOfConnections = 0;
  
 	/* Initialize SDL_net */
@@ -97,9 +97,9 @@ int WinMain(int argc, char **argv)
 								printf("Send to Client %d\n", j);
 								pSent->address.host = IPclient[j];	/* Set the destination host */
 								pSent->address.port = portClient[j];
-								sscanf((char * )pRecive->data, "%d %d %d",&id, &a, &b);
-								printf("%d %d %d\n", id, a, b);
-								sprintf((char *)pSent->data, "%d %d %d\n", id, a, b);
+								sscanf((char * )pRecive->data, "%d %d %d %d", &flag,&reciveID, &a, &b);
+								printf("%d %d %d %d\n",flag, reciveID, a, b);
+								sprintf((char *)pSent->data, "%d %d %d %d\n", flag, reciveID, a, b);
 								pSent->len = strlen((char *)pSent->data) + 1;
 								SDLNet_UDP_Send(sd, -1, pSent);
 							}
