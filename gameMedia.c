@@ -4,14 +4,27 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
+
 
 #include "gameInit.h"
 #include "map.h"
 #include "zombie.h"
 #include "player.h"
+#include "menu.h"
 #include "server/udpClient.h"
 
-void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit, Player_Init* PlayerInit, Bullet* b){
+void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit, Player_Init* PlayerInit, Bullet* b,  Start_Init* StartInit){
+
+    //Startbutton
+    SDL_Surface* gButtonsurface = IMG_Load("resources/startbutton.png");
+    StartInit->mstartbutton = SDL_CreateTextureFromSurface(iSDL->renderer, gButtonsurface);
+    StartInit->gstartbutton[0].x = 0;
+    StartInit->gstartbutton[0].y = 0;
+    StartInit->gstartbutton[0].w = 200;
+    StartInit->gstartbutton[0].h = 120;
+
+
     //Map
     SDL_Surface* gTilesSurface = IMG_Load("resources/Textur32x32V8.PNG");
     backTiles->mTiles = SDL_CreateTextureFromSurface(iSDL->renderer, gTilesSurface);
@@ -99,6 +112,8 @@ void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit,
     PlayerInit->gPlayer[11].y = 16;
     PlayerInit->gPlayer[11].w = 64;
     PlayerInit->gPlayer[11].h = 64; 
+
+    //down player
 
     PlayerInit->gPlayer[12].x = 565;
     PlayerInit->gPlayer[12].y = 111;

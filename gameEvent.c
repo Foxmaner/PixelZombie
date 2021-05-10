@@ -260,7 +260,7 @@ int mainGameEvent(){
     }
     for(int i = 0; i < ZombInit.nrOfZombies; i++){
         zombieTrackingPlayer(i);
-        //zombieCollisionWithZombie(i);
+        zombieCollisionWithZombie(i);
         zombieCollisionWithPlayer(i, &currentDmgTakenTime, &lastDmgTakenTime);
         zombieCollisionWithMap(i);
     }
