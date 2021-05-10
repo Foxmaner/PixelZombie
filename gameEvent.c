@@ -252,12 +252,14 @@ int mainGameEvent(){
             close_requested = 1;
             return close_requested;
         }
+        if (select==1){
         if (event.type== SDL_KEYDOWN){
             sendData(PlayerInit.pPosition[playerID].x, PlayerInit.pPosition[playerID].y, "127.0.0.1", playerID);
             pressedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
         }
         if(event.type== SDL_KEYUP){
             releasedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
+        }
         }
             if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT & select==0)) {  
             SDL_Log("Mouse Button 1 (left) is pressed.");

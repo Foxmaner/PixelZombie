@@ -28,7 +28,6 @@ struct Bullet{
 Bullet b;
 
 Bullet createBullet();
-int renderMenu(int Buttonpressed);
 void initSDL();
 void initWindow();
 void initRenderer(SDL_Window* pWin);

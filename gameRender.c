@@ -15,6 +15,8 @@
 #include "menu.h"
 #include "server/udpClient.h"
 
+int menuintiaited=2;
+
 void SetRenderDrawColor(){
     SDL_SetRenderDrawColor(iSDL.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 }
@@ -23,10 +25,8 @@ void clearRenderer(){
     SDL_RenderClear(iSDL.renderer);
 }
 
-int renderMenu(int Buttonpressed){
+void renderMenu(){
     SDL_RenderCopyEx(iSDL.renderer, StartInit.mstartbutton, &StartInit.gstartbutton[0],&StartInit.gstartbutton[0], 0, NULL, SDL_FLIP_NONE);
-
-    return Buttonpressed;
 }
 
 void renderBackground(InitSDL* iSDL, Background_Tiles backTiles){
@@ -70,15 +70,20 @@ void renderPreset(){
 
 
 void renderGame(){
+    if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT & menuintiaited==2)) {  
+            SDL_Log("Mouse Button 1 (left) is pressed.");
+            menuintiaited=0;
+    }
     SetRenderDrawColor();
     clearRenderer();
+    renderMenu();
+    if (menuintiaited!=2){
     SDL_PumpEvents();
     renderBackground(&iSDL, backTiles);
     renderAllZombies();
     renderAllPlayers();
     renderBullet();
-    renderMenu(1);
+    }
     renderPreset();
-
     SDL_Delay(1000/60);
 }
