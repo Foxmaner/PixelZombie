@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include "menu.h"
 
 struct InitSDL{
     SDL_Window* win;
@@ -27,6 +28,7 @@ struct Bullet{
 Bullet b;
 
 Bullet createBullet();
+int renderMenu(int Buttonpressed);
 void initSDL();
 void initWindow();
 void initRenderer(SDL_Window* pWin);

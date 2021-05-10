@@ -24,7 +24,6 @@ void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit,
     StartInit->gstartbutton[0].w = 200;
     StartInit->gstartbutton[0].h = 120;
 
-
     //Map
     SDL_Surface* gTilesSurface = IMG_Load("resources/Textur32x32V8.PNG");
     backTiles->mTiles = SDL_CreateTextureFromSurface(iSDL->renderer, gTilesSurface);
@@ -146,4 +145,6 @@ void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit,
     //Window Icon
     SDL_Surface* gWindowIcon = IMG_Load("resources/icon.png");
     SDL_SetWindowIcon(iSDL->win, gWindowIcon);
+
+    
 }

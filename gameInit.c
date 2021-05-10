@@ -3,6 +3,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
+#include "gameEvent.h"
 #include "gameInit.h"
 #include "gameMedia.h"
 #include "zombie.h"

@@ -8,6 +8,5 @@
 #include "menu.h"
 
 void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit, Player_Init* PlayerInit, Bullet* b, Start_Init* StartInit);
-void openTextBox();
 
 #endif

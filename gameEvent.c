@@ -13,9 +13,10 @@
 int lastDmgTakenTime = 0, currentDmgTakenTime = 0;
 int kordLista[3];
 int playerID=-1;
-int up_w,down_s,left_a,right_d,lctrl;
+int up_w,down_s,left_a,right_d,lctrl, select=2;
 
-void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lctrl, SDL_Event event){
+void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lctrl,SDL_Event event){
+
     if (*up_w==1){
         PlayerInit.pPosition[playerID].y -= 6;
         b.bVelY = -1;
@@ -243,6 +244,7 @@ int mainGameEvent(){
         PlayerInit.pPosition[kordLista[0]].x = kordLista[1];
         PlayerInit.pPosition[kordLista[0]].y = kordLista[2];
     }
+    if (select==2) select=0;
     //receiveCoordData(&kordLista, &playerID);
     SDL_Event event;
     while (SDL_PollEvent(&event)){ 
@@ -257,7 +259,12 @@ int mainGameEvent(){
         if(event.type== SDL_KEYUP){
             releasedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
         }
+            if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT & select==0)) {  
+            SDL_Log("Mouse Button 1 (left) is pressed.");
+            select=1;
+            }
     }
+    if (select==1){
     for(int i = 0; i < ZombInit.nrOfZombies; i++){
         zombieTrackingPlayer(i);
         zombieCollisionWithZombie(i);
@@ -266,4 +273,5 @@ int mainGameEvent(){
     }
     playerCollisionWithMap();
     bulletPositioning();
+    }
 }
