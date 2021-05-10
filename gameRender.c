@@ -4,8 +4,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
-
 
 #include "gameInit.h"
 #include "gameEvent.h"
@@ -46,7 +44,7 @@ void renderBackground(InitSDL* iSDL, Background_Tiles backTiles){
 }
 
 void renderAllPlayers(){
-    for(int i = 0; i < PlayerInit.nrOfPlayers; i++){
+    for(int i = 0; i < PlayerInit.nrOfPlayers; i++)
         SDL_RenderCopyEx(iSDL.renderer, PlayerInit.mPlayer, &PlayerInit.gPlayer[PlayerInit.pFrame[i]], &PlayerInit.pPosition[i], 0, NULL, PlayerInit.flip[i]);
 }
 
@@ -54,6 +52,7 @@ void renderAllZombies(){
     for(int i = 0; i < ZombInit.nrOfZombies; i++){
         if(z[i]->alive)
             SDL_RenderCopyEx(iSDL.renderer, ZombInit.mZombie, &ZombInit.gZombie[zFrame[i].frame], &ZombInit.zPosition[i], 0, NULL, SDL_FLIP_NONE);
+    }
 }
 
 void renderBullet(){
