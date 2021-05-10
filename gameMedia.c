@@ -18,6 +18,7 @@ Mix_Chunk *sfxPlayerHurt;
 Mix_Chunk *sfxPlayerDie;
 Mix_Chunk *sfxZombieDie;
 Mix_Chunk *sfxZombieAttack;
+Mix_Chunk *sfxZombieBrain;
 
 void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit, Player_Init* PlayerInit, Bullet* b){
     //Map
@@ -203,10 +204,10 @@ void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit,
     //Sound Effects
     sfxPistolShot = Mix_LoadWAV("resources/music/sfxPistolShot.wav");
     sfxPlayerHurt = Mix_LoadWAV("resources/music/sfxPlayerHurt.wav");
-    if(sfxPlayerHurt == NULL) printf("eroor %s", Mix_GetError());
     sfxPlayerDie = Mix_LoadWAV("resources/music/sfxPlayerDie.wav");
     sfxZombieDie = Mix_LoadWAV("resources/music/sfxZombieDie.wav");
     sfxZombieAttack = Mix_LoadWAV("resources/music/sfxZombieAttack.wav");
+    sfxZombieBrain = Mix_LoadWAV("resources/music/sfxZombieBrain.wav");
 }
 
 void playBgMusic(){
@@ -234,4 +235,9 @@ void playZombieDie(){
 
 void playZombieAttack(){
     Mix_PlayChannel(-1, sfxZombieAttack, 0);
+}
+
+void playZombieBrain(){
+    if(rand() % 250 == 0) 
+        Mix_PlayChannel(-1, sfxZombieBrain, 0);
 }

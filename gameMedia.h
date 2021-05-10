@@ -13,5 +13,6 @@ void playPlayerHurt();
 void playPlayerDie();
 void playZombieDie();
 void playZombieAttack();
+void playZombieBrain();
 
 #endif

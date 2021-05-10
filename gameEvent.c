@@ -64,13 +64,11 @@ void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lct
             *right_d=1;
         }
         if(event.key.keysym.sym==SDLK_LCTRL){
-
             if(msTimer(&b.currentShotTime, &b.lastShotTime, 500)){  //13 rps
                 b.shot = true;
                 playPistolShot();
                 sendData(1, 0,  0, "127.0.0.1", playerID);
             }
-
     }
 }
 
@@ -96,8 +94,7 @@ void releasedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lc
     }
 }
 
-double distance( int x1, int y1, int x2, int y2 )
-{
+double distance( int x1, int y1, int x2, int y2 ){
     //Return the distance between the two points
     return sqrt( pow( x2 - x1, 2 ) + pow( y2 - y1, 2 ) );
 }
@@ -106,8 +103,7 @@ int closestPlayerToZombie(int zombieNr){
     int closestPlayerId = 0;
     double closestPlayerIdDistance;
     double distancePlayer;
-    for (int i = 0; i < PlayerInit.nrOfPlayers; i++)
-    {
+    for (int i = 0; i < PlayerInit.nrOfPlayers; i++){
         closestPlayerIdDistance=distance(PlayerInit.pPosition[closestPlayerId].x, PlayerInit.pPosition[closestPlayerId].y, ZombInit.zPosition[zombieNr].x, ZombInit.zPosition[zombieNr].y);
         distancePlayer=distance(PlayerInit.pPosition[i].x, PlayerInit.pPosition[i].y, ZombInit.zPosition[zombieNr].x, ZombInit.zPosition[zombieNr].y);
         if(closestPlayerIdDistance>distancePlayer){
@@ -115,16 +111,11 @@ int closestPlayerToZombie(int zombieNr){
         };
     }
     return closestPlayerId;
-    
-
 }
 
-
-
-
 void zombieTrackingPlayer(int i){
-    int playerToTrack=0;    
-   playerToTrack = closestPlayerToZombie(i);
+    int playerToTrack=0;
+    playerToTrack = closestPlayerToZombie(i);
     if((ZombInit.zPosition[i].x - PlayerInit.pPosition[playerToTrack].x) > 20){
         ZombInit.zPosition[i].x -= 1;
         //Frame change LEFT
@@ -310,6 +301,7 @@ int mainGameEvent(){
             releasedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
         }
     }
+    playZombieBrain();
     for(int i = 0; i < ZombInit.nrOfZombies; i++){
         zombieTrackingPlayer(i);
         //zombieCollisionWithZombie(i);
@@ -318,5 +310,4 @@ int mainGameEvent(){
         bulletPositioning(i);
     }
     playerCollisionWithMap();
-    
 }
