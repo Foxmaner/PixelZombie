@@ -6,6 +6,7 @@
 
 #include "gameInit.h"
 #include "gameEvent.h"
+#include "gameMedia.h"
 #include "zombie.h"
 #include "player.h"
 #include "server/udpClient.h"
@@ -63,8 +64,10 @@ void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lct
             *right_d=1;
         }
         if(event.key.keysym.sym==SDLK_LCTRL){
-            if(msTimer(&b.currentShotTime, &b.lastShotTime, 500))  //13 rps
+            if(msTimer(&b.currentShotTime, &b.lastShotTime, 500)){  //13 rps
                 b.shot = true;
+                playPistolShot();
+            }
     }
 }
 
@@ -143,6 +146,8 @@ void zombieCollisionWithPlayer(int i, int *currentDmgTakenTime,int *lastDmgTaken
     if(z[i]->alive && checkZCollisionWithP(ZombInit.zPosition[i],PlayerInit.pPosition[playerID])){
         if(msTimer(currentDmgTakenTime, lastDmgTakenTime, 1000)){
            //respawnPlayer(PlayerInit.p[playerID], &PlayerInit.pPosition[playerID], playerID);
+           playZombieAttack();
+           playPlayerHurt();
         }
     }
 }
@@ -214,6 +219,7 @@ void bulletCollisionWithZombieX(int i){
     if((z[i]->alive) && (b.bVelX == 1) && (b.bPosition.y >= ZombInit.zPosition[i].y) && (b.bPosition.y <= (ZombInit.zPosition[i].y + ZombInit.gZombie->h) && (PlayerInit.pPosition[playerID].x + 25 < ZombInit.zPosition[i].x))){
         if(msTimer(&b.currentShotTime, &b.lastShotTime, 50)){
             killZombie(z[i]);
+            playZombieDie();
             b.shot = false;
         }
     }
@@ -221,6 +227,7 @@ void bulletCollisionWithZombieX(int i){
     if((z[i]->alive) && (b.bVelX == -1) && (b.bPosition.y >= ZombInit.zPosition[i].y) && (b.bPosition.y <= (ZombInit.zPosition[i].y + ZombInit.gZombie->h) && (PlayerInit.pPosition[playerID].x + 25 > ZombInit.zPosition[i].x))){
         if(msTimer(&b.currentShotTime, &b.lastShotTime, 50)){
             killZombie(z[i]);
+            playZombieDie();
             b.shot = false;
         }
     }
@@ -231,6 +238,7 @@ void bulletCollisionWithZombieY(int i){
     if((z[i]->alive) && (b.bVelY == 1) && (b.bPosition.x >= ZombInit.zPosition[i].x) && (b.bPosition.x <= (ZombInit.zPosition[i].x + ZombInit.gZombie->w) && (PlayerInit.pPosition[playerID].y + 25 < ZombInit.zPosition[i].y))){
         if(msTimer(&b.currentShotTime, &b.lastShotTime, 50)){
             killZombie(z[i]);
+            playZombieDie();
             b.shot = false;
         }
     }
@@ -238,6 +246,7 @@ void bulletCollisionWithZombieY(int i){
     if((z[i]->alive) && (b.bVelY == -1) && (b.bPosition.x >= ZombInit.zPosition[i].x) && (b.bPosition.x <= (ZombInit.zPosition[i].x + ZombInit.gZombie->w) && (PlayerInit.pPosition[playerID].y + 25 > ZombInit.zPosition[i].y))){
         if(msTimer(&b.currentShotTime, &b.lastShotTime, 50)){
             killZombie(z[i]);
+            playZombieDie();
             b.shot = false;
         }
     }

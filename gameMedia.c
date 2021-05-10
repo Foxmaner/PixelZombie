@@ -4,12 +4,20 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h>
 
 #include "gameInit.h"
 #include "map.h"
 #include "zombie.h"
 #include "player.h"
 #include "server/udpClient.h"
+
+Mix_Music *bgMusic;
+Mix_Chunk *sfxPistolShot;
+Mix_Chunk *sfxPlayerHurt;
+Mix_Chunk *sfxPlayerDie;
+Mix_Chunk *sfxZombieDie;
+Mix_Chunk *sfxZombieAttack;
 
 void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit, Player_Init* PlayerInit, Bullet* b){
     //Map
@@ -188,4 +196,42 @@ void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit,
     //Window Icon
     SDL_Surface* gWindowIcon = IMG_Load("resources/icon.png");
     SDL_SetWindowIcon(iSDL->win, gWindowIcon);
+    
+    //Music
+    //Background Music
+    bgMusic = Mix_LoadMUS("resources/music/bgMusic.mp3");
+    //Sound Effects
+    sfxPistolShot = Mix_LoadWAV("resources/music/sfxPistolShot.wav");
+    sfxPlayerHurt = Mix_LoadWAV("resources/music/sfxPlayerHurt.wav");
+    if(sfxPlayerHurt == NULL) printf("eroor %s", Mix_GetError());
+    sfxPlayerDie = Mix_LoadWAV("resources/music/sfxPlayerDie.wav");
+    sfxZombieDie = Mix_LoadWAV("resources/music/sfxZombieDie.wav");
+    sfxZombieAttack = Mix_LoadWAV("resources/music/sfxZombieAttack.wav");
+}
+
+void playBgMusic(){
+    if(!Mix_PlayingMusic())
+        Mix_PlayMusic(bgMusic, -1);
+    else if(Mix_PausedMusic())
+        Mix_ResumeMusic();
+}
+
+void playPistolShot(){
+    Mix_PlayChannel(-1, sfxPistolShot, 0);
+}
+
+void playPlayerHurt(){
+    Mix_PlayChannel(-1, sfxPlayerHurt, 0);
+}
+
+void playPlayerDie(){
+    Mix_PlayChannel(-1, sfxPlayerDie, 0);
+}
+
+void playZombieDie(){
+    Mix_PlayChannel(-1, sfxZombieDie, 0);
+}
+
+void playZombieAttack(){
+    Mix_PlayChannel(-1, sfxZombieAttack, 0);
 }

@@ -1,5 +1,5 @@
 pixelzombie: main.o map.o zombie.o player.o udpClient.o gameInit.o gameEvent.o gameRender.o gameMedia.o 
-	gcc -o pixelzombie main.o map.o zombie.o player.o udpClient.o gameInit.o gameEvent.o gameRender.o gameMedia.o -lSDL2 -lSDL2_image -lSDL2_net
+	gcc -o pixelzombie main.o map.o zombie.o player.o udpClient.o gameInit.o gameEvent.o gameRender.o gameMedia.o -lSDL2 -lSDL2_image -lSDL2_net -lSDL2_mixer
 main.o: main.c
 	gcc -c main.c
 map.o: map.c
