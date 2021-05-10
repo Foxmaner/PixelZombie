@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 void renderBackground(InitSDL* iSDL, Background_Tiles backTiles);
+void renderMenu();
 void SetRenderDrawColor();
 void clearRenderer();
 void renderAllZombies();

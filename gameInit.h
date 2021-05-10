@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include "menu.h"
 
 struct InitSDL{
     SDL_Window* win;

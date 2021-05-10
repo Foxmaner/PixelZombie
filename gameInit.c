@@ -4,10 +4,12 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
 
+#include "gameEvent.h"
 #include "gameInit.h"
 #include "gameMedia.h"
 #include "zombie.h"
 #include "player.h"
+#include "menu.h"
 
 #define WINDOW_WIDTH (1024)
 #define WINDOW_HEIGHT (1024)
@@ -56,6 +58,6 @@ void initGame(){
     PlayerInit.nrOfPlayers = 1;
     createAllPlayers();
     createBullet();
-    loadMedia(&iSDL, &backTiles, &ZombInit, &PlayerInit, &b);
+    loadMedia(&iSDL, &backTiles, &ZombInit, &PlayerInit, &b, &StartInit);
     playBgMusic();
 }
