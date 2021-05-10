@@ -71,7 +71,7 @@ void renderPreset(){
 
 void renderGame(){
     if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT & menuintiaited==2)) {  
-            SDL_Log("Mouse Button 1 (left) is pressed.");
+            printf("Mouse Button 2 (left) is pressed.");
             menuintiaited=0;
     }
     SetRenderDrawColor();

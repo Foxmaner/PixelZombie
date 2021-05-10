@@ -234,6 +234,7 @@ void bulletPositioning(){
 
 int mainGameEvent(){
     const Uint8 *state = SDL_GetKeyboardState(NULL);
+    Uint32 SDL_GetMouseState(int *mouseX, int *mouseY);
     int close_requested = 0;
     if(playerID == -1){
         playerID = reciveID("127.0.0.1");
@@ -262,7 +263,7 @@ int mainGameEvent(){
         }
         }
             if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT & select==0)) {  
-            SDL_Log("Mouse Button 1 (left) is pressed.");
+            printf("Mouse Button 1 (left) is pressed.");
             select=1;
             }
     }

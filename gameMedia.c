@@ -15,14 +15,14 @@
 #include "server/udpClient.h"
 
 void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit, Player_Init* PlayerInit, Bullet* b,  Start_Init* StartInit){
-
+TTF_Init();
     //Startbutton
     SDL_Surface* gButtonsurface = IMG_Load("resources/startbutton.png");
     StartInit->mstartbutton = SDL_CreateTextureFromSurface(iSDL->renderer, gButtonsurface);
     StartInit->gstartbutton[0].x = 0;
     StartInit->gstartbutton[0].y = 0;
     StartInit->gstartbutton[0].w = 200;
-    StartInit->gstartbutton[0].h = 120;
+    StartInit->gstartbutton[0].h = 62;
 
     //Map
     SDL_Surface* gTilesSurface = IMG_Load("resources/Textur32x32V8.PNG");
