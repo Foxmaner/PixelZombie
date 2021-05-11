@@ -91,7 +91,6 @@ int WinMain(int argc, char **argv)
 				if (pRecive->address.port == portClient[i]){
 					printf("Recived data %d\n", i);
 					for(int j=0; j < nrOfConnections; j++){
-						printf("TESTFORLOOP %d %d\n", j, nrOfConnections);
 						if(IPclient[j] != 0){
 							if(i != j){
 								printf("Send to Client %d\n", j);

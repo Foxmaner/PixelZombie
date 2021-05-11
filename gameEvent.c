@@ -92,6 +92,7 @@ void releasedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lc
     }
     if(event.key.keysym.sym==SDLK_LCTRL){
         lctrl=0;
+        PlayerInit.pFrame[playerID]=15;
     }
 }
 
@@ -219,8 +220,8 @@ void playerCollisionWithMap(){
 
 void bulletPositioning(int i){
     if(!b.shot){    
-        b.bPosition.x = PlayerInit.pPosition[0].x + 25;
-        b.bPosition.y = PlayerInit.pPosition[0].y + 20;
+        b.bPosition.x = PlayerInit.pPosition[playerID].x + 25;
+        b.bPosition.y = PlayerInit.pPosition[playerID].y + 20;
     }
     else{   
         if(!b.bVelY){
@@ -285,13 +286,25 @@ int mainGameEvent(){
     reciveData("127.0.0.1", kordLista);
     if(kordLista[3] == 0){
         //printf("Satta kordinater %d %d \n", kordLista[0], kordLista[1]);
+        if((PlayerInit.pPosition[kordLista[0]].x) < (kordLista[1])){
+            PlayerInit.pFrame[kordLista[0]] = 0;
+            PlayerInit.flip[kordLista[0]] = SDL_FLIP_HORIZONTAL;
+        }
+        else if((PlayerInit.pPosition[kordLista[0]].x) > (kordLista[1])){
+            PlayerInit.pFrame[kordLista[0]]=0;
+            PlayerInit.flip[kordLista[0]] = SDL_FLIP_NONE;
+        }
+        else if((PlayerInit.pPosition[kordLista[0]].y) < (kordLista[2])){
+            PlayerInit.pFrame[kordLista[0]]=14;
+        }
+        else if((PlayerInit.pPosition[kordLista[0]].y) > (kordLista[2])){
+            PlayerInit.pFrame[kordLista[0]]=11;
+        }
         PlayerInit.pPosition[kordLista[0]].x = kordLista[1];
         PlayerInit.pPosition[kordLista[0]].y = kordLista[2];
+
     }else if(kordLista[3]==1){
-        
-        b.shot = true;
-        printf("Cool: %d",kordLista[0]);
-        b.shotPlayer = kordLista[0];
+        PlayerInit.pFrame[kordLista[0]]=15;
     }
     if (select==2) select=0;
     //receiveCoordData(&kordLista, &playerID);
