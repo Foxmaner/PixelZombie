@@ -13,7 +13,9 @@
 #include "menu.h"
 #include "server/udpClient.h"
 
-Mix_Music *bgMusic;
+Mix_Music *bgGameMusic;
+Mix_Music *bgMenuMusic;
+
 Mix_Chunk *sfxPistolShot;
 Mix_Chunk *sfxPlayerHurt;
 Mix_Chunk *sfxPlayerDie;
@@ -211,7 +213,8 @@ void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit,
  
     //Music
     //Background Music
-    bgMusic = Mix_LoadMUS("resources/music/bgMusic.mp3");
+    bgGameMusic = Mix_LoadMUS("resources/music/bgGameMusic.mp3");
+    bgMenuMusic = Mix_LoadMUS("resources/music/bgMenuMusic.mp3");
     //Sound Effects
     sfxPistolShot = Mix_LoadWAV("resources/music/sfxPistolShot.wav");
     sfxPlayerHurt = Mix_LoadWAV("resources/music/sfxPlayerHurt.wav");
@@ -221,9 +224,16 @@ void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit,
     sfxZombieBrain = Mix_LoadWAV("resources/music/sfxZombieBrain.wav");
 }
 
-void playBgMusic(){
+void playBgGameMusic(){
     if(!Mix_PlayingMusic())
-        Mix_PlayMusic(bgMusic, -1);
+        Mix_PlayMusic(bgGameMusic, -1);
+    else if(Mix_PausedMusic())
+        Mix_ResumeMusic();
+}
+
+void playBgMenuMusic(){
+    if(!Mix_PlayingMusic())
+        Mix_PlayMusic(bgMenuMusic, -1);
     else if(Mix_PausedMusic())
         Mix_ResumeMusic();
 }

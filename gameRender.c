@@ -73,11 +73,11 @@ void renderGame(){
     clearRenderer();
     renderMenu();
     if (menuintiaited!=2){
-      SDL_PumpEvents();
-      renderBackground(&iSDL, backTiles);
-      renderAllZombies();
-      renderBullet();
-      renderAllPlayers();
+        SDL_PumpEvents();
+        renderBackground(&iSDL, backTiles);
+        renderAllZombies();
+        renderBullet();
+        renderAllPlayers();
     }
     renderPreset();
     SDL_Delay(1000/60);

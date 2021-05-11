@@ -59,5 +59,4 @@ void initGame(){
     createAllPlayers();
     createBullet();
     loadMedia(&iSDL, &backTiles, &ZombInit, &PlayerInit, &b, &StartInit);
-    playBgMusic();
 }

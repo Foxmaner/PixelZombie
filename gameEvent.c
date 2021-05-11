@@ -264,6 +264,7 @@ void bulletCollisionWithZombieY(int i){
 }
 
 int mainGameEvent(){
+    playBgGameMusic();
     const Uint8 *state = SDL_GetKeyboardState(NULL);
     Uint32 SDL_GetMouseState(int *mouseX, int *mouseY);
     int close_requested = 0;
