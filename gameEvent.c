@@ -105,10 +105,10 @@ int closestPlayerToZombie(int zombieNr){
     double closestPlayerIdDistance;
     double distancePlayer;
     for (int i = 0; i < PlayerInit.nrOfPlayers; i++){
-        closestPlayerIdDistance=distance(PlayerInit.pPosition[closestPlayerId].x, PlayerInit.pPosition[closestPlayerId].y, ZombInit.zPosition[zombieNr].x, ZombInit.zPosition[zombieNr].y);
-        distancePlayer=distance(PlayerInit.pPosition[i].x, PlayerInit.pPosition[i].y, ZombInit.zPosition[zombieNr].x, ZombInit.zPosition[zombieNr].y);
-        if(closestPlayerIdDistance>distancePlayer){
-            closestPlayerId=i;
+        closestPlayerIdDistance = distance(PlayerInit.pPosition[closestPlayerId].x, PlayerInit.pPosition[closestPlayerId].y, ZombInit.zPosition[zombieNr].x, ZombInit.zPosition[zombieNr].y);
+        distancePlayer = distance(PlayerInit.pPosition[i].x, PlayerInit.pPosition[i].y, ZombInit.zPosition[zombieNr].x, ZombInit.zPosition[zombieNr].y);
+        if(closestPlayerIdDistance > distancePlayer){
+            closestPlayerId = i;
         };
     }
     return closestPlayerId;
@@ -142,26 +142,14 @@ void zombieTrackingPlayer(int i){
 
 void zombieCollisionWithZombie(int i){
     for(int j = 0; j < ZombInit.nrOfZombies; j++){
-        if(j==i){
+        if(!z[i]->alive || j == i){
             break;
         }
-        else if((ZombInit.zPosition[i].x - ZombInit.zPosition[j].x) <= 19 && (ZombInit.zPosition[i].x - ZombInit.zPosition[j].x) >=0){
-            ZombInit.zPosition[j].x -= 1;
-        }
-        else if((ZombInit.zPosition[i].x - ZombInit.zPosition[j].x) >= -19 && (ZombInit.zPosition[i].x - ZombInit.zPosition[j].x) <=0){
-            ZombInit.zPosition[i].x -=1;
-        }
-    }
-    for(int j = 0; j < ZombInit.nrOfZombies; j++){
-        if(j==i){
-            break;
-        }
-        else if((ZombInit.zPosition[i].y - ZombInit.zPosition[j].y) <= 27 && (ZombInit.zPosition[i].y - ZombInit.zPosition[j].y) >= 0){
-            ZombInit.zPosition[j].y -= 1;
-        }
-        else if((ZombInit.zPosition[i].y - ZombInit.zPosition[j].y) >= -27 && (ZombInit.zPosition[i].y - ZombInit.zPosition[j].y) <= 0){
-            ZombInit.zPosition[i].y -=1;
-        }
+        else 
+            if(checkZCollisionWithZ(ZombInit.zPosition[i], ZombInit.zPosition[j])){
+                ZombInit.zPosition[i].x += 2;
+                ZombInit.zPosition[i].y += 2;
+            }
     }
 }
 

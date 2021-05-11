@@ -55,7 +55,7 @@ void initGame(){
     initAudio();
     ZombInit.nrOfZombies = 6;
     createAllZombies();
-    PlayerInit.nrOfPlayers = 1;
+    PlayerInit.nrOfPlayers = 2;
     createAllPlayers();
     createBullet();
     loadMedia(&iSDL, &backTiles, &ZombInit, &PlayerInit, &b, &StartInit);

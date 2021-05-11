@@ -249,6 +249,6 @@ void playZombieAttack(){
 }
 
 void playZombieBrain(){
-    if(rand() % 250 == 0) 
+    if(rand() % 300 == 0) 
         Mix_PlayChannel(-1, sfxZombieBrain, 0);
 }

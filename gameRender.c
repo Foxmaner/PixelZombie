@@ -77,8 +77,8 @@ void renderGame(){
       renderBackground(&iSDL, backTiles);
       renderAllZombies();
       renderBullet();
+      renderAllPlayers();
     }
-    renderAllPlayers();
     renderPreset();
     SDL_Delay(1000/60);
 }
