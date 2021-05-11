@@ -23,7 +23,7 @@ Mix_Chunk *sfxZombieBrain;
 
 void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit, Player_Init* PlayerInit, Bullet* b,  Start_Init* StartInit){
     //Startbutton
-    SDL_Surface* gButtonsurface = IMG_Load("resources/startbutton.png");
+    SDL_Surface* gButtonsurface = IMG_Load("resources/images/startbutton.png");
     StartInit->mstartbutton = SDL_CreateTextureFromSurface(iSDL->renderer, gButtonsurface);
     StartInit->gstartbutton[0].x = 0;
     StartInit->gstartbutton[0].y = 0;
@@ -31,7 +31,7 @@ void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit,
     StartInit->gstartbutton[0].h = 62;
   
     //Map
-    SDL_Surface* gTilesSurface = IMG_Load("resources/Textur32x32V8.PNG");
+    SDL_Surface* gTilesSurface = IMG_Load("resources/images/Textur32x32V8.PNG");
     backTiles->mTiles = SDL_CreateTextureFromSurface(iSDL->renderer, gTilesSurface);
     for (int i = 0; i < 32; i++) {
         backTiles->gTiles[i].x = i*getTileWidth();
@@ -41,7 +41,7 @@ void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit,
     }
 
     //Zombie
-    SDL_Surface* gZombieSurface = IMG_Load("resources/ZombieSheetSizeX2.png");
+    SDL_Surface* gZombieSurface = IMG_Load("resources/images/ZombieSheetSizeX2.png");
     ZombInit->mZombie = SDL_CreateTextureFromSurface(iSDL->renderer, gZombieSurface);
     //X O O O   <---Where in the sprite
     //O O O O
@@ -109,7 +109,7 @@ void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit,
     ZombInit->gZombie[31].y = 374;
 
     //Player
-    SDL_Surface* gPlayerSurface = IMG_Load("resources/pixel-768x768-31.png");
+    SDL_Surface* gPlayerSurface = IMG_Load("resources/images/pixel-768x768-31.png");
     PlayerInit->mPlayer = SDL_CreateTextureFromSurface(iSDL->renderer, gPlayerSurface);
 
     //Ståendes med kroppen mot skärmen med pistol
@@ -198,7 +198,7 @@ void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit,
     PlayerInit->gPlayer[15].h = 64;
 
     //Bullet
-    SDL_Surface* gBulletSurface = IMG_Load("resources/bullet.png");
+    SDL_Surface* gBulletSurface = IMG_Load("resources/images/bullet.png");
     b->mBullet = SDL_CreateTextureFromSurface(iSDL->renderer, gBulletSurface);
     b->gBullet[0].x = 0;
     b->gBullet[0].y = 0;
@@ -206,7 +206,7 @@ void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit,
     b->gBullet[0].h = 5;
 
     //Window Icon
-    SDL_Surface* gWindowIcon = IMG_Load("resources/icon.png");
+    SDL_Surface* gWindowIcon = IMG_Load("resources/images/icon.png");
     SDL_SetWindowIcon(iSDL->win, gWindowIcon);
  
     //Music
