@@ -47,7 +47,7 @@ void sendData(int flag, int x_cord, int y_cord, char selectedIp[100], int player
 	}
 }
 
-void reciveData(char selectedIp[100], int kordinater[3]){
+void reciveData(char selectedIp[100], int kordinater[4]){
 	if (sd != NULL){
 		if (SDLNet_UDP_Recv(sd, p2)){
 			int flag, recivedID, a, b;
@@ -61,14 +61,18 @@ void reciveData(char selectedIp[100], int kordinater[3]){
 				kordinater[0] = recivedID;
 				kordinater[1] = a;
 				kordinater[2] = b;
+				kordinater[3] = flag;
 			}else if(flag == 1){
 				printf("Skott avfyrades av spelare: %d ", recivedID);
+				kordinater[0] = recivedID;
+				kordinater[3] = flag;
 			}		
 		}
 		else{
 			kordinater[0] = -1000;
 			kordinater[1] = -1000;
 			kordinater[2] = -1000;
+			kordinater[3] = -1000;
 		}
 	}
 	else{

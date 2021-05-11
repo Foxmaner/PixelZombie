@@ -20,6 +20,7 @@ Bullet createBullet(){
     b.bPosition.w = 15;
     b.bPosition.h = 5;
     b.shot = false;
+    b.shotPlayer = -1;
     b.lastShotTime = 0, b.currentShotTime = 0;
     b.bVelX = 1, b.bVelY = 1, b.bUpDown = 0;
 }
@@ -55,7 +56,7 @@ void initGame(){
     initAudio();
     ZombInit.nrOfZombies = 6;
     createAllZombies();
-    PlayerInit.nrOfPlayers = 1;
+    PlayerInit.nrOfPlayers = 4;
     createAllPlayers();
     createBullet();
     loadMedia(&iSDL, &backTiles, &ZombInit, &PlayerInit, &b, &StartInit);

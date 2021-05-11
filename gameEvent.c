@@ -12,7 +12,7 @@
 #include "server/udpClient.h"
 
 int lastDmgTakenTime = 0, currentDmgTakenTime = 0;
-int kordLista[3];
+int kordLista[4];
 int playerID=-1;
 int up_w,down_s,left_a,right_d,lctrl, select=2;
 
@@ -218,11 +218,11 @@ void playerCollisionWithMap(){
 }
 
 void bulletPositioning(int i){
-    if(!b.shot){
-        b.bPosition.x = PlayerInit.pPosition[playerID].x + 25;
-        b.bPosition.y = PlayerInit.pPosition[playerID].y + 20;
+    if(!b.shot){    
+        b.bPosition.x = PlayerInit.pPosition[0].x + 25;
+        b.bPosition.y = PlayerInit.pPosition[0].y + 20;
     }
-    else{
+    else{   
         if(!b.bVelY){
             b.bPosition.x += b.bVelX * 10;
             bulletCollisionWithZombieX(i);
@@ -283,10 +283,15 @@ int mainGameEvent(){
         playerID = reciveID("127.0.0.1");
     }
     reciveData("127.0.0.1", kordLista);
-    if(kordLista[1] != -1000){
+    if(kordLista[3] == 0){
         //printf("Satta kordinater %d %d \n", kordLista[0], kordLista[1]);
         PlayerInit.pPosition[kordLista[0]].x = kordLista[1];
         PlayerInit.pPosition[kordLista[0]].y = kordLista[2];
+    }else if(kordLista[3]==1){
+        
+        b.shot = true;
+        printf("Cool: %d",kordLista[0]);
+        b.shotPlayer = kordLista[0];
     }
     if (select==2) select=0;
     //receiveCoordData(&kordLista, &playerID);

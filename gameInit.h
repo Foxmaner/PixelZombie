@@ -22,6 +22,7 @@ struct Bullet{
     SDL_Rect gBullet[1];
     SDL_Rect bPosition;
     bool shot;
+    int shotPlayer;
     int lastShotTime , currentShotTime;
     int bVelX, bVelY, bUpDown;
 };typedef struct Bullet Bullet;
