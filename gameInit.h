@@ -28,6 +28,12 @@ struct Bullet{
 Bullet b;
 Bullet createBullet();
 
+struct isGameInitOrOver{
+    bool initedGame;
+    bool gameOver;
+};typedef struct isGameInitOrOver IGIO;
+IGIO GIO;
+
 void initSDL();
 void initWindow();
 void initRenderer(SDL_Window* pWin);

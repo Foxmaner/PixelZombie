@@ -7,6 +7,7 @@
 #include "gameInit.h"
 #include "gameEvent.h"
 #include "gameMedia.h"
+#include "gameRender.h"
 #include "zombie.h"
 #include "player.h"
 #include "server/udpClient.h"
@@ -15,6 +16,10 @@ int lastDmgTakenTime = 0, currentDmgTakenTime = 0;
 int kordLista[3];
 int playerID =- 1;
 int up_w, down_s, left_a, right_d, lctrl, select=2;
+
+void setSelect(int a){
+    select = a;
+}
 
 void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lctrl,SDL_Event event){
     if (event.key.keysym.sym == SDLK_w){
@@ -155,9 +160,15 @@ void zombieCollisionWithZombie(int i){
 void zombieCollisionWithPlayer(int i, int *currentDmgTakenTime,int *lastDmgTakenTime){
     if(z[i]->alive && checkZCollisionWithP(ZombInit.zPosition[i],PlayerInit.pPosition[playerID])){
         if(msTimer(currentDmgTakenTime, lastDmgTakenTime, 1000)){
-           //respawnPlayer(PlayerInit.p[playerID], &PlayerInit.pPosition[playerID], playerID);
-           playZombieAttack();
-           playPlayerHurt();
+            playZombieAttack();
+            playPlayerHurt();
+            //hurtPlayer(PlayerInit.hitPoint[playerID]);
+            if(--PlayerInit.hitPoint[playerID] == 0){
+                PlayerInit.hitPoint[playerID] = 3;
+                setMenuInitiaited(2);
+                setSelect(2);
+                GIO.gameOver = true;
+           }
         }
     }
 }
@@ -276,16 +287,20 @@ int mainGameEvent(){
         PlayerInit.pPosition[kordLista[0]].x = kordLista[1];
         PlayerInit.pPosition[kordLista[0]].y = kordLista[2];
     }
-    if (select == 2) select = 0;
+    if(select == 2) select = 0;
     //receiveCoordData(&kordLista, &playerID);
     SDL_Event event;
-    while (SDL_PollEvent(&event)){ 
-        if (event.type == SDL_QUIT){
+    while(SDL_PollEvent(&event)){ 
+        if(event.type == SDL_QUIT){
             close_requested = 1;
             return close_requested;
+        } 
+        if(SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT & select == 0)){
+            printf("Mouse Button 1 (left) is pressed.");
+            select = 1;
         }
-        if (select == 1){
-            if (event.type == SDL_KEYDOWN){
+        if(select == 1){
+            if(event.type == SDL_KEYDOWN){
                 sendData(0, PlayerInit.pPosition[playerID].x, PlayerInit.pPosition[playerID].y, "127.0.0.1", playerID);
                 pressedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
             }
@@ -293,19 +308,15 @@ int mainGameEvent(){
                 releasedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
             }
         }
-        if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT & select == 0)){
-            printf("Mouse Button 1 (left) is pressed.");
-            select = 1;
-        }
     }
-    playZombieBrain();
     if (select == 1){
-      for(int i = 0; i < ZombInit.nrOfZombies; i++){
-          zombieTrackingPlayer(i);
-          zombieCollisionWithZombie(i);
-          zombieCollisionWithPlayer(i, &currentDmgTakenTime, &lastDmgTakenTime);
-          zombieCollisionWithMap(i);
-          bulletPositioning(i);
+        playZombieBrain();
+        for(int i = 0; i < ZombInit.nrOfZombies; i++){
+            zombieTrackingPlayer(i);
+            zombieCollisionWithZombie(i);
+            zombieCollisionWithPlayer(i, &currentDmgTakenTime, &lastDmgTakenTime);
+            zombieCollisionWithMap(i);
+            bulletPositioning(i);
         }
         playerCollisionWithMap();
     }

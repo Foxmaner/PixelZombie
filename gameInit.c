@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
@@ -50,13 +51,17 @@ void initAudio(){
 }
 
 void initGame(){
-    initSDL();
-    initWindow();
-    initAudio();
+    if(!GIO.initedGame){
+        initSDL();
+        initWindow();
+        initAudio();
+    }
     ZombInit.nrOfZombies = 6;
     createAllZombies();
     PlayerInit.nrOfPlayers = 2;
     createAllPlayers();
     createBullet();
     loadMedia(&iSDL, &backTiles, &ZombInit, &PlayerInit, &b, &StartInit);
+    GIO.initedGame = true;
+    GIO.gameOver = false;
 }

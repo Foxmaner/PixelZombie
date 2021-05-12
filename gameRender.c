@@ -15,6 +15,10 @@
 
 int menuintiaited=2;
 
+void setMenuInitiaited(int a){
+    menuintiaited = a;
+}
+
 void SetRenderDrawColor(){
     SDL_SetRenderDrawColor(iSDL.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 }
@@ -65,14 +69,14 @@ void renderPreset(){
 
 
 void renderGame(){
-    if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT & menuintiaited==2)) {  
-            printf("Mouse Button 2 (left) is pressed.");
-            menuintiaited=0;
+    if(SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT & menuintiaited == 2)){
+        printf("Mouse Button 2 (left) is pressed.");
+        menuintiaited = 0;
     }
     SetRenderDrawColor();
     clearRenderer();
     renderMenu();
-    if (menuintiaited!=2){
+    if(menuintiaited != 2){
         SDL_PumpEvents();
         renderBackground(&iSDL, backTiles);
         renderAllZombies();
