@@ -55,6 +55,7 @@ void initGame(){
         initSDL();
         initWindow();
         initAudio();
+        GIO.initedGame = true;
     }
     ZombInit.nrOfZombies = 6;
     createAllZombies();
@@ -62,6 +63,7 @@ void initGame(){
     createAllPlayers();
     createBullet();
     loadMedia(&iSDL, &backTiles, &ZombInit, &PlayerInit, &b, &StartInit);
-    GIO.initedGame = true;
+    Mix_HaltMusic();
+    playBgMenuMusic();
     GIO.gameOver = false;
 }

@@ -3,6 +3,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h>
 
 #include "gameInit.h"
 #include "gameEvent.h"
@@ -274,7 +275,6 @@ void bulletCollisionWithZombieY(int i){
 }
 
 int mainGameEvent(){
-    playBgGameMusic();
     const Uint8 *state = SDL_GetKeyboardState(NULL);
     Uint32 SDL_GetMouseState(int *mouseX, int *mouseY);
     int close_requested = 0;
@@ -298,8 +298,10 @@ int mainGameEvent(){
         if(SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT & select == 0)){
             printf("Mouse Button 1 (left) is pressed.");
             select = 1;
+            Mix_HaltMusic();
         }
         if(select == 1){
+            playBgGameMusic();
             if(event.type == SDL_KEYDOWN){
                 sendData(0, PlayerInit.pPosition[playerID].x, PlayerInit.pPosition[playerID].y, "127.0.0.1", playerID);
                 pressedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
