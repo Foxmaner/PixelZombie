@@ -66,6 +66,10 @@ void reciveData(char selectedIp[100], int kordinater[4]){
 				printf("Skott avfyrades av spelare: %d ", recivedID);
 				kordinater[0] = recivedID;
 				kordinater[3] = flag;
+			}else if(flag == 2){
+				kordinater[0] = recivedID;
+				kordinater[1] = a;
+				kordinater[3] = flag;
 			}		
 		}
 		else{

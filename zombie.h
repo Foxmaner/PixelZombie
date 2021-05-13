@@ -41,7 +41,7 @@ int getZSpawnPointY(int a);
 void changeZFrameX(int frameA, int frameB, int i);
 void changeZFrameY(int frameA, int frameB, int i);
 bool checkZCollisionWithP(SDL_Rect zombie, SDL_Rect player);
-void killZombie(Zombie a);
+void killZombie(Zombie a, int i, int playerID);
 int msTimer(int *pCurrentTime, int *pLastRecordedTime, int ms);
 
 #endif /* Zombie_h */
