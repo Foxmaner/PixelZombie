@@ -15,6 +15,14 @@
 #define WINDOW_WIDTH (1024)
 #define WINDOW_HEIGHT (1024)
 
+GameTimer initTime(){
+    timer.second = 0;
+    timer.minute = 0;
+    timer.hour = 0;
+    timer.now = 0;
+    timer.before = 0;
+}
+
 Bullet createBullet(){
     b.bPosition.x = 100;
     b.bPosition.y = 100;
@@ -59,6 +67,25 @@ void initAudio(){
         printf("Error: %s", Mix_GetError());
 }
 
+void startGameTimer(){
+    if(msTimer(&timer.now, &timer.before, 1000)){
+        timer.second++;
+        if(timer.second == 60){
+            timer.second = 0;
+            timer.minute += 1;
+        }
+        if(timer.minute == 60){
+            timer.minute = 0;
+            timer.hour += 1;
+        }
+        if(timer.hour == 24){
+            timer.second = 0;
+            timer.minute = 0;
+            timer.hour = 0;
+        }
+    }
+}
+
 void initGame(){
     if(!GIO.initedGame){
         initSDL();
@@ -66,6 +93,7 @@ void initGame(){
         initAudio();
         GIO.initedGame = true;
     }
+    initTime();
     createHeart();
     ZombInit.nrOfZombies = 6;
     createAllZombies();

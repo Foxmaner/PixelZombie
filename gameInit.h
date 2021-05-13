@@ -11,6 +11,15 @@ struct InitSDL{
 };typedef struct InitSDL InitSDL;
 InitSDL iSDL;
 
+struct GameTimer{
+    int second;
+    int minute;
+    int hour;
+    int now;
+    int before;
+};typedef struct GameTimer GameTimer;
+GameTimer timer;
+
 struct Background_Tiles{
     SDL_Texture *mTiles;
     SDL_Rect gTiles[32];
@@ -42,10 +51,12 @@ struct isGameInitOrOver{
 };typedef struct isGameInitOrOver IGIO;
 IGIO GIO;
 
+GameTimer initTime();
 void initSDL();
 void initWindow();
 void initRenderer(SDL_Window* pWin);
 void initAudio();
+void startGameTimer();
 void initGame();
 
 #endif

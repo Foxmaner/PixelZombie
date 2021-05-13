@@ -211,6 +211,7 @@ void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit,
     SDL_Surface* gWindowIcon = IMG_Load("resources/images/icon.png");
     SDL_SetWindowIcon(iSDL->win, gWindowIcon);
 
+    //Heads up display(HUD)
     //Heart for health bar
     SDL_Surface* gHeartSurface = IMG_Load("resources/images/heart.png");
     h->mHeart = SDL_CreateTextureFromSurface(iSDL->renderer, gHeartSurface);
