@@ -5,6 +5,7 @@
 #include <math.h>
 
 void setSelect(int a);
+int getPlayerID();
 void receiveCoordData(int *kordLista[], int *playerID);
 void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lctrl,SDL_Event event);
 void releasedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lctrl, SDL_Event event);

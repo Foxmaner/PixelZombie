@@ -23,7 +23,7 @@ Mix_Chunk *sfxZombieDie;
 Mix_Chunk *sfxZombieAttack;
 Mix_Chunk *sfxZombieBrain;
 
-void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit, Player_Init* PlayerInit, Bullet* b,  Start_Init* StartInit){
+void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit, Player_Init* PlayerInit, Bullet* b, Heart* h, Start_Init* StartInit){
     //Startbutton
     SDL_Surface* gButtonsurface = IMG_Load("resources/images/startbutton.png");
     StartInit->mstartbutton = SDL_CreateTextureFromSurface(iSDL->renderer, gButtonsurface);
@@ -210,7 +210,15 @@ void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit,
     //Window Icon
     SDL_Surface* gWindowIcon = IMG_Load("resources/images/icon.png");
     SDL_SetWindowIcon(iSDL->win, gWindowIcon);
- 
+
+    //Heart for health bar
+    SDL_Surface* gHeartSurface = IMG_Load("resources/images/heart.png");
+    h->mHeart = SDL_CreateTextureFromSurface(iSDL->renderer, gHeartSurface);
+    h->gHeart[0].x = 0;
+    h->gHeart[0].y = 0;
+    h->gHeart[0].w = 50;
+    h->gHeart[0].h = 50;
+
     //Music
     //Background Music
     bgGameMusic = Mix_LoadMUS("resources/music/bgGameMusic.mp3");

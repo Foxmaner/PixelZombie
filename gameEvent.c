@@ -22,6 +22,10 @@ void setSelect(int a){
     select = a;
 }
 
+int getPlayerID(){
+    return playerID;
+}
+
 void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lctrl,SDL_Event event){
     if (event.key.keysym.sym == SDLK_w){
         *up_w = 1;

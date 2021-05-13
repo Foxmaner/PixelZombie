@@ -25,6 +25,15 @@ Bullet createBullet(){
     b.bVelX = 1, b.bVelY = 1, b.bUpDown = 0;
 }
 
+Heart createHeart(){
+    for(int i = 0; i < 3; i++){
+        h.hPosition[i].x = 432 + (i * 55);
+        h.hPosition[i].y = 5;
+        h.hPosition[i].w = 50;
+        h.hPosition[i].h = 50;
+    }
+}
+
 void initSDL(){
     if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER|SDL_INIT_AUDIO) != 0){
         printf("error initializing SDL: %s\n", SDL_GetError());
@@ -57,12 +66,13 @@ void initGame(){
         initAudio();
         GIO.initedGame = true;
     }
+    createHeart();
     ZombInit.nrOfZombies = 6;
     createAllZombies();
     PlayerInit.nrOfPlayers = 2;
     createAllPlayers();
     createBullet();
-    loadMedia(&iSDL, &backTiles, &ZombInit, &PlayerInit, &b, &StartInit);
+    loadMedia(&iSDL, &backTiles, &ZombInit, &PlayerInit, &b, &h, &StartInit);
     Mix_HaltMusic();
     playBgMenuMusic();
     GIO.gameOver = false;

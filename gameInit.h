@@ -28,6 +28,14 @@ struct Bullet{
 Bullet b;
 Bullet createBullet();
 
+struct Heart{
+    SDL_Texture *mHeart;
+    SDL_Rect gHeart[1];
+    SDL_Rect hPosition[3];
+};typedef struct Heart Heart;
+Heart h;
+Heart createHeart();
+
 struct isGameInitOrOver{
     bool initedGame;
     bool gameOver;

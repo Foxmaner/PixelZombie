@@ -47,6 +47,12 @@ void renderBackground(InitSDL* iSDL, Background_Tiles backTiles){
     }
 }
 
+void renderHealthBar(){
+    for(int i = 0; i < PlayerInit.hitPoint[getPlayerID()]; i++){
+        SDL_RenderCopy(iSDL.renderer, h.mHeart, &h.gHeart[0], &h.hPosition[i]);
+    }
+}
+
 void renderAllPlayers(){
     for(int i = 0; i < PlayerInit.nrOfPlayers; i++)
         SDL_RenderCopyEx(iSDL.renderer, PlayerInit.mPlayer, &PlayerInit.gPlayer[PlayerInit.pFrame[i]], &PlayerInit.pPosition[i], 0, NULL, PlayerInit.flip[i]);
@@ -79,6 +85,7 @@ void renderGame(){
     if(menuintiaited != 2){
         SDL_PumpEvents();
         renderBackground(&iSDL, backTiles);
+        renderHealthBar();
         renderAllZombies();
         renderBullet();
         renderAllPlayers();
