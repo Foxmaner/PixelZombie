@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_image.h>
@@ -11,14 +12,29 @@
 #include "gameRender.h"
 #include "zombie.h"
 #include "player.h"
+#include "gameRender.h"
 #include "server/udpClient.h"
 
 int lastDmgTakenTime = 0, currentDmgTakenTime = 0;
 
 int kordLista[4];
 int playerID=-1;
-int up_w,down_s,left_a,right_d,lctrl, select=2;
+int up_w,down_s,left_a,right_d,lctrl, select=2, IPletter=0;
+char Bufstring[12]="\0";
 
+
+int checkmousestate(int *lowX,int *highX,int *lowY,int *highY){
+    int MouseX, MouseY;
+        if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT))
+    {
+        SDL_GetMouseState(&MouseX, &MouseY);
+    }
+
+    if (*lowX<MouseX && MouseX<*highX && *lowY<MouseY && MouseY<*highY){
+        return 1;
+    }
+    //printf("MouseX: %d MouseY: %d\n ",MouseX, MouseY);
+}
 
 void setSelect(int a){
     select = a;
@@ -283,11 +299,18 @@ void bulletCollisionWithZombieY(int i){
 }
 
 int mainGameEvent(){
+    int LetterforIP;
+    if (LetterforIP>12){LetterforIP=0;}
+    char bufIPaddress[12];
+    strcpy(Bufstring,bufIPaddress);
     const Uint8 *state = SDL_GetKeyboardState(NULL);
-    Uint32 SDL_GetMouseState(int *mouseX, int *mouseY);
     int close_requested = 0;
+    int buttonPos[4]={40,155,80,125};
     if(playerID == -1){
         playerID = reciveID("127.0.0.1");
+    }
+    if (select!=1){
+        select=checkmousestate(&buttonPos[0],&buttonPos[1],&buttonPos[2],&buttonPos[3]);
     }
     reciveData("127.0.0.1", kordLista);
     if(kordLista[3] == 0){
@@ -315,7 +338,6 @@ int mainGameEvent(){
     else if(kordLista[3]==2){
         z[kordLista[1]]->alive = 0;
     }
-    if(select == 2) select = 0;
     //receiveCoordData(&kordLista, &playerID);
     SDL_Event event;
     while(SDL_PollEvent(&event)){ 
@@ -333,6 +355,7 @@ int mainGameEvent(){
             if(event.type == SDL_KEYDOWN){
                 sendData(0, PlayerInit.pPosition[playerID].x, PlayerInit.pPosition[playerID].y, "127.0.0.1", playerID);
                 pressedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
+                MenuKeyboard(event, bufIPaddress, &LetterforIP);
             }
             if(event.type == SDL_KEYUP){
                 releasedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
@@ -353,4 +376,60 @@ int mainGameEvent(){
         playerCollisionWithMap();
     }
 }
- 
+
+int MenuKeyboard(SDL_Event event,char buf[],int *LetterforIP){
+
+    if (event.key.keysym.sym==SDLK_0)
+    {
+        buf[*LetterforIP]='0';
+    }
+    if (event.key.keysym.sym==SDLK_1)
+    {
+        buf[*LetterforIP]='1'; 
+
+    }
+    if (event.key.keysym.sym==SDLK_2)
+    {
+        buf[*LetterforIP]='2';
+    }
+    if (event.key.keysym.sym==SDLK_3)
+    {
+        buf[*LetterforIP]='3';
+    }
+    if (event.key.keysym.sym==SDLK_4)
+    {
+        buf[*LetterforIP]='4';
+    }
+    if (event.key.keysym.sym==SDLK_5)
+    {
+        buf[*LetterforIP]='5';
+    }
+    if (event.key.keysym.sym==SDLK_6)
+    {
+        buf[*LetterforIP]='6';
+    }
+    if (event.key.keysym.sym==SDLK_7)
+    {
+        buf[*LetterforIP]='7';
+    }
+
+    if (event.key.keysym.sym==SDLK_8)
+    {
+        buf[*LetterforIP]='8';
+    }
+    if (event.key.keysym.sym==SDLK_9)
+    {
+        buf[*LetterforIP]='9';
+    }
+    if (event.key.keysym.sym==SDLK_PERIOD)
+    {
+      buf[*LetterforIP]='.';
+    }
+    (*LetterforIP)++;
+    buf[*LetterforIP]='\0';
+}
+
+void GetString( char* strOut, unsigned int strSize )
+{
+   strncpy( strOut, Bufstring, strSize );
+}

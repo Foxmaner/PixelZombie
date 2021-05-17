@@ -1,9 +1,11 @@
-pixelzombie: main.o menu.o map.o zombie.o player.o udpClient.o gameInit.o gameEvent.o gameRender.o gameMedia.o 
-	gcc -o pixelzombie main.o menu.o map.o zombie.o player.o udpClient.o gameInit.o gameEvent.o gameRender.o gameMedia.o -lSDL2 -lSDL2_image -lSDL2_net -lSDL2_mixer
+pixelzombie: main.o menu.o ttf.o map.o zombie.o player.o udpClient.o gameInit.o gameEvent.o gameRender.o gameMedia.o 
+	gcc -o pixelzombie main.o ttf.o menu.o map.o zombie.o player.o udpClient.o gameInit.o gameEvent.o gameRender.o gameMedia.o -lSDL2 -lSDL2_image -lSDL2_net -lSDL2_mixer -lSDL2_ttf 
 main.o: main.c
 	gcc -c main.c
 menu.o: menu.c
 	gcc -c menu.c
+ttf.o: ttf.c 
+	gcc -c ttf.c
 map.o: map.c
 	gcc -c map.c
 zombie.o: zombie.c
