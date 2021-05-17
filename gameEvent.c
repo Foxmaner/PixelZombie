@@ -10,12 +10,15 @@
 #include "gameMedia.h"
 #include "zombie.h"
 #include "player.h"
+#include "gameRender.h"
 #include "server/udpClient.h"
 
 int lastDmgTakenTime = 0, currentDmgTakenTime = 0;
 int kordLista[3];
 int playerID=-1;
 int up_w,down_s,left_a,right_d,lctrl, select=2, IPletter=0;
+char Bufstring[12]="\0";
+
 
 int checkmousestate(int *lowX,int *highX,int *lowY,int *highY){
     int MouseX, MouseY;
@@ -291,6 +294,10 @@ void bulletCollisionWithZombieY(int i){
 }
 
 int mainGameEvent(){
+    int LetterforIP;
+    if (LetterforIP>12){LetterforIP=0;}
+    char bufIPaddress[12];
+    strcpy(Bufstring,bufIPaddress);
     const Uint8 *state = SDL_GetKeyboardState(NULL);
     int close_requested = 0;
     int buttonPos[4]={40,155,80,125};
@@ -313,12 +320,11 @@ int mainGameEvent(){
             close_requested = 1;
             return close_requested;
         }
-
         //if (select==1){
             if (event.type== SDL_KEYDOWN){
                 sendData(0, PlayerInit.pPosition[playerID].x, PlayerInit.pPosition[playerID].y, "127.0.0.1", playerID);
                 pressedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
-                MenuKeyboard(event);
+                MenuKeyboard(event, bufIPaddress, &LetterforIP);
             }
             if(event.type== SDL_KEYUP){
                 releasedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
@@ -338,53 +344,59 @@ int mainGameEvent(){
     }
 }
 
-int MenuKeyboard(SDL_Event event){
+int MenuKeyboard(SDL_Event event,char buf[],int *LetterforIP){
 
     if (event.key.keysym.sym==SDLK_0)
     {
-        //code[i]='0';
+        buf[*LetterforIP]='0';
     }
     if (event.key.keysym.sym==SDLK_1)
     {
-        //code[i]='1';
+        buf[*LetterforIP]='1'; 
+
     }
     if (event.key.keysym.sym==SDLK_2)
     {
-        //code[i]='2';
+        buf[*LetterforIP]='2';
     }
     if (event.key.keysym.sym==SDLK_3)
     {
-        //code[i]='3';
+        buf[*LetterforIP]='3';
     }
-
     if (event.key.keysym.sym==SDLK_4)
     {
-        //code[i]='4';
+        buf[*LetterforIP]='4';
     }
     if (event.key.keysym.sym==SDLK_5)
     {
-        //code[i]='5';
+        buf[*LetterforIP]='5';
     }
     if (event.key.keysym.sym==SDLK_6)
     {
-        //code[i]='6';
+        buf[*LetterforIP]='6';
     }
     if (event.key.keysym.sym==SDLK_7)
     {
-         //code[i]='7';
+        buf[*LetterforIP]='7';
     }
 
     if (event.key.keysym.sym==SDLK_8)
     {
-        //code[i]='8';
+        buf[*LetterforIP]='8';
     }
     if (event.key.keysym.sym==SDLK_9)
     {
-        //code[i]='9';
+        buf[*LetterforIP]='9';
     }
     if (event.key.keysym.sym==SDLK_PERIOD)
     {
-      //code[i]='.';
+      buf[*LetterforIP]='.';
     }
-       
+    (*LetterforIP)++;
+    buf[*LetterforIP]='\0';
+}
+
+void GetString( char* strOut, unsigned int strSize )
+{
+   strncpy( strOut, Bufstring, strSize );
 }

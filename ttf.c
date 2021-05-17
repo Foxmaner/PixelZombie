@@ -10,14 +10,14 @@
 #define PUBLIC /* empty */
 #define PRIVATE static
 
-PUBLIC Textbox createTextBox( int x, int y, int size,char text[]){
-    textbox->posY = y;
-    textbox->posX = x;
-    strcpy(textbox->Text,text);
-    SDL_Color textColor = {255, 255, 255, 0};
+/*PUBLIC Textbox createTextBox( int x, int y, int size,char text[]){
+    textboxInit->posY = y;
+    textboxInit->posX = x;
+    strcpy(textboxInit->Text,text);
+    SDL_Color textColor = {0, 0, 0, 0};
     
-    return textbox;
-}
+    return textboxInit;
+}*/
 
 PUBLIC void get_text_and_rect(SDL_Renderer *renderer, int x, int y, char *text, TTF_Font *font, SDL_Texture **texture, SDL_Rect *rect) {
     int text_width;

@@ -16,7 +16,9 @@ void bulletPositioning(int i);
 void bulletCollisionWithZombieX(int i);
 void bulletCollisionWithZombieY(int i);
 int checkmousestate(int *lowX,int *highX,int *lowY,int *highY);
-int MenuKeyboard(SDL_Event event);
+int MenuKeyboard(SDL_Event event, char buf[], int *LetterforIP);
+void GetString( char* strOut, unsigned int strSize );
+
 
 int mainGameEvent();
 
