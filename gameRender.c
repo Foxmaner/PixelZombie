@@ -20,8 +20,8 @@ int lobby=2;
 int credits=2;
 int back=2;
 
-void setMenuInitiaited(int a){
-    menuintiaited = a;
+void setStartRender(int a){
+    startrender = a;
 }
 
 void SetRenderDrawColor(){

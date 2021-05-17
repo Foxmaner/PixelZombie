@@ -190,7 +190,7 @@ void zombieCollisionWithPlayer(int i, int *currentDmgTakenTime,int *lastDmgTaken
             //hurtPlayer(PlayerInit.hitPoint[playerID]);
             if(--PlayerInit.hitPoint[playerID] == 0){
                 PlayerInit.hitPoint[playerID] = 3;
-                setMenuInitiaited(2);
+                setStartRender(2);
                 setSelect(2);
                 GIO.gameOver = true;
            }
