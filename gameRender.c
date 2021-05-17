@@ -15,6 +15,10 @@
 
 int menuintiaited=2;
 
+void setMenuInitiaited(int a){
+    menuintiaited = a;
+}
+
 void SetRenderDrawColor(){
     SDL_SetRenderDrawColor(iSDL.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 }
@@ -43,6 +47,12 @@ void renderBackground(InitSDL* iSDL, Background_Tiles backTiles){
     }
 }
 
+void renderHealthBar(){
+    for(int i = 0; i < PlayerInit.hitPoint[getPlayerID()]; i++){
+        SDL_RenderCopy(iSDL.renderer, h.mHeart, &h.gHeart[0], &h.hPosition[i]);
+    }
+}
+
 void renderAllPlayers(){
     for(int i = 0; i < PlayerInit.nrOfPlayers; i++)
         SDL_RenderCopyEx(iSDL.renderer, PlayerInit.mPlayer, &PlayerInit.gPlayer[PlayerInit.pFrame[i]], &PlayerInit.pPosition[i], 0, NULL, PlayerInit.flip[i]);
@@ -65,20 +75,21 @@ void renderPreset(){
 
 
 void renderGame(){
-    if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT & menuintiaited==2)) {  
-            printf("Mouse Button 2 (left) is pressed.");
-            menuintiaited=0;
+    if(SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT & menuintiaited == 2)){
+        printf("Mouse Button 2 (left) is pressed.");
+        menuintiaited = 0;
     }
     SetRenderDrawColor();
     clearRenderer();
     renderMenu();
-    if (menuintiaited!=2){
-      SDL_PumpEvents();
-      renderBackground(&iSDL, backTiles);
-      renderAllZombies();
-      renderBullet();
+    if(menuintiaited != 2){
+        SDL_PumpEvents();
+        renderBackground(&iSDL, backTiles);
+        renderHealthBar();
+        renderAllZombies();
+        renderBullet();
+        renderAllPlayers();
     }
-    renderAllPlayers();
     renderPreset();
     SDL_Delay(1000/60);
 }

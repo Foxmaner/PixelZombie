@@ -15,11 +15,13 @@
 
 int WinMain(void){
     srand(time(NULL));
-    int close=0;
-    initGame();
+    int close = 0;
+    GIO.initedGame = false;
+    GIO.gameOver = true;
     do{
-    close = mainGameEvent();
-    renderGame();
+        if(GIO.gameOver) initGame();
+        close = mainGameEvent();
+        renderGame();
     }while(close != 1);
 
     SDL_Quit();
