@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
@@ -14,6 +15,14 @@
 #define WINDOW_WIDTH (1024)
 #define WINDOW_HEIGHT (1024)
 
+GameTimer initTime(){
+    timer.second = 0;
+    timer.minute = 0;
+    timer.hour = 0;
+    timer.now = 0;
+    timer.before = 0;
+}
+
 Bullet createBullet(){
     b.bPosition.x = 100;
     b.bPosition.y = 100;
@@ -22,6 +31,15 @@ Bullet createBullet(){
     b.shot = false;
     b.lastShotTime = 0, b.currentShotTime = 0;
     b.bVelX = 1, b.bVelY = 1, b.bUpDown = 0;
+}
+
+Heart createHeart(){
+    for(int i = 0; i < 3; i++){
+        h.hPosition[i].x = 432 + (i * 55);
+        h.hPosition[i].y = 5;
+        h.hPosition[i].w = 50;
+        h.hPosition[i].h = 50;
+    }
 }
 
 void initSDL(){
@@ -49,15 +67,41 @@ void initAudio(){
         printf("Error: %s", Mix_GetError());
 }
 
+void startGameTimer(){
+    if(msTimer(&timer.now, &timer.before, 1000)){
+        timer.second++;
+        if(timer.second == 60){
+            timer.second = 0;
+            timer.minute += 1;
+        }
+        if(timer.minute == 60){
+            timer.minute = 0;
+            timer.hour += 1;
+        }
+        if(timer.hour == 24){
+            timer.second = 0;
+            timer.minute = 0;
+            timer.hour = 0;
+        }
+    }
+}
+
 void initGame(){
-    initSDL();
-    initWindow();
-    initAudio();
+    if(!GIO.initedGame){
+        initSDL();
+        initWindow();
+        initAudio();
+        GIO.initedGame = true;
+    }
+    initTime();
+    createHeart();
     ZombInit.nrOfZombies = 6;
     createAllZombies();
-    PlayerInit.nrOfPlayers = 1;
+    PlayerInit.nrOfPlayers = 2;
     createAllPlayers();
     createBullet();
-    loadMedia(&iSDL, &backTiles, &ZombInit, &PlayerInit, &b, &StartInit);
-    playBgMusic();
+    loadMedia(&iSDL, &backTiles, &ZombInit, &PlayerInit, &b, &h, &StartInit);
+    Mix_HaltMusic();
+    playBgMenuMusic();
+    GIO.gameOver = false;
 }

@@ -1,103 +1,131 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h>
 
 #include "gameInit.h"
 #include "gameEvent.h"
 #include "gameMedia.h"
+#include "gameRender.h"
 #include "zombie.h"
 #include "player.h"
+#include "gameRender.h"
 #include "server/udpClient.h"
 
 int lastDmgTakenTime = 0, currentDmgTakenTime = 0;
-int kordLista[3];
+
+int kordLista[4];
 int playerID=-1;
-int up_w,down_s,left_a,right_d,lctrl, select=2;
+int up_w,down_s,left_a,right_d,lctrl, select=2, IPletter=0;
+char Bufstring[12]="\0";
+
+
+int checkmousestate(int *lowX,int *highX,int *lowY,int *highY){
+    int MouseX, MouseY;
+    if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)){
+        SDL_GetMouseState(&MouseX, &MouseY);
+    }
+
+    if (*lowX<MouseX && MouseX<*highX && *lowY<MouseY && MouseY<*highY){
+        return 1;
+    }
+    //printf("MouseX: %d MouseY: %d\n ",MouseX, MouseY);
+}
+
+void setSelect(int a){
+    select = a;
+}
+
+int getPlayerID(){
+    return playerID;
+}
 
 void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lctrl,SDL_Event event){
-
-    if (*up_w==1){
+    if (event.key.keysym.sym == SDLK_w){
+        *up_w = 1;
+    }
+    if (event.key.keysym.sym == SDLK_s){
+        *down_s = 1;
+    } 
+    if(event.key.keysym.sym == SDLK_a){
+        *left_a = 1;
+    }
+    if(event.key.keysym.sym == SDLK_d){
+        *right_d = 1;
+    }
+    if(event.key.keysym.sym == SDLK_LCTRL){
+        if(msTimer(&b.currentShotTime, &b.lastShotTime, 500)){  //13 rps
+            b.shot = true;
+            playPistolShot();
+            sendData(1, 0,  0, "127.0.0.1", playerID);
+        }
+    }
+    if(*up_w == 1){
         PlayerInit.pPosition[playerID].y -= 6;
         b.bVelY = -1;
         b.bVelX = 0;
         b.bUpDown = 90;
-        if (PlayerInit.pFrame[playerID]!=9 && PlayerInit.pFrame[playerID]>=10) PlayerInit.pFrame[playerID]=9;
+        if (PlayerInit.pFrame[playerID] != 9 && PlayerInit.pFrame[playerID] >= 10) PlayerInit.pFrame[playerID] = 9;
         else PlayerInit.pFrame[playerID]++;
-        }
-        if (*down_s==1){
-            PlayerInit.pPosition[playerID].y += 6;
-            b.bVelY = 1;
-            b.bVelX = 0;
-            b.bUpDown = 90;
-            if (PlayerInit.pFrame[playerID]!=12 && PlayerInit.pFrame[playerID]>=13) PlayerInit.pFrame[playerID]=12;
-            else PlayerInit.pFrame[playerID]++;
-        }
-        if(*left_a==1){
-            PlayerInit.pPosition[playerID].x -= 6;
-            b.bVelX = -1;
-            b.bVelY = 0;
-            b.bUpDown = 0;
-            PlayerInit.flip[playerID] = SDL_FLIP_NONE;
-            if (PlayerInit.pFrame[playerID]>=8) PlayerInit.pFrame[playerID]=1;
-            else PlayerInit.pFrame[playerID]++;
-        }
-        if (*right_d==1){
-            PlayerInit.pPosition[playerID].x += 6;
-            b.bVelX = 1;
-            b.bVelY = 0;
-            b.bUpDown = 0;
-            PlayerInit.flip[playerID] = SDL_FLIP_HORIZONTAL;
-            if (PlayerInit.pFrame[playerID]>=8) PlayerInit.pFrame[playerID]=1;
-            else PlayerInit.pFrame[playerID]++;
-        }
-        if (event.key.keysym.sym==SDLK_w){
-            *up_w=1;
-        }
-        if (event.key.keysym.sym==SDLK_s){
-            *down_s=1;
-        } 
-        if(event.key.keysym.sym==SDLK_a){
-            *left_a=1;
-        }
-        if(event.key.keysym.sym==SDLK_d){
-            *right_d=1;
-        }
-        if(event.key.keysym.sym==SDLK_LCTRL){
-            if(msTimer(&b.currentShotTime, &b.lastShotTime, 500)){  //13 rps
-                b.shot = true;
-                playPistolShot();
-                sendData(1, 0,  0, "127.0.0.1", playerID);
-            }
+    }
+    if(*down_s == 1){
+        PlayerInit.pPosition[playerID].y += 6;
+        b.bVelY = 1;
+        b.bVelX = 0;
+        b.bUpDown = 90;
+        if (PlayerInit.pFrame[playerID] != 12 && PlayerInit.pFrame[playerID] >= 13) PlayerInit.pFrame[playerID] = 12;
+        else PlayerInit.pFrame[playerID]++;
+    }
+    if(*left_a == 1){
+        PlayerInit.pPosition[playerID].x -= 6;
+        b.bVelX = -1;
+        b.bVelY = 0;
+        b.bUpDown = 0;
+        PlayerInit.flip[playerID] = SDL_FLIP_NONE;
+        if (PlayerInit.pFrame[playerID] >= 8) PlayerInit.pFrame[playerID] = 1;
+        else PlayerInit.pFrame[playerID]++;
+    }
+    if(*right_d == 1){
+        PlayerInit.pPosition[playerID].x += 6;
+        b.bVelX = 1;
+        b.bVelY = 0;
+        b.bUpDown = 0;
+        PlayerInit.flip[playerID] = SDL_FLIP_HORIZONTAL;
+        if (PlayerInit.pFrame[playerID] >= 8) PlayerInit.pFrame[playerID] = 1;
+        else PlayerInit.pFrame[playerID]++;
     }
 }
 
 void releasedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lctrl, SDL_Event event){
-    if(event.key.keysym.sym==SDLK_w){
-        *up_w=0;
-        PlayerInit.pFrame[playerID]=11;
+    if(event.key.keysym.sym == SDLK_w){
+        *up_w = 0;
+        PlayerInit.pFrame[playerID] = 11;
     }
-    if(event.key.keysym.sym==SDLK_s){
-        *down_s=0;
-        PlayerInit.pFrame[playerID]=14;
+    if(event.key.keysym.sym == SDLK_s){
+        *down_s = 0;
+        PlayerInit.pFrame[playerID] = 14;
     }
-    if(event.key.keysym.sym==SDLK_a){
-        *left_a=0;
-        PlayerInit.pFrame[playerID]=0;
+    if(event.key.keysym.sym == SDLK_a){
+        *left_a = 0;
+        PlayerInit.pFrame[playerID] = 0;
     }
-    if(event.key.keysym.sym==SDLK_d){
-        *right_d=0;
-        PlayerInit.pFrame[playerID]=0;
+    if(event.key.keysym.sym == SDLK_d){
+        *right_d = 0;
+        PlayerInit.pFrame[playerID] = 0;
     }
+
     if(event.key.keysym.sym==SDLK_LCTRL){
         lctrl=0;
+        PlayerInit.pFrame[playerID]=15;
     }
 }
 
-double distance( int x1, int y1, int x2, int y2 ){
+double distance(int x1, int y1, int x2, int y2){
     //Return the distance between the two points
-    return sqrt( pow( x2 - x1, 2 ) + pow( y2 - y1, 2 ) );
+    return sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2));
 }
 
 int closestPlayerToZombie(int zombieNr){
@@ -105,10 +133,10 @@ int closestPlayerToZombie(int zombieNr){
     double closestPlayerIdDistance;
     double distancePlayer;
     for (int i = 0; i < PlayerInit.nrOfPlayers; i++){
-        closestPlayerIdDistance=distance(PlayerInit.pPosition[closestPlayerId].x, PlayerInit.pPosition[closestPlayerId].y, ZombInit.zPosition[zombieNr].x, ZombInit.zPosition[zombieNr].y);
-        distancePlayer=distance(PlayerInit.pPosition[i].x, PlayerInit.pPosition[i].y, ZombInit.zPosition[zombieNr].x, ZombInit.zPosition[zombieNr].y);
-        if(closestPlayerIdDistance>distancePlayer){
-            closestPlayerId=i;
+        closestPlayerIdDistance = distance(PlayerInit.pPosition[closestPlayerId].x, PlayerInit.pPosition[closestPlayerId].y, ZombInit.zPosition[zombieNr].x, ZombInit.zPosition[zombieNr].y);
+        distancePlayer = distance(PlayerInit.pPosition[i].x, PlayerInit.pPosition[i].y, ZombInit.zPosition[zombieNr].x, ZombInit.zPosition[zombieNr].y);
+        if(closestPlayerIdDistance > distancePlayer){
+            closestPlayerId = i;
         };
     }
     return closestPlayerId;
@@ -142,35 +170,29 @@ void zombieTrackingPlayer(int i){
 
 void zombieCollisionWithZombie(int i){
     for(int j = 0; j < ZombInit.nrOfZombies; j++){
-        if(j==i){
+        if(!z[i]->alive || j == i){
             break;
         }
-        else if((ZombInit.zPosition[i].x - ZombInit.zPosition[j].x) <= 19 && (ZombInit.zPosition[i].x - ZombInit.zPosition[j].x) >=0){
-            ZombInit.zPosition[j].x -= 1;
-        }
-        else if((ZombInit.zPosition[i].x - ZombInit.zPosition[j].x) >= -19 && (ZombInit.zPosition[i].x - ZombInit.zPosition[j].x) <=0){
-            ZombInit.zPosition[i].x -=1;
-        }
-    }
-    for(int j = 0; j < ZombInit.nrOfZombies; j++){
-        if(j==i){
-            break;
-        }
-        else if((ZombInit.zPosition[i].y - ZombInit.zPosition[j].y) <= 27 && (ZombInit.zPosition[i].y - ZombInit.zPosition[j].y) >= 0){
-            ZombInit.zPosition[j].y -= 1;
-        }
-        else if((ZombInit.zPosition[i].y - ZombInit.zPosition[j].y) >= -27 && (ZombInit.zPosition[i].y - ZombInit.zPosition[j].y) <= 0){
-            ZombInit.zPosition[i].y -=1;
-        }
+        else 
+            if(checkZCollisionWithZ(ZombInit.zPosition[i], ZombInit.zPosition[j])){
+                ZombInit.zPosition[i].x += 2;
+                ZombInit.zPosition[i].y += 2;
+            }
     }
 }
 
 void zombieCollisionWithPlayer(int i, int *currentDmgTakenTime,int *lastDmgTakenTime){
     if(z[i]->alive && checkZCollisionWithP(ZombInit.zPosition[i],PlayerInit.pPosition[playerID])){
         if(msTimer(currentDmgTakenTime, lastDmgTakenTime, 1000)){
-           //respawnPlayer(PlayerInit.p[playerID], &PlayerInit.pPosition[playerID], playerID);
-           playZombieAttack();
-           playPlayerHurt();
+            playZombieAttack();
+            playPlayerHurt();
+            //hurtPlayer(PlayerInit.hitPoint[playerID]);
+            if(--PlayerInit.hitPoint[playerID] == 0){
+                PlayerInit.hitPoint[playerID] = 3;
+                setStartRender(2);
+                setSelect(2);
+                GIO.gameOver = true;
+           }
         }
     }
 }
@@ -218,11 +240,11 @@ void playerCollisionWithMap(){
 }
 
 void bulletPositioning(int i){
-    if(!b.shot){
+    if(!b.shot){    
         b.bPosition.x = PlayerInit.pPosition[playerID].x + 25;
         b.bPosition.y = PlayerInit.pPosition[playerID].y + 20;
     }
-    else{
+    else{   
         if(!b.bVelY){
             b.bPosition.x += b.bVelX * 10;
             bulletCollisionWithZombieX(i);
@@ -241,7 +263,7 @@ void bulletCollisionWithZombieX(int i){
     //RIGHT
     if((z[i]->alive) && (b.bVelX == 1) && (b.bPosition.y >= ZombInit.zPosition[i].y) && (b.bPosition.y <= (ZombInit.zPosition[i].y + ZombInit.gZombie->h) && (PlayerInit.pPosition[playerID].x + 25 < ZombInit.zPosition[i].x))){
         if(msTimer(&b.currentShotTime, &b.lastShotTime, 50)){
-            killZombie(z[i]);
+            killZombie(z[i], i, playerID);
             playZombieDie();
             b.shot = false;
         }
@@ -249,7 +271,7 @@ void bulletCollisionWithZombieX(int i){
     //LEFT
     if((z[i]->alive) && (b.bVelX == -1) && (b.bPosition.y >= ZombInit.zPosition[i].y) && (b.bPosition.y <= (ZombInit.zPosition[i].y + ZombInit.gZombie->h) && (PlayerInit.pPosition[playerID].x + 25 > ZombInit.zPosition[i].x))){
         if(msTimer(&b.currentShotTime, &b.lastShotTime, 50)){
-            killZombie(z[i]);
+            killZombie(z[i], i, playerID);
             playZombieDie();
             b.shot = false;
         }
@@ -260,7 +282,7 @@ void bulletCollisionWithZombieY(int i){
     //UP
     if((z[i]->alive) && (b.bVelY == 1) && (b.bPosition.x >= ZombInit.zPosition[i].x) && (b.bPosition.x <= (ZombInit.zPosition[i].x + ZombInit.gZombie->w) && (PlayerInit.pPosition[playerID].y + 25 < ZombInit.zPosition[i].y))){
         if(msTimer(&b.currentShotTime, &b.lastShotTime, 50)){
-            killZombie(z[i]);
+            killZombie(z[i], i, playerID);
             playZombieDie();
             b.shot = false;
         }
@@ -268,57 +290,125 @@ void bulletCollisionWithZombieY(int i){
     //DOWN
     if((z[i]->alive) && (b.bVelY == -1) && (b.bPosition.x >= ZombInit.zPosition[i].x) && (b.bPosition.x <= (ZombInit.zPosition[i].x + ZombInit.gZombie->w) && (PlayerInit.pPosition[playerID].y + 25 > ZombInit.zPosition[i].y))){
         if(msTimer(&b.currentShotTime, &b.lastShotTime, 50)){
-            killZombie(z[i]);
+            killZombie(z[i], i, playerID);
             playZombieDie();
             b.shot = false;
         }
     }
 }
 
+int MenuKeyboard(SDL_Event event,char buf[],int *LetterforIP){
+
+    if (event.key.keysym.sym==SDLK_0){
+        buf[*LetterforIP]='0';
+    }
+    if (event.key.keysym.sym==SDLK_1){
+        buf[*LetterforIP]='1'; 
+    }
+    if (event.key.keysym.sym==SDLK_2){
+        buf[*LetterforIP]='2';
+    }
+    if (event.key.keysym.sym==SDLK_3){
+        buf[*LetterforIP]='3';
+    }
+    if (event.key.keysym.sym==SDLK_4){
+        buf[*LetterforIP]='4';
+    }
+    if (event.key.keysym.sym==SDLK_5){
+        buf[*LetterforIP]='5';
+    }
+    if (event.key.keysym.sym==SDLK_6){
+        buf[*LetterforIP]='6';
+    }
+    if (event.key.keysym.sym==SDLK_7){
+        buf[*LetterforIP]='7';
+    }
+    if (event.key.keysym.sym==SDLK_8){
+        buf[*LetterforIP]='8';
+    }
+    if (event.key.keysym.sym==SDLK_9){
+        buf[*LetterforIP]='9';
+    }
+    if (event.key.keysym.sym==SDLK_PERIOD){
+      buf[*LetterforIP]='.';
+    }
+    (*LetterforIP)++;
+    buf[*LetterforIP]='\0';
+}
+
+void GetString(char* strOut, unsigned int strSize){
+   strncpy(strOut, Bufstring, strSize);
+}
+
 int mainGameEvent(){
+    int LetterforIP;
+    if(LetterforIP>12) LetterforIP=0;
+    char bufIPaddress[12];
+    strcpy(Bufstring, bufIPaddress);
     const Uint8 *state = SDL_GetKeyboardState(NULL);
-    Uint32 SDL_GetMouseState(int *mouseX, int *mouseY);
     int close_requested = 0;
+    int buttonPos[4]={40,155,80,125};
     if(playerID == -1){
         playerID = reciveID("127.0.0.1");
     }
     reciveData("127.0.0.1", kordLista);
-    if(kordLista[1] != -1000){
+    if(kordLista[3] == 0){
         //printf("Satta kordinater %d %d \n", kordLista[0], kordLista[1]);
+        if((PlayerInit.pPosition[kordLista[0]].x) < (kordLista[1])){
+            PlayerInit.pFrame[kordLista[0]] = 0;
+            PlayerInit.flip[kordLista[0]] = SDL_FLIP_HORIZONTAL;
+        }
+        else if((PlayerInit.pPosition[kordLista[0]].x) > (kordLista[1])){
+            PlayerInit.pFrame[kordLista[0]]=0;
+            PlayerInit.flip[kordLista[0]] = SDL_FLIP_NONE;
+        }
+        else if((PlayerInit.pPosition[kordLista[0]].y) < (kordLista[2])){
+            PlayerInit.pFrame[kordLista[0]]=14;
+        }
+        else if((PlayerInit.pPosition[kordLista[0]].y) > (kordLista[2])){
+            PlayerInit.pFrame[kordLista[0]]=11;
+        }
         PlayerInit.pPosition[kordLista[0]].x = kordLista[1];
         PlayerInit.pPosition[kordLista[0]].y = kordLista[2];
+
+    }else if(kordLista[3]==1){
+        PlayerInit.pFrame[kordLista[0]]=15;
     }
-    if (select==2) select=0;
+    else if(kordLista[3]==2){
+        z[kordLista[1]]->alive = 0;
+    }
     //receiveCoordData(&kordLista, &playerID);
+    if(select!=1){
+            select=checkmousestate(&buttonPos[0],&buttonPos[1],&buttonPos[2],&buttonPos[3]);
+            if(select==1) Mix_HaltMusic();
+        }
     SDL_Event event;
-    while (SDL_PollEvent(&event)){ 
-        if (event.type== SDL_QUIT){
+    while(SDL_PollEvent(&event)){ 
+        if(event.type == SDL_QUIT){
             close_requested = 1;
             return close_requested;
         }
-        if (select==1){
-        if (event.type== SDL_KEYDOWN){
+        if(event.type == SDL_KEYDOWN){
             sendData(0, PlayerInit.pPosition[playerID].x, PlayerInit.pPosition[playerID].y, "127.0.0.1", playerID);
             pressedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
+            MenuKeyboard(event, bufIPaddress, &LetterforIP);
         }
-        if(event.type== SDL_KEYUP){
+        if(event.type == SDL_KEYUP){
             releasedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
         }
-        }
-            if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT & select==0)) {  
-            printf("Mouse Button 1 (left) is pressed.");
-            select=1;
-            }
     }
-    playZombieBrain();
-    if (select==1){
-      for(int i = 0; i < ZombInit.nrOfZombies; i++){
-          zombieTrackingPlayer(i);
-          zombieCollisionWithZombie(i);
-          zombieCollisionWithPlayer(i, &currentDmgTakenTime, &lastDmgTakenTime);
-          zombieCollisionWithMap(i);
-          bulletPositioning(i);
-      }
-      playerCollisionWithMap();
+    if(select == 1){
+        playBgGameMusic();
+        respawnZombie();
+        startGameTimer();
+        playZombieBrain();
+        for(int i = 0; i < ZombInit.nrOfZombies; i++){
+            zombieTrackingPlayer(i);
+            zombieCollisionWithZombie(i);
+            zombieCollisionWithPlayer(i, &currentDmgTakenTime, &lastDmgTakenTime);
+            zombieCollisionWithMap(i);
+            bulletPositioning(i);
+        }
+        playerCollisionWithMap();
     }
 }
