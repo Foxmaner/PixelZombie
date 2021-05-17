@@ -328,3 +328,4 @@ int mainGameEvent(){
         playerCollisionWithMap();
     }
 }
+ 
