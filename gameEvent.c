@@ -27,7 +27,7 @@ int checkmousestate(int *lowX,int *highX,int *lowY,int *highY){
     if (*lowX<MouseX && MouseX<*highX && *lowY<MouseY && MouseY<*highY){
         return 1;
     }
-    
+    //printf("MouseX: %d MouseY: %d\n ",MouseX, MouseY);
 }
 
 void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lctrl,SDL_Event event){

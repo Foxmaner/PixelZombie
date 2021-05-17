@@ -17,6 +17,8 @@
 
 int startrender=2;
 int lobby=2;
+int credits=2;
+int back=2;
 
 void SetRenderDrawColor(){
     SDL_SetRenderDrawColor(iSDL.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
@@ -32,7 +34,7 @@ void renderMenu(){
         font_path = "resources/fonts/OpenSans-Bold.ttf";
         TTF_Init();
 
-        TTF_Font *font = TTF_OpenFont(font_path, 40);
+        TTF_Font *font = TTF_OpenFont(font_path, 36);
         if (font == NULL) {
         printf("error: font not found\n");
         exit(EXIT_FAILURE);
@@ -42,18 +44,18 @@ void renderMenu(){
         int buttonPos[4]={40,155,40,85};
         int buttonStartGamePos[4]={40,155,80,125};
         //Beginning menu
-        if (lobby!=1){
-            
-                get_text_and_rect(iSDL.renderer, 40, 40, "START", font, &texture1, &rect1);
-                SDL_RenderCopy(iSDL.renderer, texture1, NULL, &rect1);
-                get_text_and_rect(iSDL.renderer, 40, rect1.y + rect1.h, "Credits", font, &texture2, &rect2); 
-                SDL_RenderCopy(iSDL.renderer, texture2, NULL, &rect2);
-                lobby=checkmousestate(&buttonPos[0],&buttonPos[1],&buttonPos[2],&buttonPos[3]);
+        if (lobby!=1 && credits!=1){
+            get_text_and_rect(iSDL.renderer, 40, 40, "START", font, &texture1, &rect1);
+            SDL_RenderCopy(iSDL.renderer, texture1, NULL, &rect1);
+            get_text_and_rect(iSDL.renderer, 40, rect1.y + rect1.h, "Credits", font, &texture2, &rect2); 
+            SDL_RenderCopy(iSDL.renderer, texture2, NULL, &rect2);
+            lobby=checkmousestate(&buttonPos[0],&buttonPos[1],&buttonPos[2],&buttonPos[3]);
+            credits=checkmousestate(&buttonStartGamePos[0],&buttonStartGamePos[1],&buttonStartGamePos[2],&buttonStartGamePos[3]);
+            back=2;
         }
 
         //Entering IPadress
-        if (lobby==1)
-        {
+        if (lobby==1){
             get_text_and_rect(iSDL.renderer, 40, 40, "Enter IPadress:", font, &texture3, &rect3); 
             SDL_RenderCopy(iSDL.renderer, texture3, NULL, &rect3);
             get_text_and_rect(iSDL.renderer, 340, 40,  "127.0.0.1", font, &texture2, &rect2); 
@@ -61,7 +63,21 @@ void renderMenu(){
             get_text_and_rect(iSDL.renderer, 40, 80, "Start game", font, &texture4, &rect4); 
             SDL_RenderCopy(iSDL.renderer, texture4, NULL, &rect4);
             startrender=checkmousestate(&buttonStartGamePos[0],&buttonStartGamePos[1],&buttonStartGamePos[2],&buttonStartGamePos[3]);
-        }        
+        }
+
+        if (credits==1)
+        {
+            get_text_and_rect(iSDL.renderer, 40, 40, "Back", font, &texture1, &rect1);
+            SDL_RenderCopy(iSDL.renderer, texture1, NULL, &rect1);
+            get_text_and_rect(iSDL.renderer, 40, rect1.y + rect1.h, "Made by Anton C, Carl G, Eskil B, Markus H, Marcus M", font, &texture2, &rect2); 
+            SDL_RenderCopy(iSDL.renderer, texture2, NULL, &rect2);
+            back=checkmousestate(&buttonPos[0],&buttonPos[1],&buttonPos[2],&buttonPos[3]);
+            if (back==1){
+                lobby=2;
+                credits=2;
+            }
+        }
+  
 
     
     //SDL_RenderCopyEx(iSDL.renderer, StartInit.mstartbutton, &StartInit.gstartbutton[0],&StartInit.gstartbutton[0], 0, NULL, SDL_FLIP_NONE);
