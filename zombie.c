@@ -6,6 +6,7 @@
 
 #include "zombie.h"
 #include "gameInit.h"
+#include "server/udpClient.h"
 
 #define PUBLIC /* empty */
 #define PRIVATE static
@@ -122,6 +123,31 @@ PUBLIC void changeZFrameY(int frameA, int frameB, int i){
     }
 }
 
+PUBLIC bool checkZCollisionWithZ(SDL_Rect zombie1, SDL_Rect zombie2){
+    int z1Left, z1Right, z1Top, z1Bottom;
+    int z2Left, z2Right, z2Top, z2Bottom;
+
+    //Calculate zombie1 hitbox
+    z1Left = zombie1.x + 10;
+    z1Right = zombie1.x + zombie1.w - 10;
+    z1Top = zombie1.y  + 10;
+    z1Bottom = zombie1.y + zombie1.h - 10;
+
+    //Calculate zombie2 hitbox
+    z2Left = zombie2.x + 10;
+    z2Right = zombie2.x + zombie2.w - 10;
+    z2Top = zombie2.y + 10;
+    z2Bottom = zombie2.y + zombie2.h - 10;
+
+    //Check if sides collide with eachother
+    if(z1Top > z2Bottom) return false;
+    if(z1Bottom < z2Top) return false;
+    if(z1Left > z2Right) return false;
+    if(z1Right < z2Left) return false;
+    //if sides are not outside eachother(aka collision), then return true
+    return true;
+}
+
 PUBLIC bool checkZCollisionWithP(SDL_Rect zombie, SDL_Rect player){
     int zLeft, zRight, zTop, zBottom;
     int plLeft, plRight, plTop, plBottom;
@@ -147,8 +173,24 @@ PUBLIC bool checkZCollisionWithP(SDL_Rect zombie, SDL_Rect player){
     return true;
 }
 
-PUBLIC void killZombie(Zombie a){
+PUBLIC void killZombie(Zombie a, int i, int playerID){
+    sendData(2, i, 0, "127.0.0.1", playerID);
     a->alive = 0;
+}
+
+PUBLIC void respawnZombie(){
+    int alive=0;   // All zombies dead?
+    for(int a = 0; a < ZombInit.nrOfZombies; a++){
+        if(z[a]->alive) alive++;
+    }
+
+    if(!alive){
+        for(int a = 0; a < ZombInit.nrOfZombies; a++){
+            z[a]->alive = 1;
+            ZombInit.zPosition[a].x = getZSpawnPointX(a % 3);
+            ZombInit.zPosition[a].y = getZSpawnPointY(a % 3);
+        }
+    }
 }
 
 PUBLIC int msTimer(int *pCurrentTime, int *pLastRecordedTime, int ms){

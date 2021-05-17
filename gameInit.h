@@ -11,6 +11,15 @@ struct InitSDL{
 };typedef struct InitSDL InitSDL;
 InitSDL iSDL;
 
+struct GameTimer{
+    int second;
+    int minute;
+    int hour;
+    int now;
+    int before;
+};typedef struct GameTimer GameTimer;
+GameTimer timer;
+
 struct Background_Tiles{
     SDL_Texture *mTiles;
     SDL_Rect gTiles[32];
@@ -28,10 +37,26 @@ struct Bullet{
 Bullet b;
 Bullet createBullet();
 
+struct Heart{
+    SDL_Texture *mHeart;
+    SDL_Rect gHeart[1];
+    SDL_Rect hPosition[3];
+};typedef struct Heart Heart;
+Heart h;
+Heart createHeart();
+
+struct isGameInitOrOver{
+    bool initedGame;
+    bool gameOver;
+};typedef struct isGameInitOrOver IGIO;
+IGIO GIO;
+
+GameTimer initTime();
 void initSDL();
 void initWindow();
 void initRenderer(SDL_Window* pWin);
 void initAudio();
+void startGameTimer();
 void initGame();
 
 #endif

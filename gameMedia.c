@@ -13,7 +13,9 @@
 #include "menu.h"
 #include "server/udpClient.h"
 
-Mix_Music *bgMusic;
+Mix_Music *bgGameMusic;
+Mix_Music *bgMenuMusic;
+
 Mix_Chunk *sfxPistolShot;
 Mix_Chunk *sfxPlayerHurt;
 Mix_Chunk *sfxPlayerDie;
@@ -21,7 +23,7 @@ Mix_Chunk *sfxZombieDie;
 Mix_Chunk *sfxZombieAttack;
 Mix_Chunk *sfxZombieBrain;
 
-void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit, Player_Init* PlayerInit, Bullet* b,  Start_Init* StartInit){
+void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit, Player_Init* PlayerInit, Bullet* b, Heart* h, Start_Init* StartInit){
     //Startbutton
     SDL_Surface* gButtonsurface = IMG_Load("resources/images/startbutton.png");
     StartInit->mstartbutton = SDL_CreateTextureFromSurface(iSDL->renderer, gButtonsurface);
@@ -208,10 +210,20 @@ void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit,
     //Window Icon
     SDL_Surface* gWindowIcon = IMG_Load("resources/images/icon.png");
     SDL_SetWindowIcon(iSDL->win, gWindowIcon);
- 
+
+    //Heads up display(HUD)
+    //Heart for health bar
+    SDL_Surface* gHeartSurface = IMG_Load("resources/images/heart.png");
+    h->mHeart = SDL_CreateTextureFromSurface(iSDL->renderer, gHeartSurface);
+    h->gHeart[0].x = 0;
+    h->gHeart[0].y = 0;
+    h->gHeart[0].w = 50;
+    h->gHeart[0].h = 50;
+
     //Music
     //Background Music
-    bgMusic = Mix_LoadMUS("resources/music/bgMusic.mp3");
+    bgGameMusic = Mix_LoadMUS("resources/music/bgGameMusic.mp3");
+    bgMenuMusic = Mix_LoadMUS("resources/music/bgMenuMusic.mp3");
     //Sound Effects
     sfxPistolShot = Mix_LoadWAV("resources/music/sfxPistolShot.wav");
     sfxPlayerHurt = Mix_LoadWAV("resources/music/sfxPlayerHurt.wav");
@@ -221,9 +233,16 @@ void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit,
     sfxZombieBrain = Mix_LoadWAV("resources/music/sfxZombieBrain.wav");
 }
 
-void playBgMusic(){
+void playBgGameMusic(){
     if(!Mix_PlayingMusic())
-        Mix_PlayMusic(bgMusic, -1);
+        Mix_PlayMusic(bgGameMusic, -1);
+    else if(Mix_PausedMusic())
+        Mix_ResumeMusic();
+}
+
+void playBgMenuMusic(){
+    if(!Mix_PlayingMusic())
+        Mix_PlayMusic(bgMenuMusic, -1);
     else if(Mix_PausedMusic())
         Mix_ResumeMusic();
 }
@@ -249,6 +268,6 @@ void playZombieAttack(){
 }
 
 void playZombieBrain(){
-    if(rand() % 250 == 0) 
+    if(rand() % 300 == 0) 
         Mix_PlayChannel(-1, sfxZombieBrain, 0);
 }

@@ -7,7 +7,6 @@
 struct player_type{
     int PLAYER_POSITION_X;
     int PLAYER_POSITION_Y;
-    int hitPoint;
 };typedef struct player_type *Player;
 
 struct Player_Init{
@@ -18,6 +17,7 @@ struct Player_Init{
     SDL_Rect pPosition[4];
     int pFrame[4];
     SDL_RendererFlip flip[4];
+    int hitPoint[4];
 };typedef struct Player_Init Player_Init;
 Player_Init PlayerInit;
 
@@ -28,11 +28,11 @@ void setPlayerPositionY(Player a, int y);
 void setPlayerPositionX(Player a, int x);
 int getPlayerWidth();
 int getPlayerHeight();
-int getPlayerHitpoint(Player a);
+int getPlayerHitpoint(int playerID);
 void createAllPlayers();
 int getSpawnPointX(int a);
 int getSpawnPointY(int a);
-void respawnPlayer(Player a, SDL_Rect pPostion[], int playerID);
+void hurtPlayer(int *a);
 
 
 #endif /* Player_h */

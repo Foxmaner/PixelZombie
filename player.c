@@ -2,6 +2,8 @@
 #include <SDL2/SDL.h>
 
 #include "player.h"
+#include "gameEvent.h"
+#include "gameRender.h"
 
 #define PUBLIC /* empty */
 #define PRIVATE static
@@ -22,7 +24,6 @@ PUBLIC Player createPlayer(int x, int y){
     Player p = malloc(sizeof(struct player_type));
     p->PLAYER_POSITION_Y = y;
     p->PLAYER_POSITION_X = x;
-    p->hitPoint = 3;
     return p;
 }
 
@@ -52,17 +53,18 @@ PUBLIC int getPlayerHeight(){
     return PLAYER_HEIGTH;
 }
 
-PUBLIC int getPlayerHitpoint(Player a){
-    return a->hitPoint;
+PUBLIC int getPlayerHitpoint(int PlayerID){
+    return PlayerInit.hitPoint[PlayerID];
 }
 
 PUBLIC void createAllPlayers(){
-    for(int i = 0; i <PlayerInit.nrOfPlayers; i++){
-        PlayerInit.p[i] = createPlayer(getSpawnPointX(i),getSpawnPointY(i));
+    for(int i = 0; i < PlayerInit.nrOfPlayers; i++){
+        PlayerInit.p[i] = createPlayer(getSpawnPointX(i), getSpawnPointY(i));
         PlayerInit.pPosition[i].x = getPlayerPositionX(PlayerInit.p[i]);
         PlayerInit.pPosition[i].y = getPlayerPositionY(PlayerInit.p[i]);
         PlayerInit.pPosition[i].w = 64;
         PlayerInit.pPosition[i].h = 64;
+        PlayerInit.hitPoint[i] = 3;
     }
 }
 
@@ -92,10 +94,13 @@ PUBLIC int getSpawnPointY(int a){
     }
 }
 
-PUBLIC void respawnPlayer(Player a, SDL_Rect pPostion[], int playerID){
-    if (!--a->hitPoint){
-        a->hitPoint=3;
-        pPostion[playerID].x=512;
-        pPostion[playerID].y=512;
-    }
+PUBLIC void hurtPlayer(int *a){
+    printf("heres johnny");
+    /*if(a->hitPoint == 0){
+        printf("heres johhny");
+        a->hitPoint = 3;
+        setMenuInitiaited(2);
+        setSelect(2);
+    }*/
+    printf("\n %d \n", a);
 }
