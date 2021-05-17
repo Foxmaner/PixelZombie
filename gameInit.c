@@ -97,7 +97,9 @@ void initGame(){
     createHeart();
     ZombInit.nrOfZombies = 6;
     createAllZombies();
-    PlayerInit.nrOfPlayers = 2;
+
+    PlayerInit.nrOfPlayers = 4;
+
     createAllPlayers();
     createBullet();
     loadMedia(&iSDL, &backTiles, &ZombInit, &PlayerInit, &b, &h, &StartInit);

@@ -14,9 +14,11 @@
 #include "server/udpClient.h"
 
 int lastDmgTakenTime = 0, currentDmgTakenTime = 0;
-int kordLista[3];
-int playerID =- 1;
-int up_w, down_s, left_a, right_d, lctrl, select=2;
+
+int kordLista[4];
+int playerID=-1;
+int up_w,down_s,left_a,right_d,lctrl, select=2;
+
 
 void setSelect(int a){
     select = a;
@@ -99,8 +101,10 @@ void releasedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lc
         *right_d = 0;
         PlayerInit.pFrame[playerID] = 0;
     }
-    if(event.key.keysym.sym == SDLK_LCTRL){
-        lctrl = 0;
+
+    if(event.key.keysym.sym==SDLK_LCTRL){
+        lctrl=0;
+        PlayerInit.pFrame[playerID]=15;
     }
 }
 
@@ -221,11 +225,11 @@ void playerCollisionWithMap(){
 }
 
 void bulletPositioning(int i){
-    if(!b.shot){
+    if(!b.shot){    
         b.bPosition.x = PlayerInit.pPosition[playerID].x + 25;
         b.bPosition.y = PlayerInit.pPosition[playerID].y + 20;
     }
-    else{
+    else{   
         if(!b.bVelY){
             b.bPosition.x += b.bVelX * 10;
             bulletCollisionWithZombieX(i);
@@ -244,7 +248,7 @@ void bulletCollisionWithZombieX(int i){
     //RIGHT
     if((z[i]->alive) && (b.bVelX == 1) && (b.bPosition.y >= ZombInit.zPosition[i].y) && (b.bPosition.y <= (ZombInit.zPosition[i].y + ZombInit.gZombie->h) && (PlayerInit.pPosition[playerID].x + 25 < ZombInit.zPosition[i].x))){
         if(msTimer(&b.currentShotTime, &b.lastShotTime, 50)){
-            killZombie(z[i]);
+            killZombie(z[i], i, playerID);
             playZombieDie();
             b.shot = false;
         }
@@ -252,7 +256,7 @@ void bulletCollisionWithZombieX(int i){
     //LEFT
     if((z[i]->alive) && (b.bVelX == -1) && (b.bPosition.y >= ZombInit.zPosition[i].y) && (b.bPosition.y <= (ZombInit.zPosition[i].y + ZombInit.gZombie->h) && (PlayerInit.pPosition[playerID].x + 25 > ZombInit.zPosition[i].x))){
         if(msTimer(&b.currentShotTime, &b.lastShotTime, 50)){
-            killZombie(z[i]);
+            killZombie(z[i], i, playerID);
             playZombieDie();
             b.shot = false;
         }
@@ -263,7 +267,7 @@ void bulletCollisionWithZombieY(int i){
     //UP
     if((z[i]->alive) && (b.bVelY == 1) && (b.bPosition.x >= ZombInit.zPosition[i].x) && (b.bPosition.x <= (ZombInit.zPosition[i].x + ZombInit.gZombie->w) && (PlayerInit.pPosition[playerID].y + 25 < ZombInit.zPosition[i].y))){
         if(msTimer(&b.currentShotTime, &b.lastShotTime, 50)){
-            killZombie(z[i]);
+            killZombie(z[i], i, playerID);
             playZombieDie();
             b.shot = false;
         }
@@ -271,7 +275,7 @@ void bulletCollisionWithZombieY(int i){
     //DOWN
     if((z[i]->alive) && (b.bVelY == -1) && (b.bPosition.x >= ZombInit.zPosition[i].x) && (b.bPosition.x <= (ZombInit.zPosition[i].x + ZombInit.gZombie->w) && (PlayerInit.pPosition[playerID].y + 25 > ZombInit.zPosition[i].y))){
         if(msTimer(&b.currentShotTime, &b.lastShotTime, 50)){
-            killZombie(z[i]);
+            killZombie(z[i], i, playerID);
             playZombieDie();
             b.shot = false;
         }
@@ -286,10 +290,30 @@ int mainGameEvent(){
         playerID = reciveID("127.0.0.1");
     }
     reciveData("127.0.0.1", kordLista);
-    if(kordLista[1] != -1000){
+    if(kordLista[3] == 0){
         //printf("Satta kordinater %d %d \n", kordLista[0], kordLista[1]);
+        if((PlayerInit.pPosition[kordLista[0]].x) < (kordLista[1])){
+            PlayerInit.pFrame[kordLista[0]] = 0;
+            PlayerInit.flip[kordLista[0]] = SDL_FLIP_HORIZONTAL;
+        }
+        else if((PlayerInit.pPosition[kordLista[0]].x) > (kordLista[1])){
+            PlayerInit.pFrame[kordLista[0]]=0;
+            PlayerInit.flip[kordLista[0]] = SDL_FLIP_NONE;
+        }
+        else if((PlayerInit.pPosition[kordLista[0]].y) < (kordLista[2])){
+            PlayerInit.pFrame[kordLista[0]]=14;
+        }
+        else if((PlayerInit.pPosition[kordLista[0]].y) > (kordLista[2])){
+            PlayerInit.pFrame[kordLista[0]]=11;
+        }
         PlayerInit.pPosition[kordLista[0]].x = kordLista[1];
         PlayerInit.pPosition[kordLista[0]].y = kordLista[2];
+
+    }else if(kordLista[3]==1){
+        PlayerInit.pFrame[kordLista[0]]=15;
+    }
+    else if(kordLista[3]==2){
+        z[kordLista[1]]->alive = 0;
     }
     if(select == 2) select = 0;
     //receiveCoordData(&kordLista, &playerID);

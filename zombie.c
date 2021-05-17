@@ -6,6 +6,7 @@
 
 #include "zombie.h"
 #include "gameInit.h"
+#include "server/udpClient.h"
 
 #define PUBLIC /* empty */
 #define PRIVATE static
@@ -172,7 +173,8 @@ PUBLIC bool checkZCollisionWithP(SDL_Rect zombie, SDL_Rect player){
     return true;
 }
 
-PUBLIC void killZombie(Zombie a){
+PUBLIC void killZombie(Zombie a, int i, int playerID){
+    sendData(2, i, 0, "127.0.0.1", playerID);
     a->alive = 0;
 }
 
