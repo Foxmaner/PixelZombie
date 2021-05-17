@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_image.h>
@@ -14,9 +15,42 @@
 int lastDmgTakenTime = 0, currentDmgTakenTime = 0;
 int kordLista[3];
 int playerID=-1;
-int up_w,down_s,left_a,right_d,lctrl, select=2;
+int up_w,down_s,left_a,right_d,lctrl, select=2, IPletter=0;
+
+int checkmousestate(int *lowX,int *highX,int *lowY,int *highY){
+    int MouseX, MouseY;
+        if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT))
+    {
+        SDL_GetMouseState(&MouseX, &MouseY);
+    }
+
+    if (*lowX<MouseX && MouseX<*highX && *lowY<MouseY && MouseY<*highY){
+        return 1;
+    }
+    
+}
 
 void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lctrl,SDL_Event event){
+
+        if (event.key.keysym.sym==SDLK_w){
+            *up_w=1;
+        }
+        if (event.key.keysym.sym==SDLK_s){
+            *down_s=1;
+        } 
+        if(event.key.keysym.sym==SDLK_a){
+            *left_a=1;
+        }
+        if(event.key.keysym.sym==SDLK_d){
+            *right_d=1;
+        }
+        if(event.key.keysym.sym==SDLK_LCTRL){
+            if(msTimer(&b.currentShotTime, &b.lastShotTime, 500)){  //13 rps
+                b.shot = true;
+                playPistolShot();
+                sendData(1, 0,  0, "127.0.0.1", playerID);
+            }
+    }
 
     if (*up_w==1){
         PlayerInit.pPosition[playerID].y -= 6;
@@ -52,25 +86,6 @@ void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lct
             if (PlayerInit.pFrame[playerID]>=8) PlayerInit.pFrame[playerID]=1;
             else PlayerInit.pFrame[playerID]++;
         }
-        if (event.key.keysym.sym==SDLK_w){
-            *up_w=1;
-        }
-        if (event.key.keysym.sym==SDLK_s){
-            *down_s=1;
-        } 
-        if(event.key.keysym.sym==SDLK_a){
-            *left_a=1;
-        }
-        if(event.key.keysym.sym==SDLK_d){
-            *right_d=1;
-        }
-        if(event.key.keysym.sym==SDLK_LCTRL){
-            if(msTimer(&b.currentShotTime, &b.lastShotTime, 500)){  //13 rps
-                b.shot = true;
-                playPistolShot();
-                sendData(1, 0,  0, "127.0.0.1", playerID);
-            }
-    }
 }
 
 void releasedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lctrl, SDL_Event event){
@@ -277,18 +292,20 @@ void bulletCollisionWithZombieY(int i){
 
 int mainGameEvent(){
     const Uint8 *state = SDL_GetKeyboardState(NULL);
-    Uint32 SDL_GetMouseState(int *mouseX, int *mouseY);
     int close_requested = 0;
+    int buttonPos[4]={40,155,80,125};
     if(playerID == -1){
         playerID = reciveID("127.0.0.1");
     }
-    reciveData("127.0.0.1", kordLista);
+    if (select!=1){
+        select=checkmousestate(&buttonPos[0],&buttonPos[1],&buttonPos[2],&buttonPos[3]);
+    }
+        reciveData("127.0.0.1", kordLista);
     if(kordLista[1] != -1000){
         //printf("Satta kordinater %d %d \n", kordLista[0], kordLista[1]);
         PlayerInit.pPosition[kordLista[0]].x = kordLista[1];
         PlayerInit.pPosition[kordLista[0]].y = kordLista[2];
     }
-    if (select==2) select=0;
     //receiveCoordData(&kordLista, &playerID);
     SDL_Event event;
     while (SDL_PollEvent(&event)){ 
@@ -296,19 +313,17 @@ int mainGameEvent(){
             close_requested = 1;
             return close_requested;
         }
-        if (select==1){
-        if (event.type== SDL_KEYDOWN){
-            sendData(0, PlayerInit.pPosition[playerID].x, PlayerInit.pPosition[playerID].y, "127.0.0.1", playerID);
-            pressedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
-        }
-        if(event.type== SDL_KEYUP){
-            releasedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
-        }
-        }
-            if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT & select==0)) {  
-            printf("Mouse Button 1 (left) is pressed.");
-            select=1;
+
+        //if (select==1){
+            if (event.type== SDL_KEYDOWN){
+                sendData(0, PlayerInit.pPosition[playerID].x, PlayerInit.pPosition[playerID].y, "127.0.0.1", playerID);
+                pressedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
+                MenuKeyboard(event);
             }
+            if(event.type== SDL_KEYUP){
+                releasedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
+            }
+        //}
     }
     playZombieBrain();
     if (select==1){
@@ -321,4 +336,55 @@ int mainGameEvent(){
       }
       playerCollisionWithMap();
     }
+}
+
+int MenuKeyboard(SDL_Event event){
+
+    if (event.key.keysym.sym==SDLK_0)
+    {
+        //code[i]='0';
+    }
+    if (event.key.keysym.sym==SDLK_1)
+    {
+        //code[i]='1';
+    }
+    if (event.key.keysym.sym==SDLK_2)
+    {
+        //code[i]='2';
+    }
+    if (event.key.keysym.sym==SDLK_3)
+    {
+        //code[i]='3';
+    }
+
+    if (event.key.keysym.sym==SDLK_4)
+    {
+        //code[i]='4';
+    }
+    if (event.key.keysym.sym==SDLK_5)
+    {
+        //code[i]='5';
+    }
+    if (event.key.keysym.sym==SDLK_6)
+    {
+        //code[i]='6';
+    }
+    if (event.key.keysym.sym==SDLK_7)
+    {
+         //code[i]='7';
+    }
+
+    if (event.key.keysym.sym==SDLK_8)
+    {
+        //code[i]='8';
+    }
+    if (event.key.keysym.sym==SDLK_9)
+    {
+        //code[i]='9';
+    }
+    if (event.key.keysym.sym==SDLK_PERIOD)
+    {
+      //code[i]='.';
+    }
+       
 }

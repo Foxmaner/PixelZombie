@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
 #include "gameInit.h"
 #include "gameEvent.h"
@@ -11,9 +12,11 @@
 #include "zombie.h"
 #include "player.h"
 #include "menu.h"
+#include "ttf.h"
 #include "server/udpClient.h"
 
-int menuintiaited=2;
+int startrender=2;
+int lobby=2;
 
 void SetRenderDrawColor(){
     SDL_SetRenderDrawColor(iSDL.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
@@ -24,7 +27,44 @@ void clearRenderer(){
 }
 
 void renderMenu(){
-    SDL_RenderCopyEx(iSDL.renderer, StartInit.mstartbutton, &StartInit.gstartbutton[0],&StartInit.gstartbutton[0], 0, NULL, SDL_FLIP_NONE);
+        char *IPaddress[12];
+        char *font_path;    
+        font_path = "resources/fonts/OpenSans-Bold.ttf";
+        TTF_Init();
+
+        TTF_Font *font = TTF_OpenFont(font_path, 40);
+        if (font == NULL) {
+        printf("error: font not found\n");
+        exit(EXIT_FAILURE);
+        }
+        SDL_Rect rect1, rect2, rect3, rect4; 
+        SDL_Texture *texture1, *texture2, *texture3, *texture4;
+        int buttonPos[4]={40,155,40,85};
+        int buttonStartGamePos[4]={40,155,80,125};
+        //Beginning menu
+        if (lobby!=1){
+            
+                get_text_and_rect(iSDL.renderer, 40, 40, "START", font, &texture1, &rect1);
+                SDL_RenderCopy(iSDL.renderer, texture1, NULL, &rect1);
+                get_text_and_rect(iSDL.renderer, 40, rect1.y + rect1.h, "Credits", font, &texture2, &rect2); 
+                SDL_RenderCopy(iSDL.renderer, texture2, NULL, &rect2);
+                lobby=checkmousestate(&buttonPos[0],&buttonPos[1],&buttonPos[2],&buttonPos[3]);
+        }
+
+        //Entering IPadress
+        if (lobby==1)
+        {
+            get_text_and_rect(iSDL.renderer, 40, 40, "Enter IPadress:", font, &texture3, &rect3); 
+            SDL_RenderCopy(iSDL.renderer, texture3, NULL, &rect3);
+            get_text_and_rect(iSDL.renderer, 340, 40,  "127.0.0.1", font, &texture2, &rect2); 
+            SDL_RenderCopy(iSDL.renderer, texture2, NULL, &rect2);
+            get_text_and_rect(iSDL.renderer, 40, 80, "Start game", font, &texture4, &rect4); 
+            SDL_RenderCopy(iSDL.renderer, texture4, NULL, &rect4);
+            startrender=checkmousestate(&buttonStartGamePos[0],&buttonStartGamePos[1],&buttonStartGamePos[2],&buttonStartGamePos[3]);
+        }        
+
+    
+    //SDL_RenderCopyEx(iSDL.renderer, StartInit.mstartbutton, &StartInit.gstartbutton[0],&StartInit.gstartbutton[0], 0, NULL, SDL_FLIP_NONE);
 }
 
 void renderBackground(InitSDL* iSDL, Background_Tiles backTiles){
@@ -63,22 +103,17 @@ void renderPreset(){
     SDL_RenderPresent(iSDL.renderer);
 }
 
-
 void renderGame(){
-    if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT & menuintiaited==2)) {  
-            printf("Mouse Button 2 (left) is pressed.");
-            menuintiaited=0;
-    }
     SetRenderDrawColor();
     clearRenderer();
-    renderMenu();
-    if (menuintiaited!=2){
-      SDL_PumpEvents();
-      renderBackground(&iSDL, backTiles);
-      renderAllZombies();
-      renderBullet();
+    if (startrender!=1) {renderMenu();}
+    if (startrender==1){
+        SDL_PumpEvents();
+        renderBackground(&iSDL, backTiles);
+        renderAllZombies();
+        renderBullet();
+        renderAllPlayers();
     }
-    renderAllPlayers();
     renderPreset();
     SDL_Delay(1000/60);
 }
