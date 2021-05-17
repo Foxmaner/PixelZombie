@@ -176,6 +176,21 @@ PUBLIC void killZombie(Zombie a){
     a->alive = 0;
 }
 
+PUBLIC void respawnZombie(){
+    int alive=0;   // All zombies dead?
+    for(int a = 0; a < ZombInit.nrOfZombies; a++){
+        if(z[a]->alive) alive++;
+    }
+
+    if(!alive){
+        for(int a = 0; a < ZombInit.nrOfZombies; a++){
+            z[a]->alive = 1;
+            ZombInit.zPosition[a].x = getZSpawnPointX(a % 3);
+            ZombInit.zPosition[a].y = getZSpawnPointY(a % 3);
+        }
+    }
+}
+
 PUBLIC int msTimer(int *pCurrentTime, int *pLastRecordedTime, int ms){
     *pCurrentTime = SDL_GetTicks();
     if(*pCurrentTime >= *pLastRecordedTime + ms){

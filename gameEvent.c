@@ -316,6 +316,7 @@ int mainGameEvent(){
         }
     }
     if (select == 1){
+        respawnZombie();
         startGameTimer();
         playZombieBrain();
         for(int i = 0; i < ZombInit.nrOfZombies; i++){

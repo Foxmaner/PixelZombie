@@ -43,6 +43,7 @@ void changeZFrameY(int frameA, int frameB, int i);
 bool checkZCollisionWithZ(SDL_Rect zombie1, SDL_Rect zombie2);
 bool checkZCollisionWithP(SDL_Rect zombie, SDL_Rect player);
 void killZombie(Zombie a);
+void respawnZombie();
 int msTimer(int *pCurrentTime, int *pLastRecordedTime, int ms);
 
 #endif /* Zombie_h */
