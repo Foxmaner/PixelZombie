@@ -160,8 +160,8 @@ void renderPreset(){
 void renderGame(){
     SetRenderDrawColor();
     clearRenderer();
-    if (startrender!=1) {renderMenu();}
-    if (startrender==1){
+    if(startrender!=1) renderMenu();
+    if(startrender==1){
         SDL_PumpEvents();
         renderBackground(&iSDL, backTiles);
         renderHealthBar();

@@ -25,8 +25,7 @@ char Bufstring[12]="\0";
 
 int checkmousestate(int *lowX,int *highX,int *lowY,int *highY){
     int MouseX, MouseY;
-        if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT))
-    {
+    if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)){
         SDL_GetMouseState(&MouseX, &MouseY);
     }
 
@@ -298,19 +297,59 @@ void bulletCollisionWithZombieY(int i){
     }
 }
 
+int MenuKeyboard(SDL_Event event,char buf[],int *LetterforIP){
+
+    if (event.key.keysym.sym==SDLK_0){
+        buf[*LetterforIP]='0';
+    }
+    if (event.key.keysym.sym==SDLK_1){
+        buf[*LetterforIP]='1'; 
+    }
+    if (event.key.keysym.sym==SDLK_2){
+        buf[*LetterforIP]='2';
+    }
+    if (event.key.keysym.sym==SDLK_3){
+        buf[*LetterforIP]='3';
+    }
+    if (event.key.keysym.sym==SDLK_4){
+        buf[*LetterforIP]='4';
+    }
+    if (event.key.keysym.sym==SDLK_5){
+        buf[*LetterforIP]='5';
+    }
+    if (event.key.keysym.sym==SDLK_6){
+        buf[*LetterforIP]='6';
+    }
+    if (event.key.keysym.sym==SDLK_7){
+        buf[*LetterforIP]='7';
+    }
+    if (event.key.keysym.sym==SDLK_8){
+        buf[*LetterforIP]='8';
+    }
+    if (event.key.keysym.sym==SDLK_9){
+        buf[*LetterforIP]='9';
+    }
+    if (event.key.keysym.sym==SDLK_PERIOD){
+      buf[*LetterforIP]='.';
+    }
+    (*LetterforIP)++;
+    buf[*LetterforIP]='\0';
+}
+
+void GetString(char* strOut, unsigned int strSize){
+   strncpy(strOut, Bufstring, strSize);
+}
+
 int mainGameEvent(){
     int LetterforIP;
-    if (LetterforIP>12){LetterforIP=0;}
+    if(LetterforIP>12) LetterforIP=0;
     char bufIPaddress[12];
-    strcpy(Bufstring,bufIPaddress);
+    strcpy(Bufstring, bufIPaddress);
     const Uint8 *state = SDL_GetKeyboardState(NULL);
     int close_requested = 0;
     int buttonPos[4]={40,155,80,125};
     if(playerID == -1){
         playerID = reciveID("127.0.0.1");
-    }
-    if (select!=1){
-        select=checkmousestate(&buttonPos[0],&buttonPos[1],&buttonPos[2],&buttonPos[3]);
     }
     reciveData("127.0.0.1", kordLista);
     if(kordLista[3] == 0){
@@ -339,30 +378,27 @@ int mainGameEvent(){
         z[kordLista[1]]->alive = 0;
     }
     //receiveCoordData(&kordLista, &playerID);
+    if(select!=1){
+            select=checkmousestate(&buttonPos[0],&buttonPos[1],&buttonPos[2],&buttonPos[3]);
+            if(select==1) Mix_HaltMusic();
+        }
     SDL_Event event;
     while(SDL_PollEvent(&event)){ 
         if(event.type == SDL_QUIT){
             close_requested = 1;
             return close_requested;
-        } 
-        if(SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT & select == 0)){
-            printf("Mouse Button 1 (left) is pressed.");
-            select = 1;
-            Mix_HaltMusic();
         }
-        if(select == 1){
-            playBgGameMusic();
-            if(event.type == SDL_KEYDOWN){
-                sendData(0, PlayerInit.pPosition[playerID].x, PlayerInit.pPosition[playerID].y, "127.0.0.1", playerID);
-                pressedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
-                MenuKeyboard(event, bufIPaddress, &LetterforIP);
-            }
-            if(event.type == SDL_KEYUP){
-                releasedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
-            }
+        if(event.type == SDL_KEYDOWN){
+            sendData(0, PlayerInit.pPosition[playerID].x, PlayerInit.pPosition[playerID].y, "127.0.0.1", playerID);
+            pressedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
+            MenuKeyboard(event, bufIPaddress, &LetterforIP);
+        }
+        if(event.type == SDL_KEYUP){
+            releasedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
         }
     }
-    if (select == 1){
+    if(select == 1){
+        playBgGameMusic();
         respawnZombie();
         startGameTimer();
         playZombieBrain();
@@ -375,61 +411,4 @@ int mainGameEvent(){
         }
         playerCollisionWithMap();
     }
-}
-
-int MenuKeyboard(SDL_Event event,char buf[],int *LetterforIP){
-
-    if (event.key.keysym.sym==SDLK_0)
-    {
-        buf[*LetterforIP]='0';
-    }
-    if (event.key.keysym.sym==SDLK_1)
-    {
-        buf[*LetterforIP]='1'; 
-
-    }
-    if (event.key.keysym.sym==SDLK_2)
-    {
-        buf[*LetterforIP]='2';
-    }
-    if (event.key.keysym.sym==SDLK_3)
-    {
-        buf[*LetterforIP]='3';
-    }
-    if (event.key.keysym.sym==SDLK_4)
-    {
-        buf[*LetterforIP]='4';
-    }
-    if (event.key.keysym.sym==SDLK_5)
-    {
-        buf[*LetterforIP]='5';
-    }
-    if (event.key.keysym.sym==SDLK_6)
-    {
-        buf[*LetterforIP]='6';
-    }
-    if (event.key.keysym.sym==SDLK_7)
-    {
-        buf[*LetterforIP]='7';
-    }
-
-    if (event.key.keysym.sym==SDLK_8)
-    {
-        buf[*LetterforIP]='8';
-    }
-    if (event.key.keysym.sym==SDLK_9)
-    {
-        buf[*LetterforIP]='9';
-    }
-    if (event.key.keysym.sym==SDLK_PERIOD)
-    {
-      buf[*LetterforIP]='.';
-    }
-    (*LetterforIP)++;
-    buf[*LetterforIP]='\0';
-}
-
-void GetString( char* strOut, unsigned int strSize )
-{
-   strncpy( strOut, Bufstring, strSize );
 }
