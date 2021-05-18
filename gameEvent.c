@@ -60,6 +60,7 @@ void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lct
         if(msTimer(&b.currentShotTime, &b.lastShotTime, 500)){  //13 rps
             b.shot = true;
             playPistolShot();
+            if(PlayerInit.pFrame[playerID] >= 0 && PlayerInit.pFrame[playerID] <= 8) PlayerInit.pFrame[playerID] = 15;
             sendData(1, 0,  0, "127.0.0.1", playerID);
         }
     }
@@ -118,8 +119,7 @@ void releasedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lc
     }
 
     if(event.key.keysym.sym==SDLK_LCTRL){
-        lctrl=0;
-        PlayerInit.pFrame[playerID]=15;
+        if(PlayerInit.pFrame[playerID] == 15) PlayerInit.pFrame[playerID]=0;
     }
 }
 

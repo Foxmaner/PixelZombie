@@ -111,7 +111,7 @@ void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit,
     ZombInit->gZombie[31].y = 374;
 
     //Player
-    SDL_Surface* gPlayerSurface = IMG_Load("resources/images/pixel-768x768-31.png");
+    SDL_Surface* gPlayerSurface = IMG_Load("resources/images/pixel-768x768-31-2.png");
     PlayerInit->mPlayer = SDL_CreateTextureFromSurface(iSDL->renderer, gPlayerSurface);
 
     //Ståendes med kroppen mot skärmen med pistol
@@ -189,15 +189,26 @@ void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit,
     PlayerInit->gPlayer[13].w = 64;
     PlayerInit->gPlayer[13].h = 64; 
 
-    PlayerInit->gPlayer[14].x = 645;
+    PlayerInit->gPlayer[14].x = 483;
     PlayerInit->gPlayer[14].y = 111;
     PlayerInit->gPlayer[14].w = 64;
     PlayerInit->gPlayer[14].h = 64; 
 
+    //Shoot left/right
     PlayerInit->gPlayer[15].x = 97;
     PlayerInit->gPlayer[15].y = 399;
     PlayerInit->gPlayer[15].w = 69;
     PlayerInit->gPlayer[15].h = 64;
+    //Shoot Up
+    /*PlayerInit->gPlayer[16].x = 595;
+    PlayerInit->gPlayer[16].y = 397;
+    PlayerInit->gPlayer[16].w = 64;
+    PlayerInit->gPlayer[16].h = 64;
+    //Shoot down
+    PlayerInit->gPlayer[16].x = 590;
+    PlayerInit->gPlayer[16].y = 490;
+    PlayerInit->gPlayer[16].w = 64;
+    PlayerInit->gPlayer[16].h = 64;*/
 
     //Bullet
     SDL_Surface* gBulletSurface = IMG_Load("resources/images/bullet.png");
