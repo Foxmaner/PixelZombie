@@ -70,6 +70,10 @@ void reciveData(char selectedIp[100], int kordinater[4]){
 				kordinater[0] = recivedID;
 				kordinater[1] = a;
 				kordinater[3] = flag;
+			}else if(flag == 3){
+				kordinater[0] = recivedID;
+				kordinater[1] = a;
+				kordinater[3] = flag;
 			}		
 		}
 		else{

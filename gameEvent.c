@@ -133,8 +133,7 @@ int closestPlayerToZombie(int zombieNr){
     double closestPlayerIdDistance;
     double distancePlayer;
     for (int i = 0; i < PlayerInit.nrOfPlayers; i++){
-        if(PlayerInit.hitPoint[i] < 1) break;
-        else{
+        if(PlayerInit.hitPoint[i] != 0){
             closestPlayerIdDistance = distance(PlayerInit.pPosition[closestPlayerId].x, PlayerInit.pPosition[closestPlayerId].y, ZombInit.zPosition[zombieNr].x, ZombInit.zPosition[zombieNr].y);
             distancePlayer = distance(PlayerInit.pPosition[i].x, PlayerInit.pPosition[i].y, ZombInit.zPosition[zombieNr].x, ZombInit.zPosition[zombieNr].y);
             if(closestPlayerIdDistance > distancePlayer){
@@ -205,6 +204,7 @@ void zombieCollisionWithPlayer(int i, int *currentDmgTakenTime,int *lastDmgTaken
             playPlayerHurt();
             //hurtPlayer(PlayerInit.hitPoint[playerID]);
             PlayerInit.hitPoint[playerID]--;
+            sendData( 3, PlayerInit.hitPoint[playerID], 0, "127.0.0.1", playerID);
         }
     }
 }
@@ -388,6 +388,10 @@ int mainGameEvent(){
     }
     else if(kordLista[3]==2){
         z[kordLista[1]]->alive = 0;
+    }
+    else if(kordLista[3]==3){
+        PlayerInit.hitPoint[kordLista[0]] = kordLista[1];
+        printf("%d blev skjuten och har %d i liv", kordLista[0], PlayerInit.hitPoint[kordLista[0]]);
     }
     //receiveCoordData(&kordLista, &playerID);
     if(select!=1){
