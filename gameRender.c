@@ -140,11 +140,9 @@ void renderHealthBar(){
 void renderAllPlayers(){
     for(int i = 0; i < PlayerInit.nrOfPlayers; i++){
         if(getPlayerID() == i){
-            printf("Render Player ID %d", getPlayerID());
             SDL_RenderCopyEx(iSDL.renderer, PlayerInit.mPlayer, &PlayerInit.gPlayer[PlayerInit.pFrame[i]], &PlayerInit.pPosition[i], 0, NULL, PlayerInit.flip[i]);
         }
         else{
-            printf("Black Man %d", i);
             SDL_RenderCopyEx(iSDL.renderer, PlayerInit.mPlayerBlack, &PlayerInit.gPlayer[PlayerInit.pFrame[i]], &PlayerInit.pPosition[i], 0, NULL, PlayerInit.flip[i]);
         }
     }
