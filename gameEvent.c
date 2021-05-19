@@ -133,11 +133,14 @@ int closestPlayerToZombie(int zombieNr){
     double closestPlayerIdDistance;
     double distancePlayer;
     for (int i = 0; i < PlayerInit.nrOfPlayers; i++){
-        closestPlayerIdDistance = distance(PlayerInit.pPosition[closestPlayerId].x, PlayerInit.pPosition[closestPlayerId].y, ZombInit.zPosition[zombieNr].x, ZombInit.zPosition[zombieNr].y);
-        distancePlayer = distance(PlayerInit.pPosition[i].x, PlayerInit.pPosition[i].y, ZombInit.zPosition[zombieNr].x, ZombInit.zPosition[zombieNr].y);
-        if(closestPlayerIdDistance > distancePlayer){
-            closestPlayerId = i;
-        };
+        if(PlayerInit.hitPoint[i] < 1) break;
+        else{
+            closestPlayerIdDistance = distance(PlayerInit.pPosition[closestPlayerId].x, PlayerInit.pPosition[closestPlayerId].y, ZombInit.zPosition[zombieNr].x, ZombInit.zPosition[zombieNr].y);
+            distancePlayer = distance(PlayerInit.pPosition[i].x, PlayerInit.pPosition[i].y, ZombInit.zPosition[zombieNr].x, ZombInit.zPosition[zombieNr].y);
+            if(closestPlayerIdDistance > distancePlayer){
+                closestPlayerId = i;
+            };
+        }
     }
     return closestPlayerId;
 }
@@ -181,18 +184,27 @@ void zombieCollisionWithZombie(int i){
     }
 }
 
+void isGameOver(){
+    int playersDead = 0;
+    for(int i = 0; i < PlayerInit.nrOfPlayers; i++){
+        if(PlayerInit.hitPoint[i] < 1){
+            playersDead++;
+            if(playersDead == PlayerInit.nrOfPlayers){
+                setStartRender(2);
+                setSelect(2);
+                GIO.gameOver = true;
+            }
+        }
+    }
+}
+
 void zombieCollisionWithPlayer(int i, int *currentDmgTakenTime,int *lastDmgTakenTime){
-    if(z[i]->alive && checkZCollisionWithP(ZombInit.zPosition[i],PlayerInit.pPosition[playerID])){
+    if(z[i]->alive && PlayerInit.hitPoint[playerID] > 0 && checkZCollisionWithP(ZombInit.zPosition[i],PlayerInit.pPosition[playerID])){
         if(msTimer(currentDmgTakenTime, lastDmgTakenTime, 1000)){
             playZombieAttack();
             playPlayerHurt();
             //hurtPlayer(PlayerInit.hitPoint[playerID]);
-            if(--PlayerInit.hitPoint[playerID] == 0){
-                PlayerInit.hitPoint[playerID] = 3;
-                setStartRender(2);
-                setSelect(2);
-                GIO.gameOver = true;
-           }
+            PlayerInit.hitPoint[playerID]--;
         }
     }
 }
@@ -410,5 +422,6 @@ int mainGameEvent(){
             bulletPositioning(i);
         }
         playerCollisionWithMap();
+        isGameOver();
     }
 }
