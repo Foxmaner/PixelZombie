@@ -102,7 +102,7 @@ void initGame(){
 
     createAllPlayers();
     createBullet();
-    loadMedia(&iSDL, &backTiles, &ZombInit, &PlayerInit, &b, &h, &StartInit);
+    loadMedia(&iSDL, &backTiles, &ZombInit, &PlayerInit, &b, &h, &MenuInit);
     Mix_HaltMusic();
     playBgMenuMusic();
     GIO.gameOver = false;

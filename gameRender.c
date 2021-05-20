@@ -38,7 +38,7 @@ void clearRenderer(){
 
 void renderMenu(){
     char IPaddress[12]="\0";
-    SDL_RenderCopyEx(iSDL.renderer, mBackgroundInit.mMenubackground, &mBackgroundInit.gMenubackground[0],&mBackgroundInit.gMenubackground[0], 0, NULL, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(iSDL.renderer, MenuInit.mstartbutton, &MenuInit.gstartbutton[0],&MenuInit.gstartbutton[0], 0, NULL, SDL_FLIP_NONE);
     GetString(IPaddress, 12 );
     //printf( "%s", IPaddress );
     //Beginning menu
