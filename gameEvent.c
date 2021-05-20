@@ -305,7 +305,6 @@ int mainGameEvent(){
     strcpy(Bufstring,bufIPaddress);
     const Uint8 *state = SDL_GetKeyboardState(NULL);
     int close_requested = 0;
-    int StartbuttonPos[4]={800,1050,40,125};
     if(playerID == -1){
         playerID = reciveID("127.0.0.1");
     }

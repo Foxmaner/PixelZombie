@@ -15,19 +15,6 @@
 #include "ttf.h"
 #include "server/udpClient.h"
 
-int startrender=2;
-int lobby=2;
-int credits=2;
-int back=2;
-
-void setStartRender(int a){
-    startrender = a;
-}
-
-int checkIfGamestarted(){
-    return startrender;
-}
-
 void SetRenderDrawColor(){
     SDL_SetRenderDrawColor(iSDL.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 }
@@ -37,22 +24,7 @@ void clearRenderer(){
 }
 
 void renderMenu(){
-    char IPaddress[12]="\0";
-    SDL_RenderCopyEx(iSDL.renderer, MenuInit.mstartbutton, &MenuInit.gstartbutton[0],&MenuInit.gstartbutton[0], 0, NULL, SDL_FLIP_NONE);
-    GetString(IPaddress, 12 );
-    //printf( "%s", IPaddress );
-    //Beginning menu
-    if (lobby!=1 && credits!=1){
-        mainMenu(iSDL.renderer, &lobby, &credits, &back);
-    }
-    //Entering IPadress
-    if (lobby==1){
-        playerLobby(iSDL.renderer, &startrender, &lobby, &credits, &back, IPaddress);
-    }
-    if (credits==1)
-    {
-        creditMenu(iSDL.renderer, &lobby, &credits, &back);
-    }
+    theMenu(iSDL.renderer);
 }
 
 
@@ -101,8 +73,8 @@ void renderPreset(){
 void renderGame(){
     SetRenderDrawColor();
     clearRenderer();
-    if (startrender!=1) {renderMenu();}
-    if (startrender==1){
+    if (checkIfGamestarted()!=1) {renderMenu();}
+    if (checkIfGamestarted()==1){
         SDL_PumpEvents();
         renderBackground(&iSDL, backTiles);
         renderHealthBar();

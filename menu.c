@@ -12,6 +12,19 @@
 #define PUBLIC /* empty */
 #define PRIVATE static
 
+int startrender=2;
+int lobby=2;
+int credits=2;
+int back=2;
+
+void setStartRender(int a){
+    startrender = a;
+}
+
+int checkIfGamestarted(){
+    return startrender;
+}
+
 PUBLIC void playerLobby(SDL_Renderer *renderer, int *startrender, int *lobby, int *credits, int *back, char* IPaddress){
     int backbutton[4]={40,190,600,750};
     int StartbuttonPos[4]={800,1050,40,125};
@@ -63,7 +76,24 @@ PUBLIC void creditMenu(SDL_Renderer *renderer, int *lobby, int *credits, int *ba
     }   
 }
 
-PUBLIC void theMenu()
+PUBLIC void theMenu(SDL_Renderer *renderer)
 {
+    char IPaddress[12]="\0";
+    SDL_RenderCopyEx(iSDL.renderer, MenuInit.mBackgroundMenu, &MenuInit.gMenubackground[0],&MenuInit.gMenubackground[0], 0, NULL, SDL_FLIP_NONE);
+    GetString(IPaddress, 12 );
+    //printf( "%s", IPaddress );
+    //Beginning menu
+    if (lobby!=1 && credits!=1){
+        mainMenu(iSDL.renderer, &lobby, &credits, &back);
+    }
+    //Entering IPadress
+    if (lobby==1){
+        playerLobby(iSDL.renderer, &startrender, &lobby, &credits, &back, IPaddress);
+    }
+    if (credits==1)
+    {
+        creditMenu(iSDL.renderer, &lobby, &credits, &back);
+    }
 
+    
 }
