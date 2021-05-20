@@ -20,10 +20,12 @@ int lobby=2;
 int credits=2;
 int back=2;
 
+//Sets startrender in order to make game over
 void setStartRender(int a){
     startrender = a;
 }
 
+//Draws white canvas
 void SetRenderDrawColor(){
     SDL_SetRenderDrawColor(iSDL.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 }
@@ -131,18 +133,21 @@ void renderBackground(InitSDL* iSDL, Background_Tiles backTiles){
     }
 }
 
+//Renders 0-3 hearts depending on players hitpoints
 void renderHealthBar(){
     for(int i = 0; i < PlayerInit.hitPoint[getPlayerID()]; i++){
         SDL_RenderCopy(iSDL.renderer, h.mHeart, &h.gHeart[0], &h.hPosition[i]);
     }
 }
 
+//Renders all alive players
 void renderAllPlayers(){
     for(int i = 0; i < PlayerInit.nrOfPlayers; i++)
         if(PlayerInit.alive[i])
             SDL_RenderCopyEx(iSDL.renderer, PlayerInit.mPlayer, &PlayerInit.gPlayer[PlayerInit.pFrame[i]], &PlayerInit.pPosition[i], 0, NULL, PlayerInit.flip[i]);
 }
 
+//Renders all alive zombies
 void renderAllZombies(){
     for(int i = 0; i < ZombInit.nrOfZombies; i++){
         if(z[i]->alive)
@@ -150,6 +155,7 @@ void renderAllZombies(){
     }
 }
 
+//Renders bullet if shot
 void renderBullet(){
     if(b.shot) SDL_RenderCopyEx(iSDL.renderer, b.mBullet, &b.gBullet[0], &b.bPosition, b.bUpDown, NULL, SDL_FLIP_NONE);
 }
@@ -158,6 +164,9 @@ void renderPreset(){
     SDL_RenderPresent(iSDL.renderer);
 }
 
+
+//Renders menu at start and game over...
+//...when game start renders game
 void renderGame(){
     SetRenderDrawColor();
     clearRenderer();
@@ -171,5 +180,6 @@ void renderGame(){
         renderAllPlayers();
     }
     renderPreset();
+    //Set to a comfortable fps
     SDL_Delay(1000/60);
 }

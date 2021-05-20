@@ -57,13 +57,13 @@ void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit,
     //O X O O
     //O O O O
     for(int i = 8; i < 16; i++){
-        //ZombInit->gZombie[i].x = (108 * (i % 2)) + 166;       This line does not work for some fucking reason, even though the exact same line reoccurs at line 57
+        //ZombInit->gZombie[i].x = (108 * (i % 2)) + 166;       This line does not work for some reason, even though the exact same line reoccurs at line 77
         if(i % 2 == 0) ZombInit->gZombie[i].y = (54 * (i % 8)) / 2;
         else ZombInit->gZombie[i].y = ZombInit->gZombie[i-1].y;
         ZombInit->gZombie[i].w = 43;
         ZombInit->gZombie[i].h = 54;
     }
-    ZombInit->gZombie[8].x = 166;            //Because line 40 does not work, it had to be manually inputed...
+    ZombInit->gZombie[8].x = 166;            //Because line 60 does not work, it had to be manually inputed...
     ZombInit->gZombie[9].x = 274;
     ZombInit->gZombie[10].x = 166;
     ZombInit->gZombie[11].x = 274;
@@ -199,7 +199,7 @@ void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit,
     PlayerInit->gPlayer[15].y = 399;
     PlayerInit->gPlayer[15].w = 69;
     PlayerInit->gPlayer[15].h = 64;
-    //Shoot Up
+    //Shoot Up                              Not working...
     /*PlayerInit->gPlayer[16].x = 595;
     PlayerInit->gPlayer[16].y = 397;
     PlayerInit->gPlayer[16].w = 64;
@@ -279,6 +279,6 @@ void playZombieAttack(){
 }
 
 void playZombieBrain(){
-    if(rand() % 300 == 0) 
+    if(rand() % 300 == 0)
         Mix_PlayChannel(-1, sfxZombieBrain, 0);
 }

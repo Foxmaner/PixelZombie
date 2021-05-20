@@ -14,10 +14,14 @@
 PRIVATE int ZOMBIE_WIDTH = 54;
 PRIVATE int ZOMBIE_HEIGTH = 54;
 
+//Spawnpoints
+//LEFT
 PRIVATE int zSpawnPointX0 = -200;
 PRIVATE int zSpawnPointY0 = 360;
+//BOTTOM
 PRIVATE int zSpawnPointX1 = 335;
 PRIVATE int zSpawnPointY1 = 1224;
+//RIGHT
 PRIVATE int zSpawnPointX2 = 1224;
 PRIVATE int zSpawnPointY2 = 360;
 
@@ -55,6 +59,7 @@ PUBLIC int getZombieHitPoint(Zombie a){
     return a->hitPoint;
 }
 
+//Gives and spawn zombies at "random" spawnpoint and give random skin
 PUBLIC void createAllZombies(){
     for(int i = 0; i < ZombInit.nrOfZombies; i++){
         z[i] = createZombie(getZSpawnPointX(i % 3),getZSpawnPointY(i % 3));
