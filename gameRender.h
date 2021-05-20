@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include "gameInit.h"
-
+int checkIfGamestarted();
 void setStartRender(int a);
 void renderBackground(InitSDL* iSDL, Background_Tiles backTiles);
 void renderHealthBar();

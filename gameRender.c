@@ -24,6 +24,10 @@ void setStartRender(int a){
     startrender = a;
 }
 
+int checkIfGamestarted(){
+    return startrender;
+}
+
 void SetRenderDrawColor(){
     SDL_SetRenderDrawColor(iSDL.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 }
@@ -33,61 +37,24 @@ void clearRenderer(){
 }
 
 void renderMenu(){
-        char IPaddress[12]="\0";
-        SDL_RenderCopyEx(iSDL.renderer, StartInit.mstartbutton, &StartInit.gstartbutton[0],&StartInit.gstartbutton[0], 0, NULL, SDL_FLIP_NONE);
-        GetString(IPaddress, 12 );
-        //printf( "%s", IPaddress );
-        int buttonPos[4]={40,155,40,85};
-        int buttonStartGamePos[4]={40,155,80,125};
-        int backbutton[4]={40,190,600,750};
-        int StartbuttonPos[4]={40,155,800,845};
-        //Beginning menu
-        if (lobby!=1 && credits!=1){
-            createTextbox(iSDL.renderer, 40, 40, "START", 36);
-            createTextbox(iSDL.renderer, 40, 80, "Credits", 36); 
-            lobby=checkmousestate(&buttonPos[0],&buttonPos[1],&buttonPos[2],&buttonPos[3]);
-            credits=checkmousestate(&buttonStartGamePos[0],&buttonStartGamePos[1],&buttonStartGamePos[2],&buttonStartGamePos[3]);
-            back=2;
-        }
-
-        //Entering IPadress
-        if (lobby==1){
-            createTextbox(iSDL.renderer, 40, 40, "Enter IPadress:", 36); 
-            createTextbox(iSDL.renderer, 300, 40,  IPaddress, 36); 
-
-            createTextbox(iSDL.renderer, 40, 600, "Back", 36);
-
-            back=checkmousestate(&backbutton[0],&backbutton[1],&backbutton[2],&backbutton[3]);
-            if (back==1){
-                lobby=2;
-                credits=2;
-            }
-
-            createTextbox(iSDL.renderer, 800, 40, "Start game", 36); 
-            startrender=checkmousestate(&buttonStartGamePos[0],&buttonStartGamePos[1],&buttonStartGamePos[2],&buttonStartGamePos[3]);
-        }
-
-        if (credits==1)
-        {
-            createTextbox(iSDL.renderer, 40, 600, "Back", 36);
-            //Creators
-            createTextbox(iSDL.renderer, 40, 80, "Made by Anton C, Carl G, Eskil B, Markus H, Marcus M", 36); 
-            //Heart pixel art
-            createTextbox(iSDL.renderer, 40, 120, "Heart pixel art: DanSevenStar.xyz", 30); 
-            //Spelare
-            createTextbox(iSDL.renderer, 40, 160, "Player: thekingphoenix & Bonsaiheldin", 30); 
-            //Zombie
-            createTextbox(iSDL.renderer, 40, 200, "Zombie: Kazzador & Enterbrain", 30); 
-            //Musik
-            createTextbox(iSDL.renderer, 40, 240, "Music: March of Midnight by Scott Buckley ", 30); 
-
-            back=checkmousestate(&backbutton[0],&backbutton[1],&backbutton[2],&backbutton[3]);
-            if (back==1){
-                lobby=2;
-                credits=2;
-            }
-        }
+    char IPaddress[12]="\0";
+    SDL_RenderCopyEx(iSDL.renderer, mBackgroundInit.mMenubackground, &mBackgroundInit.gMenubackground[0],&mBackgroundInit.gMenubackground[0], 0, NULL, SDL_FLIP_NONE);
+    GetString(IPaddress, 12 );
+    //printf( "%s", IPaddress );
+    //Beginning menu
+    if (lobby!=1 && credits!=1){
+        mainMenu(iSDL.renderer, &lobby, &credits, &back);
+    }
+    //Entering IPadress
+    if (lobby==1){
+        playerLobby(iSDL.renderer, &startrender, &lobby, &credits, &back, IPaddress);
+    }
+    if (credits==1)
+    {
+        creditMenu(iSDL.renderer, &lobby, &credits, &back);
+    }
 }
+
 
 void renderBackground(InitSDL* iSDL, Background_Tiles backTiles){
     SDL_Rect position;

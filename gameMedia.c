@@ -23,14 +23,14 @@ Mix_Chunk *sfxZombieDie;
 Mix_Chunk *sfxZombieAttack;
 Mix_Chunk *sfxZombieBrain;
 
-void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit, Player_Init* PlayerInit, Bullet* b, Heart* h, Start_Init* StartInit){
+void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit, Player_Init* PlayerInit, Bullet* b, Heart* h, mBackground_Init* mBackgroundInit){
     //Startbutton
-    SDL_Surface* gButtonsurface = IMG_Load("resources/images/finalNight.png");
-    StartInit->mstartbutton = SDL_CreateTextureFromSurface(iSDL->renderer, gButtonsurface);
-    StartInit->gstartbutton[0].x = 0;
-    StartInit->gstartbutton[0].y = 0;
-    StartInit->gstartbutton[0].w = 1200;
-    StartInit->gstartbutton[0].h = 1200;
+    SDL_Surface* gBackgroundsurface = IMG_Load("resources/images/finalNight.png");
+    mBackgroundInit->mMenubackground = SDL_CreateTextureFromSurface(iSDL->renderer, gBackgroundsurface);
+    mBackgroundInit->gMenubackground[0].x = 0;
+    mBackgroundInit->gMenubackground[0].y = 0;
+    mBackgroundInit->gMenubackground[0].w = 1200;
+    mBackgroundInit->gMenubackground[0].h = 1200;
   
     //Map
     SDL_Surface* gTilesSurface = IMG_Load("resources/images/Textur32x32V8.PNG");

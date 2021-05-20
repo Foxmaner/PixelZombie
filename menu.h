@@ -2,28 +2,22 @@
 #define menu_h
 #include <stdio.h>
 #include <SDL2/SDL.h>
+#include "gameInit.h"
 
+struct menubackground{
+    int MBACKGROUND_POSITION_X;
+    int MBACKGROUND_POSITION_Y;
+    int INITMBACKGROUNDT;
+}; typedef struct menubackground *Menubackground;
 
-struct startbutton{
-    int STARTBUTTON_POSITION_X;
-    int STARTBUTTON_POSITION_Y;
-    int INITSTART;
-}; typedef struct startbutton *Startbutton;
-
-struct startsync{
-    SDL_Texture *mstartbutton;
-    SDL_Rect gstartbutton[1];
+struct backgroundSync{
+    SDL_Texture *mMenubackground;
+    SDL_Rect gMenubackground[1];
     SDL_Rect WhichPlayer[4];
-    int GameInstance[4];
-};typedef struct startsync Start_Init;
-Start_Init StartInit;
+};typedef struct backgroundSync mBackground_Init;
+mBackground_Init mBackgroundInit;
 
-int setStartButtonPosition(int x, int y);
-int getStartState(Startbutton a);
-int getStartButtonWidth();
-int getStartButtonHeight();
-void setStartButtomPositionY(Startbutton a, int y);
-void setStartButtonPositionX(Startbutton a, int x);
-Startbutton startButtonPos(int x, int y);
-
+void mainMenu(SDL_Renderer *renderer, int *lobby, int *credits, int *back);
+void creditMenu(SDL_Renderer *renderer, int *lobby, int *credits, int *back);
+void playerLobby(SDL_Renderer *renderer,int *startrender, int *lobby, int *credits, int *back, char* IPaddress);
 #endif /* menu_h */

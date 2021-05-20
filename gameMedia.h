@@ -7,7 +7,7 @@
 #include "player.h"
 #include "menu.h"
 
-void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit, Player_Init* PlayerInit, Bullet* b, Heart* h, Start_Init* StartInit);
+void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit, Player_Init* PlayerInit, Bullet* b, Heart* h,  mBackground_Init* mBackgroundInit);
 void playBgGameMusic();
 void playBgMenuMusic();
 void playPistolShot();

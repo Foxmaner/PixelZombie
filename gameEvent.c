@@ -305,12 +305,12 @@ int mainGameEvent(){
     strcpy(Bufstring,bufIPaddress);
     const Uint8 *state = SDL_GetKeyboardState(NULL);
     int close_requested = 0;
-    int StartbuttonPos[4]={40,155,80,125};
+    int StartbuttonPos[4]={800,1050,40,125};
     if(playerID == -1){
         playerID = reciveID("127.0.0.1");
     }
     if (select!=1){
-        select=checkmousestate(&StartbuttonPos[0],&StartbuttonPos[1],&StartbuttonPos[2],&StartbuttonPos[3]);
+        select=checkIfGamestarted();
         Mix_HaltMusic();
     }
     reciveData("127.0.0.1", kordLista);
