@@ -133,7 +133,7 @@ int closestPlayerToZombie(int zombieNr){
     double closestPlayerIdDistance;
     double distancePlayer;
     for (int i = 0; i < PlayerInit.nrOfPlayers; i++){
-        if(PlayerInit.hitPoint[i] != 0){
+        if(PlayerInit.alive[i]){
             closestPlayerIdDistance = distance(PlayerInit.pPosition[closestPlayerId].x, PlayerInit.pPosition[closestPlayerId].y, ZombInit.zPosition[zombieNr].x, ZombInit.zPosition[zombieNr].y);
             distancePlayer = distance(PlayerInit.pPosition[i].x, PlayerInit.pPosition[i].y, ZombInit.zPosition[zombieNr].x, ZombInit.zPosition[zombieNr].y);
             if(closestPlayerIdDistance > distancePlayer){
@@ -147,6 +147,11 @@ int closestPlayerToZombie(int zombieNr){
 void zombieTrackingPlayer(int i){
     int playerToTrack=0;
     playerToTrack = closestPlayerToZombie(i);
+    if(!PlayerInit.alive[playerToTrack]){                   //fullösning
+        for(int j = 0; j < PlayerInit.nrOfPlayers; j++){    //
+            if(PlayerInit.alive[j]) playerToTrack = j;      //
+        }                                                   //
+    }
     if((ZombInit.zPosition[i].x - PlayerInit.pPosition[playerToTrack].x) > 20){
         ZombInit.zPosition[i].x -= 1;
         //Frame change LEFT
@@ -186,7 +191,7 @@ void zombieCollisionWithZombie(int i){
 void isGameOver(){
     int playersDead = 0;
     for(int i = 0; i < PlayerInit.nrOfPlayers; i++){
-        if(PlayerInit.hitPoint[i] < 1){
+        if(!PlayerInit.alive[i]){
             playersDead++;
             if(playersDead == PlayerInit.nrOfPlayers){
                 setStartRender(2);
@@ -198,13 +203,14 @@ void isGameOver(){
 }
 
 void zombieCollisionWithPlayer(int i, int *currentDmgTakenTime,int *lastDmgTakenTime){
-    if(z[i]->alive && PlayerInit.hitPoint[playerID] > 0 && checkZCollisionWithP(ZombInit.zPosition[i],PlayerInit.pPosition[playerID])){
+    if(z[i]->alive && PlayerInit.alive[playerID] && checkZCollisionWithP(ZombInit.zPosition[i],PlayerInit.pPosition[playerID])){
         if(msTimer(currentDmgTakenTime, lastDmgTakenTime, 1000)){
             playZombieAttack();
             playPlayerHurt();
             //hurtPlayer(PlayerInit.hitPoint[playerID]);
             PlayerInit.hitPoint[playerID]--;
-            sendData( 3, PlayerInit.hitPoint[playerID], 0, "127.0.0.1", playerID);
+            if(PlayerInit.hitPoint[playerID] == 0) PlayerInit.alive[playerID] = false;
+            sendData( 3, PlayerInit.alive[playerID], 0, "127.0.0.1", playerID);
         }
     }
 }
@@ -390,8 +396,8 @@ int mainGameEvent(){
         z[kordLista[1]]->alive = 0;
     }
     else if(kordLista[3]==3){
-        PlayerInit.hitPoint[kordLista[0]] = kordLista[1];
-        printf("%d blev skjuten och har %d i liv", kordLista[0], PlayerInit.hitPoint[kordLista[0]]);
+        PlayerInit.alive[kordLista[0]] = kordLista[1];
+        printf("%d dog", kordLista[0]);
     }
     //receiveCoordData(&kordLista, &playerID);
     if(select!=1){

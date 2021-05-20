@@ -65,6 +65,7 @@ PUBLIC void createAllPlayers(){
         PlayerInit.pPosition[i].w = 64;
         PlayerInit.pPosition[i].h = 64;
         PlayerInit.hitPoint[i] = 3;
+        PlayerInit.alive[i] = true;
     }
 }
 

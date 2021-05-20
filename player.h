@@ -2,6 +2,7 @@
 #define player_h
 
 #include <stdio.h>
+#include <stdbool.h>
 #include <SDL2/SDL.h>
 
 struct player_type{
@@ -18,6 +19,7 @@ struct Player_Init{
     int pFrame[4];
     SDL_RendererFlip flip[4];
     int hitPoint[4];
+    bool alive[4];
 };typedef struct Player_Init Player_Init;
 Player_Init PlayerInit;
 
