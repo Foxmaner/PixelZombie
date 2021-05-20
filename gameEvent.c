@@ -305,12 +305,13 @@ int mainGameEvent(){
     strcpy(Bufstring,bufIPaddress);
     const Uint8 *state = SDL_GetKeyboardState(NULL);
     int close_requested = 0;
-    int buttonPos[4]={40,155,80,125};
+    int StartbuttonPos[4]={40,155,80,125};
     if(playerID == -1){
         playerID = reciveID("127.0.0.1");
     }
     if (select!=1){
-        select=checkmousestate(&buttonPos[0],&buttonPos[1],&buttonPos[2],&buttonPos[3]);
+        select=checkmousestate(&StartbuttonPos[0],&StartbuttonPos[1],&StartbuttonPos[2],&StartbuttonPos[3]);
+        Mix_HaltMusic();
     }
     reciveData("127.0.0.1", kordLista);
     if(kordLista[3] == 0){
@@ -345,12 +346,7 @@ int mainGameEvent(){
             close_requested = 1;
             return close_requested;
         } 
-        if(SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT & select == 0)){
-            printf("Mouse Button 1 (left) is pressed.");
-            select = 1;
-            Mix_HaltMusic();
-        }
-        if(select == 1){
+        //if(select == 1){
             playBgGameMusic();
             if(event.type == SDL_KEYDOWN){
                 sendData(0, PlayerInit.pPosition[playerID].x, PlayerInit.pPosition[playerID].y, "127.0.0.1", playerID);
@@ -360,7 +356,7 @@ int mainGameEvent(){
             if(event.type == SDL_KEYUP){
                 releasedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
             }
-        }
+        //}
     }
     if (select == 1){
         respawnZombie();
@@ -386,7 +382,6 @@ int MenuKeyboard(SDL_Event event,char buf[],int *LetterforIP){
     if (event.key.keysym.sym==SDLK_1)
     {
         buf[*LetterforIP]='1'; 
-
     }
     if (event.key.keysym.sym==SDLK_2)
     {
