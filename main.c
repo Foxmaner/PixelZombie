@@ -10,6 +10,7 @@
 #include "gameInit.h"
 #include "gameEvent.h"
 #include "gameRender.h"
+#include "gameQuit.h"
 
 int WinMain(void){
     srand(time(NULL));
@@ -22,5 +23,5 @@ int WinMain(void){
         renderGame();
     }while(close != 1);
 
-    SDL_Quit();
+    quitGame();
 }
