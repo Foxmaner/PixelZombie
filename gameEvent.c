@@ -16,9 +16,8 @@
 #include "server/udpClient.h"
 
 int lastDmgTakenTime = 0, currentDmgTakenTime = 0;
-
+int playerID = -1;
 int kordLista[4];
-int playerID=-1;
 int up_w,down_s,left_a,right_d,lctrl, select=2, IPletter=0;
 char Bufstring[12]="\0";
 
@@ -341,6 +340,7 @@ void GetString(char* strOut, unsigned int strSize){
 }
 
 int mainGameEvent(){
+    playerID = PlayerInit.playerID;
     int LetterforIP;
     if(LetterforIP>12) LetterforIP=0;
     char bufIPaddress[12];
@@ -348,9 +348,6 @@ int mainGameEvent(){
     const Uint8 *state = SDL_GetKeyboardState(NULL);
     int close_requested = 0;
     int buttonPos[4]={40,155,80,125};
-    if(playerID == -1){
-        playerID = reciveID("127.0.0.1");
-    }
     reciveData("127.0.0.1", kordLista);
     if(kordLista[3] == 0){
         //printf("Satta kordinater %d %d \n", kordLista[0], kordLista[1]);

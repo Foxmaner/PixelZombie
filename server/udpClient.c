@@ -94,7 +94,7 @@ int reciveID(char selectedIp[100]){
 			return i;
 		}
 		else{
-			//printf("Inget id Mottaget! \n");
+			printf("Inget id Mottaget! \n");
 		}
 	}
 	else{
@@ -102,5 +102,5 @@ int reciveID(char selectedIp[100]){
 		createConnection(selectedIp);
 		reciveID(selectedIp);
 	}
-	return -1;
+	return -2;
 }

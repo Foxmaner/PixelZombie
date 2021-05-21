@@ -126,15 +126,16 @@ int WinMain(int argc, char **argv)
 
 void sendId(int playerId, Uint32 selectedIp, Uint32 selectedPort){
 	
-	printf("cool");
+	//printf("cool");
 	pSent->address.host = selectedIp;	/* Set the destination host */
 	pSent->address.port = selectedPort;
-	printf("cool2");
+	//printf("cool2");
 	//sscanf((char * )pRecive->data, "%d", playerId);
 	printf("%d\n", playerId);
 	sprintf((char *)pSent->data, "%d\n", playerId);
 	pSent->len = strlen((char *)pSent->data) + 1;
 	SDLNet_UDP_Send(sd, -1, pSent);
+	printf("SentId %d och %d", selectedIp , selectedPort);
 	
 
 }
