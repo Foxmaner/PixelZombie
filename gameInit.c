@@ -16,6 +16,8 @@
 #define WINDOW_WIDTH (1024)
 #define WINDOW_HEIGHT (1024)
 
+int tempID = -1; 
+
 GameTimer initTime(){
     timer.second = 0;
     timer.minute = 0;
@@ -88,7 +90,8 @@ void startGameTimer(){
 }
 
 void initGame(){
-    PlayerInit.playerID = -1;
+    PlayerInit.playerID;
+    
     if(!GIO.initedGame){
         initSDL();
         initWindow();
@@ -99,8 +102,8 @@ void initGame(){
     createHeart();
     ZombInit.nrOfZombies = 6;
     createAllZombies();
-    sendData(0,0,0,"127.0.0.1" ,-3);
-    PlayerInit.nrOfPlayers = 2;
+    sendData(10,0,0,"127.0.0.1" ,PlayerInit.playerID);
+    PlayerInit.nrOfPlayers = 4;
     printf("Player ID  %d \n", PlayerInit.playerID);
     createAllPlayers();
     createBullet();
@@ -108,7 +111,11 @@ void initGame(){
     Mix_HaltMusic();
     playBgMenuMusic();
     GIO.gameOver = false;
-    if(PlayerInit.playerID == -1){
+    if(tempID == -1){
         PlayerInit.playerID = reciveID("127.0.0.1");
+        tempID = PlayerInit.playerID;
+    }
+    else{
+        PlayerInit.playerID = tempID;
     }
 }
