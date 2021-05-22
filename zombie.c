@@ -25,6 +25,12 @@ PRIVATE int zSpawnPointY1 = 1224;
 PRIVATE int zSpawnPointX2 = 1224;
 PRIVATE int zSpawnPointY2 = 360;
 
+/*int currentLevel=1;
+
+int getCurrentLevel(){
+    return currentLevel;
+}*/
+
 PUBLIC Zombie createZombie(int x, int y){
     Zombie z = malloc(sizeof(struct zombie_type));
     z->ZOMBIE_POSITION_Y = y;
@@ -61,6 +67,7 @@ PUBLIC int getZombieHitPoint(Zombie a){
 
 //Gives and spawn zombies at "random" spawnpoint and give random skin
 PUBLIC void createAllZombies(){
+    //createTextbox(iSDL.renderer,x,y,"1",size);
     for(int i = 0; i < ZombInit.nrOfZombies; i++){
         z[i] = createZombie(getZSpawnPointX(i % 3),getZSpawnPointY(i % 3));
         ZombInit.zPosition[i].x = getZombiePositionX(z[i]);
@@ -185,6 +192,8 @@ PUBLIC void killZombie(Zombie a, int i, int playerID){
 
 PUBLIC void respawnZombie(){
     int alive=0;   // All zombies dead?
+    char txt[4]="";
+    int newZombieId=0;
     for(int a = 0; a < ZombInit.nrOfZombies; a++){
         if(z[a]->alive) alive++;
     }
@@ -195,6 +204,16 @@ PUBLIC void respawnZombie(){
             ZombInit.zPosition[a].x = getZSpawnPointX(a % 3);
             ZombInit.zPosition[a].y = getZSpawnPointY(a % 3);
         }
+        
+        newZombieId = ZombInit.nrOfZombies+=2;
+        //currentLevel++; sprintf(txt,"%d",currentLevel);
+        //createTextbox(iSDL.renderer,x,y,txt,size); 
+        z[newZombieId] = createZombie(getZSpawnPointX(newZombieId % 3),getZSpawnPointY(newZombieId % 3));
+        ZombInit.zPosition[newZombieId].x = getZombiePositionX(z[newZombieId]);
+        ZombInit.zPosition[newZombieId].y = getZombiePositionY(z[newZombieId]);
+        ZombInit.zPosition[newZombieId].w = 43;
+        ZombInit.zPosition[newZombieId].h = 54;
+        zFrame[newZombieId].skin = ((rand() % 4 + 1) * 8) - 8;
     }
 }
 

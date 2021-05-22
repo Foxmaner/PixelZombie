@@ -103,14 +103,14 @@ void initGame(){
         initSDL();
         initWindow();
         initAudio();
+        PlayerInit.nrOfPlayers = 2;
+        ZombInit.nrOfZombies = 6;
         GIO.initedGame = true;
     }
     ///Initilizes at start of game and at every game over
     initTime();
     createHeart();
-    ZombInit.nrOfZombies = 6;
     createAllZombies();
-    PlayerInit.nrOfPlayers = 2;
     createAllPlayers();
     createBullet();
     loadMedia(&iSDL, &backTiles, &ZombInit, &PlayerInit, &b, &h, &StartInit);

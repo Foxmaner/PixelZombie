@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <SDL2/SDL.h>
 
 struct zombie_type{
     int ZOMBIE_POSITION_X;
