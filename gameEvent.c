@@ -315,7 +315,6 @@ int mainGameEvent(){
     reciveData("127.0.0.1", kordLista);
 
     if(kordLista[3] == 0){
-        if (areyoulooking==1){select=1;}
         //printf("Satta kordinater %d %d \n", kordLista[0], kordLista[1]);
         if((PlayerInit.pPosition[kordLista[0]].x) < (kordLista[1])){
             PlayerInit.pFrame[kordLista[0]] = 0;
@@ -336,11 +335,15 @@ int mainGameEvent(){
 
     }else if(kordLista[3]==1){
         PlayerInit.pFrame[kordLista[0]]=15;
-        if (areyoulooking==1){select=1;}
     }
     else if(kordLista[3]==2){
         z[kordLista[1]]->alive = 0;
-        if (areyoulooking==1){select=1;}
+    }
+    else if(kordLista[3]==3){
+        if (areyoulooking==1){
+            select=kordLista[1];
+            PlayerInit.nrOfPlayers = kordLista[2];
+        }
     }
 
     //receiveCoordData(&kordLista, &playerID);
@@ -353,8 +356,10 @@ int mainGameEvent(){
             } 
             playBgGameMusic();
             if(event.type == SDL_KEYDOWN){
-                sendData(0, PlayerInit.pPosition[playerID].x, PlayerInit.pPosition[playerID].y, "127.0.0.1", playerID);
-                if (select == 1){pressedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);}
+                if (select == 1){
+                    sendData(0, PlayerInit.pPosition[playerID].x, PlayerInit.pPosition[playerID].y, "127.0.0.1", playerID);
+                    pressedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
+                }
                 MenuKeyboard(event, bufIPaddress, bufAmountPlayers, &LetterforIP);
             }
             if(event.type == SDL_KEYUP){

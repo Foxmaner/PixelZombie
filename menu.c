@@ -8,6 +8,7 @@
 #include "menu.h"
 #include "gameEvent.h"
 #include "ttf.h"
+#include "player.h"
 
 #define PUBLIC /* empty */
 #define PRIVATE static
@@ -99,10 +100,10 @@ PUBLIC int CheckIfLooking()
 
 PUBLIC void theMenu(SDL_Renderer *renderer)
 {
-    char IPaddress[12]=" \0";
     char AmountPlayers[2]="\0";
+    char IPaddress[12]=" \0";
     SDL_RenderCopyEx(iSDL.renderer, MenuInit.mBackgroundMenu, &MenuInit.gMenubackground[0],&MenuInit.gMenubackground[0], 0, NULL, SDL_FLIP_NONE);
-    GetIPaddress(IPaddress, 12 );
+    //GetIPaddress(PlayerInit.IPaddress, 15 );
     GetAmountPlayers(AmountPlayers, 2);
     //Beginning menu
     if (lookingforgame!=1 && credits!=1 && lookingforgame!=1 && hostinggame!=1){

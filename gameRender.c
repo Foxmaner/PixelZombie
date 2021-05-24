@@ -15,6 +15,8 @@
 #include "ttf.h"
 #include "server/udpClient.h"
 
+int firstStart = 0;
+
 void SetRenderDrawColor(){
     SDL_SetRenderDrawColor(iSDL.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 }
@@ -75,14 +77,17 @@ void renderBullet(){
 void renderPreset(){
     SDL_RenderPresent(iSDL.renderer);
 }
-
 void renderGame(){
     SetRenderDrawColor();
     clearRenderer();
 
     if (checkIfGamestarted()!=1) {renderMenu();}
+    
     if (checkIfGamestarted()==1){
-
+        if(firstStart == 0){
+            sendData(3,1,PlayerInit.nrOfPlayers,"127.0.0.1" ,PlayerInit.playerID); 
+            firstStart = 1;
+        }
         SDL_PumpEvents();
         renderBackground(&iSDL, backTiles);
         renderHealthBar();

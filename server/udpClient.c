@@ -35,7 +35,7 @@ void sendData(int flag, int x_cord, int y_cord, char selectedIp[100], int player
 			//exit(EXIT_FAILURE);
 		}
 		// send and retrive positions
-		sprintf((char *)p->data, "%d %d %d %d %d\n", (int)flag, (int)playerID, (int)x_cord, (int)y_cord);
+		sprintf((char *)p->data, "%d %d %d %d \n", (int)flag, (int)playerID, (int)x_cord, (int)y_cord);
 		p->address.host = srvadd.host; /* Set the destination host */
 		p->address.port = srvadd.port; /* And destination port */
 		p->len = strlen((char *)p->data) + 1;
@@ -57,6 +57,7 @@ void reciveData(char selectedIp[100], int kordinater[4]){
 			//Flag = 0 == Player reporting possition
 			//Flag = 1 == Player reporting gunshot
 			//Flag = 2 == Player reporting zombieDeath
+			//Flag = 3 == Report gamestart
 			if(flag == 0){
 				kordinater[0] = recivedID;
 				kordinater[1] = a;
@@ -70,7 +71,13 @@ void reciveData(char selectedIp[100], int kordinater[4]){
 				kordinater[0] = recivedID;
 				kordinater[1] = a;
 				kordinater[3] = flag;
-			}		
+			}	
+			else if(flag == 3){
+				kordinater[0] = recivedID;
+				kordinater[1] = a;
+				kordinater[2] = b;
+				kordinater[3] = flag;
+			}	
 		}
 		else{
 			kordinater[0] = -1000;
