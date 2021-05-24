@@ -205,15 +205,20 @@ PUBLIC void respawnZombie(){
             ZombInit.zPosition[a].y = getZSpawnPointY(a % 3);
         }
         
-        newZombieId = ZombInit.nrOfZombies+=1;
+        newZombieId = ZombInit.nrOfZombies;
+        printf("%d\n",newZombieId);
+        ZombInit.nrOfZombies+=2;
+        printf("nr# %d\n",ZombInit.nrOfZombies);
         //currentLevel++; sprintf(txt,"%d",currentLevel);
-        //createTextbox(iSDL.renderer,40,40,txt,20); 
-        z[newZombieId] = createZombie(getZSpawnPointX(newZombieId % 3),getZSpawnPointY(newZombieId % 3));
-        ZombInit.zPosition[newZombieId].x = getZombiePositionX(z[newZombieId]);
-        ZombInit.zPosition[newZombieId].y = getZombiePositionY(z[newZombieId]);
-        ZombInit.zPosition[newZombieId].w = 43;
-        ZombInit.zPosition[newZombieId].h = 54;
-        zFrame[newZombieId].skin = ((rand() % 4 + 1) * 8) - 8;
+        //createTextbox(iSDL.renderer,40,40,txt,20);                                                        //FIX
+        for(int i = newZombieId; i < newZombieId+2; i++){
+            z[i] = createZombie(getZSpawnPointX(i % 3),getZSpawnPointY(i % 3));
+            ZombInit.zPosition[i].x = getZombiePositionX(z[i]);
+            ZombInit.zPosition[i].y = getZombiePositionY(z[i]);
+            ZombInit.zPosition[i].w = 43;
+            ZombInit.zPosition[i].h = 54;
+            zFrame[i].skin = ((rand() % 4 + 1) * 8) - 8;
+        }
     }
 }
 
