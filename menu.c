@@ -87,6 +87,11 @@ PUBLIC void creditMenu(SDL_Renderer *renderer, int *credits, int *back){
     }   
 }
 
+PUBLIC int CheckIfHost()
+{
+    return hostinggame;
+}
+
 PUBLIC void theMenu(SDL_Renderer *renderer)
 {
     char IPaddress[12]=" \0";

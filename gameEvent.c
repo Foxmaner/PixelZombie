@@ -19,7 +19,7 @@ int lastDmgTakenTime = 0, currentDmgTakenTime = 0;
 
 int kordLista[4];
 int playerID=-1;
-int up_w,down_s,left_a,right_d,lctrl, select=2, IPletter=0;
+int up_w,down_s,left_a,right_d,lctrl, select=2, IPletter=0, areyouhost=2;
 char IPBuffstring[12]=" \0";
 char AmountPlayersBuffstring[2]="4\0";
 
@@ -303,6 +303,7 @@ int mainGameEvent(){
     if (LetterforIP>12){LetterforIP=0;}
     char bufIPaddress[12];
     char bufAmountPlayers[2];
+    areyouhost=CheckIfHost();
     const Uint8 *state = SDL_GetKeyboardState(NULL);
     int close_requested = 0;
     if(playerID == -1){
@@ -379,26 +380,35 @@ int MenuKeyboard(SDL_Event event,char buf[],char buf2[], int *LetterforIP){
     if (event.key.keysym.sym==SDLK_1)
     {
         buf[*LetterforIP]='1'; 
-        buf2[0]='1';
-        PlayerInit.nrOfPlayers = 1;
+        if (areyouhost==1)
+        {
+            buf2[0]='1';
+            PlayerInit.nrOfPlayers = 1;
+        }
     }
     if (event.key.keysym.sym==SDLK_2)
     {
         buf[*LetterforIP]='2';
-        buf2[0]='2';
-        PlayerInit.nrOfPlayers = 2;
+        if (areyouhost==1){
+            buf2[0]='2';
+            PlayerInit.nrOfPlayers = 2;
+        }
     }
     if (event.key.keysym.sym==SDLK_3)
     {
         buf[*LetterforIP]='3';
-        buf2[0]='3';
-        PlayerInit.nrOfPlayers = 3;
+        if (areyouhost==1){
+            buf2[0]='3';
+            PlayerInit.nrOfPlayers = 3;
+        }
     }
     if (event.key.keysym.sym==SDLK_4)
     {
         buf[*LetterforIP]='4';
-        buf2[0]='4';
-        PlayerInit.nrOfPlayers = 4;
+        if (areyouhost==1){
+            buf2[0]='4';
+            PlayerInit.nrOfPlayers = 4;
+        }
     }
     if (event.key.keysym.sym==SDLK_5)
     {
