@@ -12,7 +12,7 @@
 #include "gameRender.h"
 #include "gameQuit.h"
 
-int WinMain(void){
+int main(void){
     srand(time(NULL));
     int close = 0;
     GIO.initedGame = false;

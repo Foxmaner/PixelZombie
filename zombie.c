@@ -206,8 +206,8 @@ PUBLIC void respawnZombie(){
         }
         
         newZombieId = ZombInit.nrOfZombies+=2;
-        currentLevel++; sprintf(txt,"%d",currentLevel);
-        createTextbox(iSDL.renderer,40,40,txt,20); 
+        //currentLevel++; sprintf(txt,"%d",currentLevel);
+        //createTextbox(iSDL.renderer,40,40,txt,20); 
         z[newZombieId] = createZombie(getZSpawnPointX(newZombieId % 3),getZSpawnPointY(newZombieId % 3));
         ZombInit.zPosition[newZombieId].x = getZombiePositionX(z[newZombieId]);
         ZombInit.zPosition[newZombieId].y = getZombiePositionY(z[newZombieId]);
