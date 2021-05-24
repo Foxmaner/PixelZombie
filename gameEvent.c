@@ -376,16 +376,16 @@ int MenuKeyboard(SDL_Event event,char buf[],char buf2[], int *LetterforIP){
 
     if (event.key.keysym.sym==SDLK_0)
     {
-        if (areyoulooking==1){
+        if (areyoulooking==1 && select!=1){
             buf[*LetterforIP]='0';
         }
     }
     if (event.key.keysym.sym==SDLK_1)
     {
-        if (areyoulooking==1){
+        if (areyoulooking==1 && select!=1){
         buf[*LetterforIP]='1'; 
         }
-        if (areyouhost==1)
+        if (areyouhost==1 && select!=1)
         {
             buf2[0]='1';
             PlayerInit.nrOfPlayers = 1;
@@ -393,67 +393,67 @@ int MenuKeyboard(SDL_Event event,char buf[],char buf2[], int *LetterforIP){
     }
     if (event.key.keysym.sym==SDLK_2)
     {
-        if (areyoulooking==1){
+        if (areyoulooking==1 && select!=1){
             buf[*LetterforIP]='2';
         }
-        if (areyouhost==1){
+        if (areyouhost==1 && select!=1){
             buf2[0]='2';
             PlayerInit.nrOfPlayers = 2;
         }
     }
     if (event.key.keysym.sym==SDLK_3)
     {
-        if (areyoulooking==1){
+        if (areyoulooking==1 && select!=1){
             buf[*LetterforIP]='3';
         }
-        if (areyouhost==1){
+        if (areyouhost==1 && select!=1){
             buf2[0]='3';
             PlayerInit.nrOfPlayers = 3;
         }
     }
     if (event.key.keysym.sym==SDLK_4)
     {
-        if (areyoulooking==1){
+        if (areyoulooking==1 && select!=1){
             buf[*LetterforIP]='4';
         }
-        if (areyouhost==1){
+        if (areyouhost==1 && select!=1){
             buf2[0]='4';
             PlayerInit.nrOfPlayers = 4;
         }
     }
     if (event.key.keysym.sym==SDLK_5)
     {
-        if (areyoulooking==1){
+        if (areyoulooking==1 && select!=1){
             buf[*LetterforIP]='5';
         }    
     }
     if (event.key.keysym.sym==SDLK_6)
     {
-        if (areyoulooking==1){
+        if (areyoulooking==1 && select!=1){
             buf[*LetterforIP]='6';
         }
     }
     if (event.key.keysym.sym==SDLK_7)
     {
-        if (areyoulooking==1){
+        if (areyoulooking==1 && select!=1){
             buf[*LetterforIP]='7';
         }
     }
     if (event.key.keysym.sym==SDLK_8)
     {
-        if (areyoulooking==1){
+        if (areyoulooking==1 && select!=1){
             buf[*LetterforIP]='8';
         }
     }
     if (event.key.keysym.sym==SDLK_9)
     {
-        if (areyoulooking==1){
+        if (areyoulooking==1 && select!=1){
             buf[*LetterforIP]='9';
         }
     }
     if (event.key.keysym.sym==SDLK_PERIOD)
     {
-        if (areyoulooking==1){
+        if (areyoulooking==1 && select!=1){
             buf[*LetterforIP]='.';
         }
     }
