@@ -302,7 +302,7 @@ int mainGameEvent(){
     int LetterforIP;
     if (LetterforIP>12){LetterforIP=0;}
     char bufIPaddress[12];
-    char bufAmountPlayers[2];
+    char bufAmountPlayers[2]="4";
     areyouhost=CheckIfHost();
     const Uint8 *state = SDL_GetKeyboardState(NULL);
     int close_requested = 0;
