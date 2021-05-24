@@ -18,15 +18,8 @@
 
 int firstStart = 0;
 
-int startrender=2;
-int lobby=2;
-int credits=2;
-int back=2;
 
 //Sets startrender in order to make game over
-void setStartRender(int a){
-    startrender = a;
-}
 
 
 //Draws white canvas

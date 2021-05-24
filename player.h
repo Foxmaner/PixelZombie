@@ -20,9 +20,7 @@ struct Player_Init{
     int pFrame[4];
     SDL_RendererFlip flip[4];
     int hitPoint[4];
-
     int playerID;
-
     bool alive[4];
 
 };typedef struct Player_Init Player_Init;

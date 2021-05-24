@@ -9,9 +9,6 @@ void renderHealthBar();
 void renderMenu();
 
 
-//Sets startrender in order to make game over
-void setStartRender(int a);
-
 //Draws white canvas
 
 void SetRenderDrawColor();
