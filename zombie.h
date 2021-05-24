@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <SDL2/SDL.h>
 
 struct zombie_type{
     int ZOMBIE_POSITION_X;
@@ -35,7 +36,10 @@ void setZombiePositionY(Zombie a, int y);
 int getZombieWidth();
 int getZombieHeight();
 int getZombieHP(Zombie a);
+
+//Gives and spawn zombies at "random" spawnpoint and give random skin
 void createAllZombies();
+
 int getZSpawnPointX(int a);
 int getZSpawnPointY(int a);
 void changeZFrameX(int frameA, int frameB, int i);

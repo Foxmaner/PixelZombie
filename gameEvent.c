@@ -15,6 +15,7 @@
 #include "gameRender.h"
 #include "server/udpClient.h"
 
+//Helps track time so players only take damage once per second
 int lastDmgTakenTime = 0, currentDmgTakenTime = 0;
 int playerID = -1;
 int kordLista[4];
@@ -35,6 +36,7 @@ int checkmousestate(int *lowX,int *highX,int *lowY,int *highY){
     //printf("MouseX: %d MouseY: %d\n ",MouseX, MouseY);
 }
 
+//Sets select in order to make game over
 void setSelect(int a){
     select = a;
 }
@@ -60,6 +62,7 @@ void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lct
         if(msTimer(&b.currentShotTime, &b.lastShotTime, 500)){  //13 rps
             b.shot = true;
             playPistolShot();
+            if(PlayerInit.pFrame[playerID] >= 0 && PlayerInit.pFrame[playerID] <= 8) PlayerInit.pFrame[playerID] = 15;
             sendData(1, 0,  0, "127.0.0.1", playerID);
         }
     }
@@ -118,8 +121,7 @@ void releasedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lc
     }
 
     if(event.key.keysym.sym==SDLK_LCTRL){
-        lctrl=0;
-        PlayerInit.pFrame[playerID]=15;
+        if(PlayerInit.pFrame[playerID] == 15) PlayerInit.pFrame[playerID]=0;
     }
 }
 
@@ -133,18 +135,28 @@ int closestPlayerToZombie(int zombieNr){
     double closestPlayerIdDistance;
     double distancePlayer;
     for (int i = 0; i < PlayerInit.nrOfPlayers; i++){
-        closestPlayerIdDistance = distance(PlayerInit.pPosition[closestPlayerId].x, PlayerInit.pPosition[closestPlayerId].y, ZombInit.zPosition[zombieNr].x, ZombInit.zPosition[zombieNr].y);
-        distancePlayer = distance(PlayerInit.pPosition[i].x, PlayerInit.pPosition[i].y, ZombInit.zPosition[zombieNr].x, ZombInit.zPosition[zombieNr].y);
-        if(closestPlayerIdDistance > distancePlayer){
-            closestPlayerId = i;
-        };
+        if(PlayerInit.alive[i]){
+            closestPlayerIdDistance = distance(PlayerInit.pPosition[closestPlayerId].x, PlayerInit.pPosition[closestPlayerId].y, ZombInit.zPosition[zombieNr].x, ZombInit.zPosition[zombieNr].y);
+            distancePlayer = distance(PlayerInit.pPosition[i].x, PlayerInit.pPosition[i].y, ZombInit.zPosition[zombieNr].x, ZombInit.zPosition[zombieNr].y);
+            if(closestPlayerIdDistance > distancePlayer){
+                closestPlayerId = i;
+            };
+        }
     }
     return closestPlayerId;
 }
 
+//Zombies walk towards nearest player and changes frames (animation)
 void zombieTrackingPlayer(int i){
     int playerToTrack=0;
     playerToTrack = closestPlayerToZombie(i);
+    if(!PlayerInit.alive[playerToTrack]){                   //This solved zombies only following one specific player...
+        for(int j = 0; j < PlayerInit.nrOfPlayers; j++){    //...the rootproblem may be that clients start at different...
+            if(PlayerInit.alive[j]) playerToTrack = j;      //...times. Until that is fixed, this solution will do.
+        }                                                   //
+    }                                                       //              ONLY WORKS FOR TWO PLAYERS!!!
+
+    //Zombie following the Survivor X
     if((ZombInit.zPosition[i].x - PlayerInit.pPosition[playerToTrack].x) > 20){
         ZombInit.zPosition[i].x -= 1;
         //Frame change LEFT
@@ -168,6 +180,8 @@ void zombieTrackingPlayer(int i){
     }
 }
 
+//Checks all alive zombies if they run into eachother...
+//...and adjust their position if they do.
 void zombieCollisionWithZombie(int i){
     for(int j = 0; j < ZombInit.nrOfZombies; j++){
         if(!z[i]->alive || j == i){
@@ -181,28 +195,44 @@ void zombieCollisionWithZombie(int i){
     }
 }
 
-void zombieCollisionWithPlayer(int i, int *currentDmgTakenTime,int *lastDmgTakenTime){
-    if(z[i]->alive && checkZCollisionWithP(ZombInit.zPosition[i],PlayerInit.pPosition[playerID])){
-        if(msTimer(currentDmgTakenTime, lastDmgTakenTime, 1000)){
-            playZombieAttack();
-            playPlayerHurt();
-            //hurtPlayer(PlayerInit.hitPoint[playerID]);
-            if(--PlayerInit.hitPoint[playerID] == 0){
-                PlayerInit.hitPoint[playerID] = 3;
+//Restarts game if all players are dead
+void isGameOver(){
+    int playersDead = 0;
+    for(int i = 0; i < PlayerInit.nrOfPlayers; i++){
+        if(!PlayerInit.alive[i]){
+            playersDead++;
+            if(playersDead == PlayerInit.nrOfPlayers){
                 setStartRender(2);
                 setSelect(2);
                 GIO.gameOver = true;
-           }
+            }
         }
     }
 }
 
+//Checks if alive zombie collide with alive players...
+//...and removes player hitpoints if they do
+void zombieCollisionWithPlayer(int i, int *currentDmgTakenTime,int *lastDmgTakenTime){
+    if(z[i]->alive && PlayerInit.alive[playerID] && checkZCollisionWithP(ZombInit.zPosition[i],PlayerInit.pPosition[playerID])){
+        if(msTimer(currentDmgTakenTime, lastDmgTakenTime, 1000)){
+            playZombieAttack();
+            playPlayerHurt();
+            //hurtPlayer(PlayerInit.hitPoint[playerID]);
+            PlayerInit.hitPoint[playerID]--;
+            if(PlayerInit.hitPoint[playerID] == 0) PlayerInit.alive[playerID] = false;
+            sendData( 3, PlayerInit.alive[playerID], 0, "127.0.0.1", playerID);
+        }
+    }
+}
+
+//Checks if zombies collide with map boundries...
+//...and adjust thier position accordingly.
 void zombieCollisionWithMap(int i){
     //TOP
     if(ZombInit.zPosition[i].y < 15){
         ZombInit.zPosition[i].y = 15;
     }
-    //BOTTOM
+    //BOTTOM with "Room" outside of map where zombies may spawn
     if(ZombInit.zPosition[i].y > 1224) ZombInit.zPosition[i].y = 1224;
     if(ZombInit.zPosition[i].y > 905 && (ZombInit.zPosition[i].x < 330 || ZombInit.zPosition[i].x > 455))
         ZombInit.zPosition[i].y = 905;
@@ -210,7 +240,7 @@ void zombieCollisionWithMap(int i){
         ZombInit.zPosition[i].x = 335;
     else if(ZombInit.zPosition[i].y > 905 && ZombInit.zPosition[i].x > 450)
         ZombInit.zPosition[i].x = 450;
-    //LEFT
+    //LEFT with "Room" outside of map where zombies may spawn
     if(ZombInit.zPosition[i].x < -200) ZombInit.zPosition[i].x = -200;
     if(ZombInit.zPosition[i].x < 64 && (ZombInit.zPosition[i].y < 355 || ZombInit.zPosition[i].y > 430))
         ZombInit.zPosition[i].x = 64;
@@ -218,7 +248,7 @@ void zombieCollisionWithMap(int i){
         ZombInit.zPosition[i].y = 360;
     else if(ZombInit.zPosition[i].x < 64 && ZombInit.zPosition[i].y > 425)
         ZombInit.zPosition[i].y = 425;
-    //RIGHT
+    //RIGHT with "Room" outside of map where zombies may spawn
     if(ZombInit.zPosition[i].x > 1224) ZombInit.zPosition[i].x = 1224;
     if(ZombInit.zPosition[i].x > 930 && (ZombInit.zPosition[i].y < 355 || ZombInit.zPosition[i].y > 430))
         ZombInit.zPosition[i].x = 930;
@@ -228,6 +258,8 @@ void zombieCollisionWithMap(int i){
         ZombInit.zPosition[i].y = 425;
 }
 
+//Checks if players collide with map boundries...
+//...and adjust thier position accordingly.
 void playerCollisionWithMap(){
     //TOP
     if(PlayerInit.pPosition[playerID].y < 15) PlayerInit.pPosition[playerID].y = 15;
@@ -239,6 +271,8 @@ void playerCollisionWithMap(){
     if(PlayerInit.pPosition[playerID].x > 930) PlayerInit.pPosition[playerID].x = 930;
 }
 
+//If player has not shot, bullet follows player...
+//...when shot, shoots in direction and checks for collision.
 void bulletPositioning(int i){
     if(!b.shot){    
         b.bPosition.x = PlayerInit.pPosition[playerID].x + 25;
@@ -259,6 +293,7 @@ void bulletPositioning(int i){
     }
 }
 
+//If bullet collide with alive zombie (X coordinates), kill it 
 void bulletCollisionWithZombieX(int i){
     //RIGHT
     if((z[i]->alive) && (b.bVelX == 1) && (b.bPosition.y >= ZombInit.zPosition[i].y) && (b.bPosition.y <= (ZombInit.zPosition[i].y + ZombInit.gZombie->h) && (PlayerInit.pPosition[playerID].x + 25 < ZombInit.zPosition[i].x))){
@@ -278,6 +313,7 @@ void bulletCollisionWithZombieX(int i){
     }
 }
 
+//If bullet collide with alive zombie (Y coordinates), kill it 
 void bulletCollisionWithZombieY(int i){
     //UP
     if((z[i]->alive) && (b.bVelY == 1) && (b.bPosition.x >= ZombInit.zPosition[i].x) && (b.bPosition.x <= (ZombInit.zPosition[i].x + ZombInit.gZombie->w) && (PlayerInit.pPosition[playerID].y + 25 < ZombInit.zPosition[i].y))){
@@ -296,6 +332,53 @@ void bulletCollisionWithZombieY(int i){
         }
     }
 }
+
+
+int MenuKeyboard(SDL_Event event,char buf[],int *LetterforIP){
+
+    if (event.key.keysym.sym==SDLK_0){
+        buf[*LetterforIP]='0';
+    }
+    if (event.key.keysym.sym==SDLK_1){
+        buf[*LetterforIP]='1'; 
+    }
+    if (event.key.keysym.sym==SDLK_2){
+        buf[*LetterforIP]='2';
+    }
+    if (event.key.keysym.sym==SDLK_3){
+        buf[*LetterforIP]='3';
+    }
+    if (event.key.keysym.sym==SDLK_4){
+        buf[*LetterforIP]='4';
+    }
+    if (event.key.keysym.sym==SDLK_5){
+        buf[*LetterforIP]='5';
+    }
+    if (event.key.keysym.sym==SDLK_6){
+        buf[*LetterforIP]='6';
+    }
+    if (event.key.keysym.sym==SDLK_7){
+        buf[*LetterforIP]='7';
+    }
+    if (event.key.keysym.sym==SDLK_8){
+        buf[*LetterforIP]='8';
+    }
+    if (event.key.keysym.sym==SDLK_9){
+        buf[*LetterforIP]='9';
+    }
+    if (event.key.keysym.sym==SDLK_PERIOD){
+      buf[*LetterforIP]='.';
+    }
+    (*LetterforIP)++;
+    buf[*LetterforIP]='\0';
+}
+
+void GetString(char* strOut, unsigned int strSize){
+   strncpy(strOut, Bufstring, strSize);
+}
+
+
+//Handles game events and game logic
 
 int mainGameEvent(){
     playerID = PlayerInit.playerID;
@@ -348,6 +431,18 @@ int mainGameEvent(){
 
     //receiveCoordData(&kordLista, &playerID);
 
+
+        PlayerInit.alive[kordLista[0]] = kordLista[1];
+        printf("%d dog", kordLista[0]);
+    }
+    //receiveCoordData(&kordLista, &playerID);
+    if(select!=1){
+            select=checkmousestate(&buttonPos[0],&buttonPos[1],&buttonPos[2],&buttonPos[3]);
+            if(select==1) Mix_HaltMusic();
+        }
+
+    //Game events 
+
     SDL_Event event;
     while(SDL_PollEvent(&event)){ 
         if(event.type == SDL_QUIT){
@@ -366,6 +461,8 @@ int mainGameEvent(){
                 releasedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
             }
     }
+
+    //Game Logic
     if(select == 1){
         playBgGameMusic();
         respawnZombie();
@@ -379,6 +476,7 @@ int mainGameEvent(){
             bulletPositioning(i);
         }
         playerCollisionWithMap();
+        isGameOver();
     }
 
 }
