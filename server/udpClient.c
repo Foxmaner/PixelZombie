@@ -28,14 +28,14 @@ void createConnection(char selectedIp[100]){
 	}
 }
 
-void sendData(int flag, int x_cord, int y_cord, char selectedIp[100], int playerID){
+void sendData(int flag, int x_cord, int y_cord, char selectedIp[100], int playerID, int startgame){
 	if (sd != NULL){
 		if (!((p = SDLNet_AllocPacket(512)) && (p2 = SDLNet_AllocPacket(512)))){
 			fprintf(stderr, "SDLNet_AllocPacket: %s\n", SDLNet_GetError());
 			//exit(EXIT_FAILURE);
 		}
 		// send and retrive positions
-		sprintf((char *)p->data, "%d %d %d %d\n", (int)flag, (int)playerID, (int)x_cord, (int)y_cord);
+		sprintf((char *)p->data, "%d %d %d %d %d\n", (int)flag, (int)playerID, (int)x_cord, (int)y_cord, (int)startgame);
 		p->address.host = srvadd.host; /* Set the destination host */
 		p->address.port = srvadd.port; /* And destination port */
 		p->len = strlen((char *)p->data) + 1;
@@ -43,7 +43,7 @@ void sendData(int flag, int x_cord, int y_cord, char selectedIp[100], int player
 	}
 	else{
 		createConnection(selectedIp);
-		sendData(flag, x_cord, y_cord, selectedIp,playerID);
+		sendData(flag, x_cord, y_cord, selectedIp,playerID, startgame);
 	}
 }
 

@@ -61,7 +61,7 @@ void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lct
         if(msTimer(&b.currentShotTime, &b.lastShotTime, 500)){  //13 rps
             b.shot = true;
             playPistolShot();
-            sendData(1, 0,  0, "127.0.0.1", playerID);
+            sendData(1, 0,  0, "127.0.0.1", playerID,select);
         }
     }
     if(*up_w == 1){
@@ -315,7 +315,9 @@ int mainGameEvent(){
         Mix_HaltMusic();
     }
     reciveData("127.0.0.1", kordLista);
+
     if(kordLista[3] == 0){
+        if (areyoulooking==1){select=1;}
         //printf("Satta kordinater %d %d \n", kordLista[0], kordLista[1]);
         if((PlayerInit.pPosition[kordLista[0]].x) < (kordLista[1])){
             PlayerInit.pFrame[kordLista[0]] = 0;
@@ -336,10 +338,13 @@ int mainGameEvent(){
 
     }else if(kordLista[3]==1){
         PlayerInit.pFrame[kordLista[0]]=15;
+        if (areyoulooking==1){select=1;}
     }
     else if(kordLista[3]==2){
         z[kordLista[1]]->alive = 0;
+        if (areyoulooking==1){select=1;}
     }
+
     //receiveCoordData(&kordLista, &playerID);
     SDL_Event event;
     while(SDL_PollEvent(&event)){ 
@@ -349,7 +354,7 @@ int mainGameEvent(){
             } 
             playBgGameMusic();
             if(event.type == SDL_KEYDOWN){
-                sendData(0, PlayerInit.pPosition[playerID].x, PlayerInit.pPosition[playerID].y, "127.0.0.1", playerID);
+                sendData(0, PlayerInit.pPosition[playerID].x, PlayerInit.pPosition[playerID].y, "127.0.0.1", playerID,select);
                 if (select == 1){pressedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);}
                 MenuKeyboard(event, bufIPaddress, bufAmountPlayers, &LetterforIP);
             }
@@ -474,4 +479,9 @@ void GetIPaddress( char* strOut, unsigned int strSize )
 void GetAmountPlayers( char* strOut, unsigned int strSize )
 {
     strncpy( strOut, AmountPlayersBuffstring, strSize );
+}
+
+int sendSelect()
+{
+    return select;
 }

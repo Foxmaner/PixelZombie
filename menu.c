@@ -46,7 +46,7 @@ PUBLIC void findinggameLobby(SDL_Renderer *renderer, int *back, int *lookingforg
     createTextbox(iSDL.renderer, 40, 40, "Enter IPadress:", 36); 
     createTextbox(iSDL.renderer, 300, 40,  IPaddress, 36); 
     createTextbox(iSDL.renderer, 40, 600, "Back", 36);
-
+    *startrender=sendSelect();
     *back=checkmousestate(&backbutton[0],&backbutton[1],&backbutton[2],&backbutton[3]);
     if (*back==1){
         (*lookingforgame)=2;

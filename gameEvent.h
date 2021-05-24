@@ -22,7 +22,7 @@ int checkmousestate(int *lowX,int *highX,int *lowY,int *highY);
 int MenuKeyboard(SDL_Event event,char buf[],char buf2[], int *LetterforIP);
 void GetIPaddress( char* strOut, unsigned int strSize );
 void GetAmountPlayers( char* strOut, unsigned int strSize );
-
+int sendSelect();
 int mainGameEvent();
 
 #endif
