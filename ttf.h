@@ -7,5 +7,5 @@
 #include <SDL2/SDL.h>
 
 
-void get_text_and_rect(SDL_Renderer *renderer, int x, int y, char *text, TTF_Font *font, SDL_Texture **texture, SDL_Rect *rect); 
+void createTextbox(SDL_Renderer *renderer, int x, int y, char *text, int size);
 #endif

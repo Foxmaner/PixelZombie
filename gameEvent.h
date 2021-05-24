@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <math.h>
 
+
 void setSelect(int a);
 int getPlayerID();
 void receiveCoordData(int *kordLista[], int *playerID);
@@ -18,10 +19,10 @@ void bulletPositioning(int i);
 void bulletCollisionWithZombieX(int i);
 void bulletCollisionWithZombieY(int i);
 int checkmousestate(int *lowX,int *highX,int *lowY,int *highY);
-int MenuKeyboard(SDL_Event event, char buf[], int *LetterforIP);
-void GetString( char* strOut, unsigned int strSize );
-
-
+int MenuKeyboard(SDL_Event event,char buf[],char buf2[], int *LetterforIP);
+void GetIPaddress( char* strOut, unsigned int strSize );
+void GetAmountPlayers( char* strOut, unsigned int strSize );
+int sendSelect();
 int mainGameEvent();
 
 #endif

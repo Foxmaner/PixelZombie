@@ -3,8 +3,6 @@
 
 #include <stdio.h>
 #include "gameInit.h"
-
-void setStartRender(int a);
 void renderBackground(InitSDL* iSDL, Background_Tiles backTiles);
 void renderHealthBar();
 void renderMenu();

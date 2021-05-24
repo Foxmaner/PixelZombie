@@ -2,28 +2,25 @@
 #define menu_h
 #include <stdio.h>
 #include <SDL2/SDL.h>
+#include "gameInit.h"
+struct menubackground{
+    int MENUBACKGROUND_POSITION_X;
+    int MENUBACKGROUND_POSITION_Y;
+}; typedef struct menubackground *MenuBackground;
 
+struct menusync{
+    SDL_Texture *mBackgroundMenu;
+    SDL_Rect gMenubackground[1];
+};typedef struct menusync Menu_Init;
+Menu_Init MenuInit;
 
-struct startbutton{
-    int STARTBUTTON_POSITION_X;
-    int STARTBUTTON_POSITION_Y;
-    int INITSTART;
-}; typedef struct startbutton *Startbutton;
-
-struct startsync{
-    SDL_Texture *mstartbutton;
-    SDL_Rect gstartbutton[1];
-    SDL_Rect WhichPlayer[4];
-    int GameInstance[4];
-};typedef struct startsync Start_Init;
-Start_Init StartInit;
-
-int setStartButtonPosition(int x, int y);
-int getStartState(Startbutton a);
-int getStartButtonWidth();
-int getStartButtonHeight();
-void setStartButtomPositionY(Startbutton a, int y);
-void setStartButtonPositionX(Startbutton a, int x);
-Startbutton startButtonPos(int x, int y);
-
+void mainMenu(SDL_Renderer *renderer,int *lookingforgame,int *hostinggame, int *credits, int *back);
+void creditMenu(SDL_Renderer *renderer, int *credits, int *back);
+void findinggameLobby(SDL_Renderer *renderer, int *back, int *lookingforgame,int *startrender ,char* IPaddress);
+void hostinglobby(SDL_Renderer *renderer, int *back, int *hostinggame, int *startrender,char* AmountPlayer);
+void setStartRender(int a);
+int CheckIfHost();
+int CheckIfLooking();
+int checkIfGamestarted();
+void theMenu(SDL_Renderer *renderer);
 #endif /* menu_h */

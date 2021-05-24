@@ -18,8 +18,9 @@
 int lastDmgTakenTime = 0, currentDmgTakenTime = 0;
 int playerID = -1;
 int kordLista[4];
-int up_w,down_s,left_a,right_d,lctrl, select=2, IPletter=0;
-char Bufstring[12]="\0";
+int up_w,down_s,left_a,right_d,lctrl, select=2, IPletter=0, areyouhost=2,areyoulooking=2;
+char IPBuffstring[12]=" \0";
+char AmountPlayersBuffstring[2]="4\0";
 
 
 int checkmousestate(int *lowX,int *highX,int *lowY,int *highY){
@@ -59,7 +60,7 @@ void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lct
         if(msTimer(&b.currentShotTime, &b.lastShotTime, 500)){  //13 rps
             b.shot = true;
             playPistolShot();
-            sendData(1, 0,  0, "127.0.0.1", playerID);
+            sendData(1, 0,  0, "127.0.0.1", playerID,select);
         }
     }
     if(*up_w == 1){
@@ -344,12 +345,20 @@ int mainGameEvent(){
     int LetterforIP;
     if(LetterforIP>12) LetterforIP=0;
     char bufIPaddress[12];
-    strcpy(Bufstring, bufIPaddress);
+
+    char bufAmountPlayers[2]="4";
+    areyouhost=CheckIfHost();
+    areyoulooking=CheckIfLooking();
     const Uint8 *state = SDL_GetKeyboardState(NULL);
     int close_requested = 0;
-    int buttonPos[4]={40,155,80,125};
+    if (select!=1){
+        select=checkIfGamestarted();
+        Mix_HaltMusic();
+    }
     reciveData("127.0.0.1", kordLista);
+
     if(kordLista[3] == 0){
+        if (areyoulooking==1){select=1;}
         //printf("Satta kordinater %d %d \n", kordLista[0], kordLista[1]);
         if((PlayerInit.pPosition[kordLista[0]].x) < (kordLista[1])){
             PlayerInit.pFrame[kordLista[0]] = 0;
@@ -370,10 +379,13 @@ int mainGameEvent(){
 
     }else if(kordLista[3]==1){
         PlayerInit.pFrame[kordLista[0]]=15;
+        if (areyoulooking==1){select=1;}
     }
     else if(kordLista[3]==2){
         z[kordLista[1]]->alive = 0;
+        if (areyoulooking==1){select=1;}
     }
+
     //receiveCoordData(&kordLista, &playerID);
     if(select!=1){
             select=checkmousestate(&buttonPos[0],&buttonPos[1],&buttonPos[2],&buttonPos[3]);
@@ -384,15 +396,16 @@ int mainGameEvent(){
         if(event.type == SDL_QUIT){
             close_requested = 1;
             return close_requested;
-        }
-        if(event.type == SDL_KEYDOWN){
-            sendData(0, PlayerInit.pPosition[playerID].x, PlayerInit.pPosition[playerID].y, "127.0.0.1", playerID);
-            pressedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
-            MenuKeyboard(event, bufIPaddress, &LetterforIP);
-        }
-        if(event.type == SDL_KEYUP){
-            releasedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
-        }
+            } 
+            playBgGameMusic();
+            if(event.type == SDL_KEYDOWN){
+                sendData(0, PlayerInit.pPosition[playerID].x, PlayerInit.pPosition[playerID].y, "127.0.0.1", playerID,select);
+                if (select == 1){pressedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);}
+                MenuKeyboard(event, bufIPaddress, bufAmountPlayers, &LetterforIP);
+            }
+            if(event.type == SDL_KEYUP){
+                releasedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
+            }
     }
     if(select == 1){
         playBgGameMusic();
@@ -408,4 +421,114 @@ int mainGameEvent(){
         }
         playerCollisionWithMap();
     }
+
+}
+
+int MenuKeyboard(SDL_Event event,char buf[],char buf2[], int *LetterforIP){
+
+    if (event.key.keysym.sym==SDLK_0)
+    {
+        if (areyoulooking==1 && select!=1){
+            buf[*LetterforIP]='0';
+        }
+    }
+    if (event.key.keysym.sym==SDLK_1)
+    {
+        if (areyoulooking==1 && select!=1){
+        buf[*LetterforIP]='1'; 
+        }
+        if (areyouhost==1 && select!=1)
+        {
+            buf2[0]='1';
+            PlayerInit.nrOfPlayers = 1;
+        }
+    }
+    if (event.key.keysym.sym==SDLK_2)
+    {
+        if (areyoulooking==1 && select!=1){
+            buf[*LetterforIP]='2';
+        }
+        if (areyouhost==1 && select!=1){
+            buf2[0]='2';
+            PlayerInit.nrOfPlayers = 2;
+        }
+    }
+    if (event.key.keysym.sym==SDLK_3)
+    {
+        if (areyoulooking==1 && select!=1){
+            buf[*LetterforIP]='3';
+        }
+        if (areyouhost==1 && select!=1){
+            buf2[0]='3';
+            PlayerInit.nrOfPlayers = 3;
+        }
+    }
+    if (event.key.keysym.sym==SDLK_4)
+    {
+        if (areyoulooking==1 && select!=1){
+            buf[*LetterforIP]='4';
+        }
+        if (areyouhost==1 && select!=1){
+            buf2[0]='4';
+            PlayerInit.nrOfPlayers = 4;
+        }
+    }
+    if (event.key.keysym.sym==SDLK_5)
+    {
+        if (areyoulooking==1 && select!=1){
+            buf[*LetterforIP]='5';
+        }    
+    }
+    if (event.key.keysym.sym==SDLK_6)
+    {
+        if (areyoulooking==1 && select!=1){
+            buf[*LetterforIP]='6';
+        }
+    }
+    if (event.key.keysym.sym==SDLK_7)
+    {
+        if (areyoulooking==1 && select!=1){
+            buf[*LetterforIP]='7';
+        }
+    }
+    if (event.key.keysym.sym==SDLK_8)
+    {
+        if (areyoulooking==1 && select!=1){
+            buf[*LetterforIP]='8';
+        }
+    }
+    if (event.key.keysym.sym==SDLK_9)
+    {
+        if (areyoulooking==1 && select!=1){
+            buf[*LetterforIP]='9';
+        }
+    }
+    if (event.key.keysym.sym==SDLK_PERIOD)
+    {
+        if (areyoulooking==1 && select!=1){
+            buf[*LetterforIP]='.';
+        }
+    }
+
+    strcpy(AmountPlayersBuffstring,buf2);    
+    if (areyoulooking==1){
+        (*LetterforIP)++;
+        buf[*LetterforIP]='\0';
+        strcpy(IPBuffstring,buf);
+    }
+}
+
+void GetIPaddress( char* strOut, unsigned int strSize )
+{
+   strncpy( strOut, IPBuffstring, strSize );
+}
+
+void GetAmountPlayers( char* strOut, unsigned int strSize )
+{
+    strncpy( strOut, AmountPlayersBuffstring, strSize );
+}
+
+int sendSelect()
+{
+    return select;
 }
