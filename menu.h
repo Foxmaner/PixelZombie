@@ -20,6 +20,7 @@ void findinggameLobby(SDL_Renderer *renderer, int *back, int *lookingforgame,int
 void hostinglobby(SDL_Renderer *renderer, int *back, int *hostinggame, int *startrender,char* AmountPlayer);
 void setStartRender(int a);
 int CheckIfHost();
+int CheckIfLooking();
 int checkIfGamestarted();
 void theMenu(SDL_Renderer *renderer);
 #endif /* menu_h */

@@ -92,6 +92,11 @@ PUBLIC int CheckIfHost()
     return hostinggame;
 }
 
+PUBLIC int CheckIfLooking()
+{
+    return lookingforgame;
+}
+
 PUBLIC void theMenu(SDL_Renderer *renderer)
 {
     char IPaddress[12]=" \0";
