@@ -20,8 +20,8 @@ int lastDmgTakenTime = 0, currentDmgTakenTime = 0;
 int kordLista[4];
 int playerID=-1;
 int up_w,down_s,left_a,right_d,lctrl, select=2, IPletter=0;
-char Bufstring[12]="\0";
-
+char IPBuffstring[12]=" \0";
+char AmountPlayersBuffstring[2]="4\0";
 
 int checkmousestate(int *lowX,int *highX,int *lowY,int *highY){
     int MouseX, MouseY;
@@ -302,7 +302,7 @@ int mainGameEvent(){
     int LetterforIP;
     if (LetterforIP>12){LetterforIP=0;}
     char bufIPaddress[12];
-    strcpy(Bufstring,bufIPaddress);
+    char bufAmountPlayers[2];
     const Uint8 *state = SDL_GetKeyboardState(NULL);
     int close_requested = 0;
     if(playerID == -1){
@@ -344,18 +344,16 @@ int mainGameEvent(){
         if(event.type == SDL_QUIT){
             close_requested = 1;
             return close_requested;
-        } 
-        //if(select == 1){
+            } 
             playBgGameMusic();
             if(event.type == SDL_KEYDOWN){
                 sendData(0, PlayerInit.pPosition[playerID].x, PlayerInit.pPosition[playerID].y, "127.0.0.1", playerID);
-                pressedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
-                MenuKeyboard(event, bufIPaddress, &LetterforIP);
+                if (select == 1){pressedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);}
+                MenuKeyboard(event, bufIPaddress, bufAmountPlayers, &LetterforIP);
             }
             if(event.type == SDL_KEYUP){
                 releasedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
             }
-        //}
     }
     if (select == 1){
         respawnZombie();
@@ -372,7 +370,7 @@ int mainGameEvent(){
     }
 }
 
-int MenuKeyboard(SDL_Event event,char buf[],int *LetterforIP){
+int MenuKeyboard(SDL_Event event,char buf[],char buf2[], int *LetterforIP){
 
     if (event.key.keysym.sym==SDLK_0)
     {
@@ -381,18 +379,26 @@ int MenuKeyboard(SDL_Event event,char buf[],int *LetterforIP){
     if (event.key.keysym.sym==SDLK_1)
     {
         buf[*LetterforIP]='1'; 
+        buf2[0]='1';
+        PlayerInit.nrOfPlayers = 1;
     }
     if (event.key.keysym.sym==SDLK_2)
     {
         buf[*LetterforIP]='2';
+        buf2[0]='2';
+        PlayerInit.nrOfPlayers = 2;
     }
     if (event.key.keysym.sym==SDLK_3)
     {
         buf[*LetterforIP]='3';
+        buf2[0]='3';
+        PlayerInit.nrOfPlayers = 3;
     }
     if (event.key.keysym.sym==SDLK_4)
     {
         buf[*LetterforIP]='4';
+        buf2[0]='4';
+        PlayerInit.nrOfPlayers = 4;
     }
     if (event.key.keysym.sym==SDLK_5)
     {
@@ -406,7 +412,6 @@ int MenuKeyboard(SDL_Event event,char buf[],int *LetterforIP){
     {
         buf[*LetterforIP]='7';
     }
-
     if (event.key.keysym.sym==SDLK_8)
     {
         buf[*LetterforIP]='8';
@@ -417,13 +422,20 @@ int MenuKeyboard(SDL_Event event,char buf[],int *LetterforIP){
     }
     if (event.key.keysym.sym==SDLK_PERIOD)
     {
-      buf[*LetterforIP]='.';
+        buf[*LetterforIP]='.';
     }
     (*LetterforIP)++;
     buf[*LetterforIP]='\0';
+    strcpy(IPBuffstring,buf);
+    strcpy(AmountPlayersBuffstring,buf2);
 }
 
-void GetString( char* strOut, unsigned int strSize )
+void GetIPaddress( char* strOut, unsigned int strSize )
 {
-   strncpy( strOut, Bufstring, strSize );
+   strncpy( strOut, IPBuffstring, strSize );
+}
+
+void GetAmountPlayers( char* strOut, unsigned int strSize )
+{
+    strncpy( strOut, AmountPlayersBuffstring, strSize );
 }

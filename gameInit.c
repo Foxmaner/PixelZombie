@@ -100,6 +100,7 @@ void initGame(){
 
     PlayerInit.nrOfPlayers = 4;
 
+
     createAllPlayers();
     createBullet();
     loadMedia(&iSDL, &backTiles, &ZombInit, &PlayerInit, &b, &h, &MenuInit);
