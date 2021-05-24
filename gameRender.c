@@ -51,8 +51,14 @@ void renderHealthBar(){
 }
 
 void renderAllPlayers(){
-    for(int i = 0; i < PlayerInit.nrOfPlayers; i++)
-        SDL_RenderCopyEx(iSDL.renderer, PlayerInit.mPlayer, &PlayerInit.gPlayer[PlayerInit.pFrame[i]], &PlayerInit.pPosition[i], 0, NULL, PlayerInit.flip[i]);
+    for(int i = 0; i < PlayerInit.nrOfPlayers; i++){
+        if(getPlayerID() == i){
+            SDL_RenderCopyEx(iSDL.renderer, PlayerInit.mPlayer, &PlayerInit.gPlayer[PlayerInit.pFrame[i]], &PlayerInit.pPosition[i], 0, NULL, PlayerInit.flip[i]);
+        }
+        else{
+            SDL_RenderCopyEx(iSDL.renderer, PlayerInit.mPlayerBlack, &PlayerInit.gPlayer[PlayerInit.pFrame[i]], &PlayerInit.pPosition[i], 0, NULL, PlayerInit.flip[i]);
+        }
+    }
 }
 
 void renderAllZombies(){
@@ -73,8 +79,10 @@ void renderPreset(){
 void renderGame(){
     SetRenderDrawColor();
     clearRenderer();
+
     if (checkIfGamestarted()!=1) {renderMenu();}
     if (checkIfGamestarted()==1){
+
         SDL_PumpEvents();
         renderBackground(&iSDL, backTiles);
         renderHealthBar();

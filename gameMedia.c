@@ -12,6 +12,7 @@
 #include "player.h"
 #include "menu.h"
 #include "server/udpClient.h"
+#include "gameEvent.h"
 
 Mix_Music *bgGameMusic;
 Mix_Music *bgMenuMusic;
@@ -111,8 +112,10 @@ void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit,
     ZombInit->gZombie[31].y = 374;
 
     //Player
-    SDL_Surface* gPlayerSurface = IMG_Load("resources/images/pixel-768x768-31.png");
+    SDL_Surface *gPlayerSurface = IMG_Load("resources/images/pixel-768x768-31.png");
     PlayerInit->mPlayer = SDL_CreateTextureFromSurface(iSDL->renderer, gPlayerSurface);
+    SDL_Surface *gPlayerSurfaceB = IMG_Load("resources/images/pixel-768x768-31-b.png");
+    PlayerInit->mPlayerBlack = SDL_CreateTextureFromSurface(iSDL->renderer, gPlayerSurfaceB);
 
     //Ståendes med kroppen mot skärmen med pistol
     PlayerInit->gPlayer[0].x = 8;

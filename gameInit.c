@@ -11,9 +11,12 @@
 #include "zombie.h"
 #include "player.h"
 #include "menu.h"
+#include "server/udpClient.h"
 
 #define WINDOW_WIDTH (1024)
 #define WINDOW_HEIGHT (1024)
+
+int tempID = -1; 
 
 GameTimer initTime(){
     timer.second = 0;
@@ -87,6 +90,8 @@ void startGameTimer(){
 }
 
 void initGame(){
+    PlayerInit.playerID;
+    
     if(!GIO.initedGame){
         initSDL();
         initWindow();
@@ -97,13 +102,20 @@ void initGame(){
     createHeart();
     ZombInit.nrOfZombies = 6;
     createAllZombies();
-
+    sendData(10,0,0,"127.0.0.1" ,PlayerInit.playerID);
     PlayerInit.nrOfPlayers = 4;
-
+    printf("Player ID  %d \n", PlayerInit.playerID);
     createAllPlayers();
     createBullet();
     loadMedia(&iSDL, &backTiles, &ZombInit, &PlayerInit, &b, &h, &MenuInit);
     Mix_HaltMusic();
     playBgMenuMusic();
     GIO.gameOver = false;
+    if(tempID == -1){
+        PlayerInit.playerID = reciveID("127.0.0.1");
+        tempID = PlayerInit.playerID;
+    }
+    else{
+        PlayerInit.playerID = tempID;
+    }
 }

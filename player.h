@@ -12,12 +12,14 @@ struct player_type{
 struct Player_Init{
     int nrOfPlayers;
     SDL_Texture *mPlayer;
+    SDL_Texture *mPlayerBlack;
     SDL_Rect gPlayer[16];
     Player p[4];
     SDL_Rect pPosition[4];
     int pFrame[4];
     SDL_RendererFlip flip[4];
     int hitPoint[4];
+    int playerID;
 };typedef struct Player_Init Player_Init;
 Player_Init PlayerInit;
 

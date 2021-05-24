@@ -16,17 +16,16 @@
 #include "server/udpClient.h"
 
 int lastDmgTakenTime = 0, currentDmgTakenTime = 0;
-
+int playerID = -1;
 int kordLista[4];
-int playerID=-1;
 int up_w,down_s,left_a,right_d,lctrl, select=2, IPletter=0, areyouhost=2,areyoulooking=2;
 char IPBuffstring[12]=" \0";
 char AmountPlayersBuffstring[2]="4\0";
 
+
 int checkmousestate(int *lowX,int *highX,int *lowY,int *highY){
     int MouseX, MouseY;
-        if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT))
-    {
+    if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)){
         SDL_GetMouseState(&MouseX, &MouseY);
     }
 
@@ -298,18 +297,60 @@ void bulletCollisionWithZombieY(int i){
     }
 }
 
+int MenuKeyboard(SDL_Event event,char buf[],int *LetterforIP){
+
+    if (event.key.keysym.sym==SDLK_0){
+        buf[*LetterforIP]='0';
+    }
+    if (event.key.keysym.sym==SDLK_1){
+        buf[*LetterforIP]='1'; 
+    }
+    if (event.key.keysym.sym==SDLK_2){
+        buf[*LetterforIP]='2';
+    }
+    if (event.key.keysym.sym==SDLK_3){
+        buf[*LetterforIP]='3';
+    }
+    if (event.key.keysym.sym==SDLK_4){
+        buf[*LetterforIP]='4';
+    }
+    if (event.key.keysym.sym==SDLK_5){
+        buf[*LetterforIP]='5';
+    }
+    if (event.key.keysym.sym==SDLK_6){
+        buf[*LetterforIP]='6';
+    }
+    if (event.key.keysym.sym==SDLK_7){
+        buf[*LetterforIP]='7';
+    }
+    if (event.key.keysym.sym==SDLK_8){
+        buf[*LetterforIP]='8';
+    }
+    if (event.key.keysym.sym==SDLK_9){
+        buf[*LetterforIP]='9';
+    }
+    if (event.key.keysym.sym==SDLK_PERIOD){
+      buf[*LetterforIP]='.';
+    }
+    (*LetterforIP)++;
+    buf[*LetterforIP]='\0';
+}
+
+void GetString(char* strOut, unsigned int strSize){
+   strncpy(strOut, Bufstring, strSize);
+}
+
 int mainGameEvent(){
+    playerID = PlayerInit.playerID;
     int LetterforIP;
-    if (LetterforIP>12){LetterforIP=0;}
+    if(LetterforIP>12) LetterforIP=0;
     char bufIPaddress[12];
+
     char bufAmountPlayers[2]="4";
     areyouhost=CheckIfHost();
     areyoulooking=CheckIfLooking();
     const Uint8 *state = SDL_GetKeyboardState(NULL);
     int close_requested = 0;
-    if(playerID == -1){
-        playerID = reciveID("127.0.0.1");
-    }
     if (select!=1){
         select=checkIfGamestarted();
         Mix_HaltMusic();
@@ -346,6 +387,10 @@ int mainGameEvent(){
     }
 
     //receiveCoordData(&kordLista, &playerID);
+    if(select!=1){
+            select=checkmousestate(&buttonPos[0],&buttonPos[1],&buttonPos[2],&buttonPos[3]);
+            if(select==1) Mix_HaltMusic();
+        }
     SDL_Event event;
     while(SDL_PollEvent(&event)){ 
         if(event.type == SDL_QUIT){
@@ -362,7 +407,8 @@ int mainGameEvent(){
                 releasedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
             }
     }
-    if (select == 1){
+    if(select == 1){
+        playBgGameMusic();
         respawnZombie();
         startGameTimer();
         playZombieBrain();
@@ -375,6 +421,7 @@ int mainGameEvent(){
         }
         playerCollisionWithMap();
     }
+
 }
 
 int MenuKeyboard(SDL_Event event,char buf[],char buf2[], int *LetterforIP){
