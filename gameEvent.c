@@ -60,7 +60,7 @@ void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lct
         if(msTimer(&b.currentShotTime, &b.lastShotTime, 500)){  //13 rps
             b.shot = true;
             playPistolShot();
-            sendData(1, 0,  0, "127.0.0.1", playerID,select);
+            sendData(1, 0,  0, "127.0.0.1", playerID);
         }
     }
     if(*up_w == 1){
@@ -297,49 +297,6 @@ void bulletCollisionWithZombieY(int i){
     }
 }
 
-int MenuKeyboard(SDL_Event event,char buf[],int *LetterforIP){
-
-    if (event.key.keysym.sym==SDLK_0){
-        buf[*LetterforIP]='0';
-    }
-    if (event.key.keysym.sym==SDLK_1){
-        buf[*LetterforIP]='1'; 
-    }
-    if (event.key.keysym.sym==SDLK_2){
-        buf[*LetterforIP]='2';
-    }
-    if (event.key.keysym.sym==SDLK_3){
-        buf[*LetterforIP]='3';
-    }
-    if (event.key.keysym.sym==SDLK_4){
-        buf[*LetterforIP]='4';
-    }
-    if (event.key.keysym.sym==SDLK_5){
-        buf[*LetterforIP]='5';
-    }
-    if (event.key.keysym.sym==SDLK_6){
-        buf[*LetterforIP]='6';
-    }
-    if (event.key.keysym.sym==SDLK_7){
-        buf[*LetterforIP]='7';
-    }
-    if (event.key.keysym.sym==SDLK_8){
-        buf[*LetterforIP]='8';
-    }
-    if (event.key.keysym.sym==SDLK_9){
-        buf[*LetterforIP]='9';
-    }
-    if (event.key.keysym.sym==SDLK_PERIOD){
-      buf[*LetterforIP]='.';
-    }
-    (*LetterforIP)++;
-    buf[*LetterforIP]='\0';
-}
-
-void GetString(char* strOut, unsigned int strSize){
-   strncpy(strOut, Bufstring, strSize);
-}
-
 int mainGameEvent(){
     playerID = PlayerInit.playerID;
     int LetterforIP;
@@ -387,10 +344,7 @@ int mainGameEvent(){
     }
 
     //receiveCoordData(&kordLista, &playerID);
-    if(select!=1){
-            select=checkmousestate(&buttonPos[0],&buttonPos[1],&buttonPos[2],&buttonPos[3]);
-            if(select==1) Mix_HaltMusic();
-        }
+
     SDL_Event event;
     while(SDL_PollEvent(&event)){ 
         if(event.type == SDL_QUIT){
@@ -399,7 +353,7 @@ int mainGameEvent(){
             } 
             playBgGameMusic();
             if(event.type == SDL_KEYDOWN){
-                sendData(0, PlayerInit.pPosition[playerID].x, PlayerInit.pPosition[playerID].y, "127.0.0.1", playerID,select);
+                sendData(0, PlayerInit.pPosition[playerID].x, PlayerInit.pPosition[playerID].y, "127.0.0.1", playerID);
                 if (select == 1){pressedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);}
                 MenuKeyboard(event, bufIPaddress, bufAmountPlayers, &LetterforIP);
             }
