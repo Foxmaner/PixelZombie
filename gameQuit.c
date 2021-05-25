@@ -20,7 +20,7 @@ void quitGame(){
     Mix_FreeChunk(sounds.sfxZombieBrain);
     Mix_FreeChunk(sounds.sfxZombieDie);
 
-    //SDL_DestroyTexture(MenuInit.mBackgroundMenu);
+    SDL_DestroyTexture(MenuInit.mBackgroundMenu);
     SDL_DestroyTexture(backTiles.mTiles);
     SDL_DestroyTexture(ZombInit.mZombie);
     SDL_DestroyTexture(PlayerInit.mPlayer);

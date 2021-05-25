@@ -14,7 +14,7 @@ void renderMenu();
 void SetRenderDrawColor();
 
 void clearRenderer();
-
+//Render menu and all menu options with buttons to navigate
 void renderMenu();
 
 void renderBackground(InitSDL* iSDL, Background_Tiles backTiles);

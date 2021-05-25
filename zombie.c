@@ -31,7 +31,7 @@ int getCurrentLevel(){
     return currentLevel;
 }
 */
-PUBLIC Zombie createZombie(int x, int y){
+PUBLIC Zombie createZombie(int x, int y){  //Allocate memory to create a zombie, must make free when done.
     Zombie z = malloc(sizeof(struct zombie_type));
     z->ZOMBIE_POSITION_Y = y;
     z->ZOMBIE_POSITION_X = x;
@@ -40,7 +40,7 @@ PUBLIC Zombie createZombie(int x, int y){
     return z;
 }
 
-PUBLIC void setZombiePositionY(Zombie a, int y){
+PUBLIC void setZombiePositionY(Zombie a, int y){ 
     a->ZOMBIE_POSITION_Y = y;
 }
 
@@ -96,7 +96,7 @@ PUBLIC int getZSpawnPointY(int a){
         return zSpawnPointY2 + (rand() % 65);
 }
 
-PUBLIC void changeZFrameX(int frameA, int frameB, int i){
+PUBLIC void changeZFrameX(int frameA, int frameB, int i){ //Changes the zombie frame making it appear like its walking
     zFrame[i].diagonal = 0;
     if(zFrame[i].frame == frameA && zFrame[i].counter >= 25){
         zFrame[i].frame = frameB;
@@ -115,7 +115,7 @@ PUBLIC void changeZFrameX(int frameA, int frameB, int i){
     }
 }
 
-PUBLIC void changeZFrameY(int frameA, int frameB, int i){
+PUBLIC void changeZFrameY(int frameA, int frameB, int i){ //Changes the zombie frame making it appear like its walking
     if((zFrame[i].diagonal)++ > 0){
         if(zFrame[i].frame == frameA && zFrame[i].counter >= 25){
             zFrame[i].frame = frameB;
@@ -198,7 +198,7 @@ PUBLIC void respawnZombie(){
         if(z[a]->alive) alive++;
     }
 
-    if(!alive){
+    if(!alive){  //if all zombies are dead, create a "new" wave of zombies.
         for(int a = 0; a < ZombInit.nrOfZombies; a++){
             z[a]->alive = 1;
             ZombInit.zPosition[a].x = getZSpawnPointX(a % 3);
@@ -211,7 +211,7 @@ PUBLIC void respawnZombie(){
         printf("nr# %d\n",ZombInit.nrOfZombies);
         //currentLevel++; sprintf(txt,"%d",currentLevel);
         //createTextbox(iSDL.renderer,40,40,txt,20);                                                        //FIX
-        for(int i = newZombieId; i < newZombieId+2; i++){
+        for(int i = newZombieId; i < newZombieId+2; i++){ //Create 2 more zombies each wave
             z[i] = createZombie(getZSpawnPointX(i % 3),getZSpawnPointY(i % 3));
             ZombInit.zPosition[i].x = getZombiePositionX(z[i]);
             ZombInit.zPosition[i].y = getZombiePositionY(z[i]);
@@ -222,7 +222,7 @@ PUBLIC void respawnZombie(){
     }
 }
 
-PUBLIC int msTimer(int *pCurrentTime, int *pLastRecordedTime, int ms){
+PUBLIC int msTimer(int *pCurrentTime, int *pLastRecordedTime, int ms){ //Wait x ms.
     *pCurrentTime = SDL_GetTicks();
     if(*pCurrentTime >= *pLastRecordedTime + ms){
         *pLastRecordedTime = *pCurrentTime;

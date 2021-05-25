@@ -27,7 +27,7 @@ Mix_Chunk *sfxZombieAttack;
 Mix_Chunk *sfxZombieBrain;
 
 void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit, Player_Init* PlayerInit, Bullet* b, Heart* h, Menu_Init* MenuInit){
-    //Startbutton
+    //Background for menu
     SDL_Surface* gMenuBackgroundsurface = IMG_Load("resources/images/finalNight.png");
     MenuInit->mBackgroundMenu = SDL_CreateTextureFromSurface(iSDL->renderer, gMenuBackgroundsurface);
     MenuInit->gMenubackground[0].x = 0;

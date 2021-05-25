@@ -18,15 +18,15 @@ int credits=2;
 int back=2;
 int lookingforgame=2;
 int hostinggame=2;
-
+//sets start renderer to a specific value
 void setStartRender(int a){
     startrender = a;
 }
-
+//Returns if the game has been initiated
 int checkIfGamestarted(){
     return startrender;
 }
-
+//Renders host lobby 
 PUBLIC void hostinglobby(SDL_Renderer *renderer, int *back, int *hostinggame, int *startrender,char* AmountPlayers){
     int StartbuttonPos[4]={800,1050,40,125};
     int backbutton[4]={40,190,600,750};
@@ -41,7 +41,7 @@ PUBLIC void hostinglobby(SDL_Renderer *renderer, int *back, int *hostinggame, in
     } 
 
 }
-
+//Renders non host lobby
 PUBLIC void findinggameLobby(SDL_Renderer *renderer, int *back, int *lookingforgame, int *startrender,char* IPaddress){
     int backbutton[4]={40,190,600,750};
     createTextbox(iSDL.renderer, 40, 40, "Enter IPadress:", 36); 
@@ -53,7 +53,7 @@ PUBLIC void findinggameLobby(SDL_Renderer *renderer, int *back, int *lookingforg
         (*lookingforgame)=2;
     } 
 }
-
+//Render default main menu
 PUBLIC void mainMenu(SDL_Renderer *renderer, int *lookingforgame,int *hostinggame, int *credits, int *back){
     int buttonPos[4]={40,155,40,85};    
     int buttonPos2[4]={40,155,80,125};
@@ -66,7 +66,7 @@ PUBLIC void mainMenu(SDL_Renderer *renderer, int *lookingforgame,int *hostinggam
     *credits=checkmousestate(&buttonPos3[0],&buttonPos3[1],&buttonPos3[2],&buttonPos3[3]);
     *back=2;
 }
-
+//Renders credits part of menu
 PUBLIC void creditMenu(SDL_Renderer *renderer, int *credits, int *back){
     int backbutton[4]={40,190,600,750};
 
@@ -75,7 +75,7 @@ PUBLIC void creditMenu(SDL_Renderer *renderer, int *credits, int *back){
     createTextbox(iSDL.renderer, 40, 80, "Made by Anton C, Carl G, Eskil B, Markus H, Marcus M", 36); 
     //Heart pixel art
     createTextbox(iSDL.renderer, 40, 120, "Heart pixel art: DanSevenStar.xyz", 30); 
-    //Spelare
+    //Player
     createTextbox(iSDL.renderer, 40, 160, "Player: thekingphoenix & Bonsaiheldin", 30); 
     //Zombie
     createTextbox(iSDL.renderer, 40, 200, "Zombie: Kazzador & Enterbrain", 30); 
@@ -87,14 +87,12 @@ PUBLIC void creditMenu(SDL_Renderer *renderer, int *credits, int *back){
         (*credits)=2;    
     }   
 }
-
-PUBLIC int CheckIfHost()
-{
+//Returns if host instance is active. 
+PUBLIC int CheckIfHost(){
     return hostinggame;
 }
-
-PUBLIC int CheckIfLooking()
-{
+//Returns if person is a none host
+PUBLIC int CheckIfLooking(){
     return lookingforgame;
 }
 
@@ -109,14 +107,16 @@ PUBLIC void theMenu(SDL_Renderer *renderer)
     if (lookingforgame!=1 && credits!=1 && lookingforgame!=1 && hostinggame!=1){
         mainMenu(iSDL.renderer, &lookingforgame, &hostinggame, &credits, &back);
     }
-    //Entering IPadress
+    //None host lobby
     if (lookingforgame==1){
         findinggameLobby(iSDL.renderer, &back, &lookingforgame, &startrender,IPaddress);
     }
+    //Host session lobby
     if (hostinggame==1)
     {
         hostinglobby(iSDL.renderer, &back, &hostinggame, &startrender,AmountPlayers);
     }
+    //Credits for creators and artists
     if (credits==1)
     {
         creditMenu(iSDL.renderer, &credits, &back);

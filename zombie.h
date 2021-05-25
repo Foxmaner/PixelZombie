@@ -31,7 +31,7 @@ ZombieInit ZombInit;
 
 int getZombiePositionX(Zombie a);
 int getZombiePositionY(Zombie a);
-Zombie createZombie(int x, int y);
+Zombie createZombie(int x, int y); //Allocate memory to create a zombie, must make free when done.
 void setZombiePositionY(Zombie a, int y);
 int getZombieWidth();
 int getZombieHeight();
@@ -42,15 +42,15 @@ void createAllZombies();
 
 int getZSpawnPointX(int a);
 int getZSpawnPointY(int a);
-void changeZFrameX(int frameA, int frameB, int i);
-void changeZFrameY(int frameA, int frameB, int i);
-bool checkZCollisionWithZ(SDL_Rect zombie1, SDL_Rect zombie2);
-bool checkZCollisionWithP(SDL_Rect zombie, SDL_Rect player);
+void changeZFrameX(int frameA, int frameB, int i); //Changes the zombie frame making it appear like its walking
+void changeZFrameY(int frameA, int frameB, int i); //Changes the zombie frame making it appear like its walking
+bool checkZCollisionWithZ(SDL_Rect zombie1, SDL_Rect zombie2); //Check if zombies collide with eachother
+bool checkZCollisionWithP(SDL_Rect zombie, SDL_Rect player); //Check if zombies collide with player
 
 void killZombie(Zombie a, int i, int playerID);
 
-void respawnZombie();
+void respawnZombie(); //if all zombies are dead, create a "new" wave + 2 more zombies.
 
-int msTimer(int *pCurrentTime, int *pLastRecordedTime, int ms);
+int msTimer(int *pCurrentTime, int *pLastRecordedTime, int ms); //Wait x ms.
 
 #endif /* Zombie_h */

@@ -23,7 +23,7 @@ int up_w,down_s,left_a,right_d,lctrl, select=2, IPletter=0, areyouhost=2,areyoul
 char IPBuffstring[12]=" \0";
 char AmountPlayersBuffstring[2]="4\0";
 
-
+//Check if person running the game has clicked within a certain area
 int checkmousestate(int *lowX,int *highX,int *lowY,int *highY){
     int MouseX, MouseY;
     if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)){
@@ -33,7 +33,6 @@ int checkmousestate(int *lowX,int *highX,int *lowY,int *highY){
     if (*lowX<MouseX && MouseX<*highX && *lowY<MouseY && MouseY<*highY){
         return 1;
     }
-    //printf("MouseX: %d MouseY: %d\n ",MouseX, MouseY);
 }
 
 //Sets select in order to make game over
@@ -44,7 +43,7 @@ void setSelect(int a){
 int getPlayerID(){
     return playerID;
 }
-
+//
 void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lctrl,SDL_Event event){
     if (event.key.keysym.sym == SDLK_w){
         *up_w = 1;
@@ -217,7 +216,6 @@ void zombieCollisionWithPlayer(int i, int *currentDmgTakenTime,int *lastDmgTaken
         if(msTimer(currentDmgTakenTime, lastDmgTakenTime, 1000)){
             playZombieAttack();
             playPlayerHurt();
-            //hurtPlayer(PlayerInit.hitPoint[playerID]);
             PlayerInit.hitPoint[playerID]--;
             if(PlayerInit.hitPoint[playerID] == 0) PlayerInit.alive[playerID] = false;
             sendData( 4, PlayerInit.alive[playerID], 0, "127.0.0.1", playerID);
@@ -352,10 +350,12 @@ int mainGameEvent(){
         select=checkIfGamestarted();
         Mix_HaltMusic();
     }
+
+    // Handels all information recived from the server and updates the character with that id
+    //udpClient explains what flags(kordLista[3]) does   
     reciveData("127.0.0.1", kordLista);
 
     if(kordLista[3] == 0){
-        //printf("Satta kordinater %d %d \n", kordLista[0], kordLista[1]);
         if((PlayerInit.pPosition[kordLista[0]].x) < (kordLista[1])){
             PlayerInit.pFrame[kordLista[0]] = 0;
             PlayerInit.flip[kordLista[0]] = SDL_FLIP_HORIZONTAL;
@@ -385,9 +385,6 @@ int mainGameEvent(){
             PlayerInit.nrOfPlayers = kordLista[2];
         }
     }
-
-    //receiveCoordData(&kordLista, &playerID);
-
     else if(kordLista[3]==4){
         PlayerInit.alive[kordLista[0]] = kordLista[1];
         printf("%d dog", kordLista[0]);
@@ -433,7 +430,7 @@ int mainGameEvent(){
     }
 
 }
-
+//Keyboard to read specific keystrokes made towards IP address or number of players
 int MenuKeyboard(SDL_Event event,char buf[],char buf2[], int *LetterforIP){
 
     if (event.key.keysym.sym==SDLK_0)
@@ -527,18 +524,15 @@ int MenuKeyboard(SDL_Event event,char buf[],char buf2[], int *LetterforIP){
         strcpy(IPBuffstring,buf);
     }
 }
-
-void GetIPaddress( char* strOut, unsigned int strSize )
-{
+//returns the IP address that the non host has entered
+void GetIPaddress( char* strOut, unsigned int strSize ){
    strncpy( strOut, IPBuffstring, strSize );
 }
-
-void GetAmountPlayers( char* strOut, unsigned int strSize )
-{
+//returns the amount of players that host has entered 
+void GetAmountPlayers( char* strOut, unsigned int strSize ){
     strncpy( strOut, AmountPlayersBuffstring, strSize );
 }
-
-int sendSelect()
-{
+//Returns if game has been started
+int sendSelect(){
     return select;
 }

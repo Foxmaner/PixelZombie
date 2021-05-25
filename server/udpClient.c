@@ -10,29 +10,27 @@ UDPpacket *p;
 UDPpacket *p2;
 int playerID;
 
+//Creates connection with the server. Checks if the connection exists. 
 void createConnection(char selectedIp[100]){
 	if (SDLNet_Init() < 0){
 		fprintf(stderr, "SDLNet_Init: %s\n", SDLNet_GetError());
-		//exit(EXIT_FAILURE);
 	}
 
 	if (!(sd = SDLNet_UDP_Open(0))){
 		fprintf(stderr, "SDLNet_UDP_Open: %s\n", SDLNet_GetError());
-		//exit(EXIT_FAILURE);
 	}
 
 	/* Resolve server name  */
 	if (SDLNet_ResolveHost(&srvadd, "127.0.0.1", 2000) == -1){
 		fprintf(stderr, "SDLNet_ResolveHost(81.230.227.193 Detta är eskils ip ba fuck han 2000) : % s\n ", SDLNet_GetError());
-		//exit(EXIT_FAILURE);
 	}
 }
 
+//Creates a packet that contains a data package, host and port adress, sends it to the server. 
 void sendData(int flag, int x_cord, int y_cord, char selectedIp[100], int playerID){
 	if (sd != NULL){
 		if (!((p = SDLNet_AllocPacket(512)) && (p2 = SDLNet_AllocPacket(512)))){
 			fprintf(stderr, "SDLNet_AllocPacket: %s\n", SDLNet_GetError());
-			//exit(EXIT_FAILURE);
 		}
 		// send and retrive positions
 		sprintf((char *)p->data, "%d %d %d %d \n", (int)flag, (int)playerID, (int)x_cord, (int)y_cord);
@@ -47,6 +45,13 @@ void sendData(int flag, int x_cord, int y_cord, char selectedIp[100], int player
 	}
 }
 
+//Recives packages from server with different flags that points to what the sender has done(watch list below.)
+//Flag = 0 == Player reporting possition
+//Flag = 1 == Player reporting gunshot
+//Flag = 2 == Player reporting zombieDeath
+//Flag = 3 == Report gamestart
+//Flag = 4 == Players Hp
+
 void reciveData(char selectedIp[100], int kordinater[4]){
 	if (sd != NULL){
 		if (SDLNet_UDP_Recv(sd, p2)){
@@ -54,10 +59,7 @@ void reciveData(char selectedIp[100], int kordinater[4]){
 			sscanf((char *)p2->data, "%d %d %d %d", &flag, &recivedID, &a, &b);
 
 			printf("UDP Packet incoming %d %d %d %d\n", flag, recivedID, a, b);
-			//Flag = 0 == Player reporting possition
-			//Flag = 1 == Player reporting gunshot
-			//Flag = 2 == Player reporting zombieDeath
-			//Flag = 3 == Report gamestart
+			
 			if(flag == 0){
 				kordinater[0] = recivedID;
 				kordinater[1] = a;
@@ -97,6 +99,7 @@ void reciveData(char selectedIp[100], int kordinater[4]){
 	}
 }
 
+//Creates Players ID, like all functions in udpClient it contains an else that calls createConnection if its not established
 int reciveID(char selectedIp[100]){
 	if (sd != NULL){
 		if (SDLNet_UDP_Recv(sd, p2)){

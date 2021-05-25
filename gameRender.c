@@ -30,7 +30,7 @@ void SetRenderDrawColor(){
 void clearRenderer(){
     SDL_RenderClear(iSDL.renderer);
 }
-
+//Render menu and adds all different instances of menu. Also adds button to change different through different meun options
 void renderMenu(){
     theMenu(iSDL.renderer);
 }

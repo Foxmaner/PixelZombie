@@ -123,6 +123,7 @@ void initGame(){
     createHeart();
     createAllZombies();
 
+    //Initilizes a connection to server
     sendData(10,0,0,"127.0.0.1" ,PlayerInit.playerID);
     PlayerInit.nrOfPlayers = 4;
     printf("Player ID  %d \n", PlayerInit.playerID);
@@ -133,6 +134,8 @@ void initGame(){
     Mix_HaltMusic();
     playBgMenuMusic();
     GIO.gameOver = false;
+
+    //Sets player ID and makes sure that it stays as that id 
     if(tempID == -1){
         PlayerInit.playerID = reciveID("127.0.0.1");
         tempID = PlayerInit.playerID;
