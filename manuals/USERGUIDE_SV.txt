@@ -1,0 +1,21 @@
+7.1.4 Starta spelet
+Spelaren startar spelklienten genom att starta den exekverbara filen “pixelzombie” och möts då av av en huvudmeny. Proceduren för att starta spelet skiljer sig något om användaren är första spelare att ansluta till servern, eller om användaren är spelare nr2-nr4
+Spelare nr1
+Från huvudmenyn så klicka på knappen “Host Game”
+Tryck sedan på tangentbordet nr1-4 för att välja antalet spelare som ska vara med i lobbyn.
+När samtliga spelare är anslutna till servern, så används knappen “Start Game” för att starta spelet. Spelet kommer då att starta för samtliga spelare.
+Spelare nr2-4
+Från huvudmenyn så klicka på knappen “Find Game”
+Förutsatt att rätt ip har angetts, och servern är igång. Så kommer spelet att starta för “dig”, och de andra spelarna efter att spelare nr:1 har tryckt på “Start Game”
+7.2.1 Spelkontroller
+För att förflytta spelaren så används de klassiska knapparna W (upp), A (vänster), S (ner), och D-tangenterna (höger).
+Attackera zombies
+För att tilldela skada till en zombie så används pistolen. Denna pistol avfyras genom att trycka ner  LCTRL-tangenten (CTRL på vänster sida av tangentbordet. Pistolen kommer då att avfyra en projektil i samma riktning som spelaren.
+ 
+ 
+ 
+7.3.1 Spelets mål
+Efter spelets start så kommer 1-4 spelare att spawnas in på en bana. Det kommer sedan att börja komma zombies mot spelarna. Målet med spelet är att skjuta dessa zombies, och överleva så många “waves” som möjligt.
+Zombies kommer att följa den närmaste spelaren, från deras perspektiv. Zombien kommer att orsaka skada på spelaren om den står för nära.
+7.4.1 Avsluta spelet
+För att avsluta spelet så används KRYSSET längst upp i högra hörnet av spelfönstret.

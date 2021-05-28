@@ -1,0 +1,12 @@
+7.1.1 Installera spelet
+Detta spel är byggt på SDL biblioteket. För att starta detta spel, så krävs det därför att användaren installerar följande tillägg.
+SDL2: https://www.libsdl.org/download-2.0.php
+SDL_net: https://www.libsdl.org/projects/SDL_net/
+SDL_image: https://www.libsdl.org/projects/SDL_image/
+SDL_mixer: https://www.libsdl.org/projects/SDL_mixer/
+SDL_ttf: https://www.libsdl.org/projects/SDL_ttf/
+SDL2, samt dess tillägg installeras alla på samma sätt. Under utvecklingprocessen har kompilatorn MinGw använts för att kompilera. I detta fall är då bara att kopiera över mapparna “bin”,”include”, samt “lib” och dess innehåll i motsvarande mappar (med samma namn) i MinGw installations-mappen.
+7.1.2 Starta servern
+Innan spelet kan startas, är det viktigt att en server redan är uppstartad. Servern startas genom att starta server.exe i spelets map. För att multiplayern ska fungera utanför LAN:et så krävs det också att serverns router har en “port-forward” på port 2000, till serverns lokala ip-adress.
+7.1.3 Konfigurera IP
+Innan klienten kan starta spelet så måste rätt IP konfigureras. Klienten hårdkodad att kommunicera med en server som ligger på samma maskin, den använder sig därför av loopback-adressen 127.0.0.1. För att ansluta sig till en annan server, måste därför användaren manuellt ändra “127.0.0.1” på alla ställen i koden, till valfri IP. Detta är en dålig lösning som inte hunnit lösas på ett finare sätt. Programmet måste kompileras igen, efter att IP:n har ändrats.
