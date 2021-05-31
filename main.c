@@ -6,14 +6,13 @@
 #include <stdlib.h>
 #include <time.h>
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_timer.h>
-#include <SDL2/SDL_image.h>
 
 #include "gameInit.h"
 #include "gameEvent.h"
 #include "gameRender.h"
+#include "gameQuit.h"
 
-int WinMain(void){
+int main(int argc, char* argv[]){
     srand(time(NULL));
     int close = 0;
     GIO.initedGame = false;
@@ -22,7 +21,7 @@ int WinMain(void){
         if(GIO.gameOver) initGame();
         close = mainGameEvent();
         renderGame();
-    }while(close != 1);
-
-    SDL_Quit();
+    } while (close != 1); {
+        quitGame();
+    }
 }

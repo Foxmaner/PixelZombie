@@ -4,17 +4,39 @@
 #include <stdio.h>
 #include "gameInit.h"
 
-void setStartRender(int a);
 void renderBackground(InitSDL* iSDL, Background_Tiles backTiles);
 void renderHealthBar();
 void renderMenu();
+
+
+//Draws white canvas
+
 void SetRenderDrawColor();
+
 void clearRenderer();
-void renderAllZombies();
+//Render menu and all menu options with buttons to navigate
+void renderMenu();
+
+void renderTimeAndLevel();
+
+void renderBackground(InitSDL* iSDL, Background_Tiles backTiles);
+
+//Renders 0-3 hearts depending on players hitpoints
+void renderHealthBar();
+
+//Renders all alive players
 void renderAllPlayers();
+
+//Renders all alive zombies
+void renderAllZombies();
+
+//Renders bullet if shot
 void renderBullet();
+
 void renderPreset();
 
+//Renders menu at start and game over...
+//...when game start renders game
 void renderGame();
 
 #endif

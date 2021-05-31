@@ -26,38 +26,38 @@ PUBLIC Player createPlayer(int x, int y){
     p->PLAYER_POSITION_X = x;
     return p;
 }
-
+//sets player position to specific Y value
 PUBLIC void setPlayerPositionY(Player a, int y){
     a->PLAYER_POSITION_Y = y;
 }
-
+//sets player position to specific X value
 PUBLIC void setPlayerPositionX(Player a, int x){
     a->PLAYER_POSITION_X = x;
 }
 
-
+//returns player's specific X position
 PUBLIC int getPlayerPositionX(Player a){
     return a->PLAYER_POSITION_X;
 }
 
-
+//returns player's specific Y position
 PUBLIC int getPlayerPositionY(Player a){
     return a->PLAYER_POSITION_Y;
 }
-
+//returns player's specific width of texture
 PUBLIC int getPlayerWidth(){
     return PLAYER_WIDTH;
 }
-
+//returns player's specific height of texture
 PUBLIC int getPlayerHeight(){
     return PLAYER_HEIGTH;
 }
 
-PUBLIC int getPlayerHitpoint(int PlayerID){
+PUBLIC int getPlayerHitpoint(int PlayerID){ //returns player´s specific current health
     return PlayerInit.hitPoint[PlayerID];
 }
 
-PUBLIC void createAllPlayers(){
+PUBLIC void createAllPlayers(){ //Create all player with their own spawnpoint
     for(int i = 0; i < PlayerInit.nrOfPlayers; i++){
         PlayerInit.p[i] = createPlayer(getSpawnPointX(i), getSpawnPointY(i));
         PlayerInit.pPosition[i].x = getPlayerPositionX(PlayerInit.p[i]);
@@ -65,10 +65,11 @@ PUBLIC void createAllPlayers(){
         PlayerInit.pPosition[i].w = 64;
         PlayerInit.pPosition[i].h = 64;
         PlayerInit.hitPoint[i] = 3;
+        PlayerInit.alive[i] = true;
     }
 }
 
-PUBLIC int getSpawnPointX(int a){
+PUBLIC int getSpawnPointX(int a){ //Decides what X value the player will spawn on
     if(a == 0)
         return zSpawnPointX0;
     else if(a == 1)
@@ -79,7 +80,7 @@ PUBLIC int getSpawnPointX(int a){
         return zSpawnPointX3;
 }
 
-PUBLIC int getSpawnPointY(int a){
+PUBLIC int getSpawnPointY(int a){ //Decides what Y value the player will spawn on
     if(a == 0){
         return zSpawnPointY0;
     }
@@ -92,15 +93,4 @@ PUBLIC int getSpawnPointY(int a){
     else if(a==3){
         return zSpawnPointY3;
     }
-}
-
-PUBLIC void hurtPlayer(int *a){
-    printf("heres johnny");
-    /*if(a->hitPoint == 0){
-        printf("heres johhny");
-        a->hitPoint = 3;
-        setMenuInitiaited(2);
-        setSelect(2);
-    }*/
-    printf("\n %d \n", a);
 }

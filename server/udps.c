@@ -20,9 +20,7 @@ void sendId(int playerId, Uint32 selectedIp, Uint32 selectedPort);
 int WinMain(int argc, char **argv)
 {
     Uint32 IPclient[4]={0}; 
-    Uint32 IPclient2=0;
     Uint32 portClient[4]={0}; 
-    Uint32 portClient2=0;
     int quit, a, b, reciveID, flag;
 	int nrOfConnections = 0;
  
@@ -57,6 +55,8 @@ int WinMain(int argc, char **argv)
 			printf("UDP Packet incoming\n");
 			printf("\tData:    %s\n", (char *)pRecive->data);
 			printf("\tAddress: %x %x\n", pRecive->address.host, pRecive->address.port);
+
+			//Checks if Ip and port has been set for each connection. 
             if(IPclient[0] == 0 && portClient[0] == 0){
                 printf("Client 1\n");
                 IPclient[0] = pRecive->address.host;
@@ -82,11 +82,8 @@ int WinMain(int argc, char **argv)
 				nrOfConnections =4;
 				sendId(3, pRecive->address.host, pRecive->address.port);
             }
-
+		//Recives data and then transfers it to pSent and sends it.
 		if(nrOfConnections > 0){
-			//printf("ELSE?\n");
-			//printf("Port %x ---", pRecive->address.port);
-			//printf("Port %x ---", portClient[0]);
 			for(int i=0; i < nrOfConnections; i++){
 				if (pRecive->address.port == portClient[i]){
 					printf("Recived data %d\n", i);
@@ -123,18 +120,19 @@ int WinMain(int argc, char **argv)
 	return EXIT_SUCCESS;
 }
 
-
+//Almost the same as in main but only send the Id. 
 void sendId(int playerId, Uint32 selectedIp, Uint32 selectedPort){
 	
-	printf("cool");
+	//printf("cool");
 	pSent->address.host = selectedIp;	/* Set the destination host */
 	pSent->address.port = selectedPort;
-	printf("cool2");
+	//printf("cool2");
 	//sscanf((char * )pRecive->data, "%d", playerId);
 	printf("%d\n", playerId);
 	sprintf((char *)pSent->data, "%d\n", playerId);
 	pSent->len = strlen((char *)pSent->data) + 1;
 	SDLNet_UDP_Send(sd, -1, pSent);
+	printf("SentId %d och %d", selectedIp , selectedPort);
 	
 
 }
