@@ -192,13 +192,13 @@ PUBLIC void killZombie(Zombie a, int i, int playerID){
 
 PUBLIC void respawnZombie(){
     int alive=0;   // All zombies dead?
-    //char txt[4]="";
     int newZombieId=0;
     for(int a = 0; a < ZombInit.nrOfZombies; a++){
         if(z[a]->alive) alive++;
     }
 
     if(!alive){  //if all zombies are dead, create a "new" wave of zombies.
+        currentLevel++;
         for(int a = 0; a < ZombInit.nrOfZombies; a++){
             z[a]->alive = 1;
             ZombInit.zPosition[a].x = getZSpawnPointX(a % 3);
