@@ -17,6 +17,8 @@ void clearRenderer();
 //Render menu and all menu options with buttons to navigate
 void renderMenu();
 
+void renderTimeAndLevel();
+
 void renderBackground(InitSDL* iSDL, Background_Tiles backTiles);
 
 //Renders 0-3 hearts depending on players hitpoints

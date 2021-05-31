@@ -90,7 +90,15 @@ void renderPreset(){
     SDL_RenderPresent(iSDL.renderer);
 }
 
+void renderTimeAndLevel(){
 
+    int level = getCurrentLevel();
+    createTextbox(iSDL.renderer, 20, 2, "Stage:", 36); 
+    //Level
+    createTextFromInt(iSDL.renderer,125,2,level,40);
+    //Timer
+    createTimer();
+}
 
 //Renders menu at start and game over...
 //...when game start renders game
@@ -99,7 +107,11 @@ void renderGame(){
     SetRenderDrawColor();
     clearRenderer();
 
-    if (checkIfGamestarted()!=1) {renderMenu();}
+    if (checkIfGamestarted()!=1){
+        //if(firstStart==0){
+            renderMenu();
+        //}
+    }
     
     if (checkIfGamestarted()==1){
         if(firstStart == 0){
@@ -107,11 +119,12 @@ void renderGame(){
             firstStart = 1;
         }
         SDL_PumpEvents();
-        renderBackground(&iSDL, backTiles);
+        renderBackground(&iSDL, backTiles);   
         renderHealthBar();
         renderAllZombies();
         renderBullet();
         renderAllPlayers();
+        renderTimeAndLevel();
     }
     renderPreset();
     //Set to a comfortable fps

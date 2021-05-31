@@ -9,6 +9,7 @@
 #include "gameEvent.h"
 #include "ttf.h"
 #include "player.h"
+#include "gameRender.h"
 
 #define PUBLIC /* empty */
 #define PRIVATE static
@@ -37,6 +38,7 @@ PUBLIC void hostinglobby(SDL_Renderer *renderer, int *back, int *hostinggame, in
     *startrender=checkmousestate(&StartbuttonPos[0],&StartbuttonPos[1],&StartbuttonPos[2],&StartbuttonPos[3]);
     *back=checkmousestate(&backbutton[0],&backbutton[1],&backbutton[2],&backbutton[3]);
     if (*back==1){
+        clearRenderer();
         (*hostinggame)=2;
     } 
 
@@ -50,8 +52,10 @@ PUBLIC void findinggameLobby(SDL_Renderer *renderer, int *back, int *lookingforg
     *startrender=sendSelect();
     *back=checkmousestate(&backbutton[0],&backbutton[1],&backbutton[2],&backbutton[3]);
     if (*back==1){
+        clearRenderer();
         (*lookingforgame)=2;
-    } 
+    }
+
 }
 //Render default main menu
 PUBLIC void mainMenu(SDL_Renderer *renderer, int *lookingforgame,int *hostinggame, int *credits, int *back){
@@ -65,11 +69,12 @@ PUBLIC void mainMenu(SDL_Renderer *renderer, int *lookingforgame,int *hostinggam
     *hostinggame=checkmousestate(&buttonPos2[0],&buttonPos2[1],&buttonPos2[2],&buttonPos2[3]);
     *credits=checkmousestate(&buttonPos3[0],&buttonPos3[1],&buttonPos3[2],&buttonPos3[3]);
     *back=2;
+
 }
 //Renders credits part of menu
 PUBLIC void creditMenu(SDL_Renderer *renderer, int *credits, int *back){
     int backbutton[4]={40,190,600,750};
-
+    
     createTextbox(iSDL.renderer, 40, 600, "Back", 36);
     //Creators
     createTextbox(iSDL.renderer, 40, 80, "Made by Anton C, Carl G, Eskil B, Markus H, Marcus M", 36); 
@@ -84,8 +89,9 @@ PUBLIC void creditMenu(SDL_Renderer *renderer, int *credits, int *back){
 
     *back=checkmousestate(&backbutton[0],&backbutton[1],&backbutton[2],&backbutton[3]);
     if (*back==1){
+        clearRenderer();
         (*credits)=2;    
-    }   
+    }
 }
 //Returns if host instance is active. 
 PUBLIC int CheckIfHost(){
@@ -96,8 +102,7 @@ PUBLIC int CheckIfLooking(){
     return lookingforgame;
 }
 
-PUBLIC void theMenu(SDL_Renderer *renderer)
-{
+PUBLIC void theMenu(SDL_Renderer *renderer){
     char AmountPlayers[2]="\0";
     char IPaddress[12]=" \0";
     SDL_RenderCopyEx(iSDL.renderer, MenuInit.mBackgroundMenu, &MenuInit.gMenubackground[0],&MenuInit.gMenubackground[0], 0, NULL, SDL_FLIP_NONE);

@@ -24,6 +24,8 @@ GameTimer timer;
 //Creates the initiall time values
 GameTimer initTime();
 
+int getSeconds();
+
 //Struct that holds varibles for background textures
 struct Background_Tiles{
     SDL_Texture *mTiles;

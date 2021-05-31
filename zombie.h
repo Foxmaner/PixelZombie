@@ -39,7 +39,7 @@ int getZombieHP(Zombie a);
 
 //Gives and spawn zombies at "random" spawnpoint and give random skin
 void createAllZombies();
-
+int getCurrentLevel();
 int getZSpawnPointX(int a);
 int getZSpawnPointY(int a);
 void changeZFrameX(int frameA, int frameB, int i); //Changes the zombie frame making it appear like its walking

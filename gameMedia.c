@@ -28,14 +28,13 @@ Mix_Chunk *sfxZombieBrain;
 
 void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit, Player_Init* PlayerInit, Bullet* b, Heart* h, Menu_Init* MenuInit){
     //Background for menu
-    SDL_Surface* gMenuBackgroundsurface = IMG_Load("resources/images/finalNight.png");
+    SDL_Surface* gMenuBackgroundsurface = IMG_Load("resources/images/finalDay.png");
     MenuInit->mBackgroundMenu = SDL_CreateTextureFromSurface(iSDL->renderer, gMenuBackgroundsurface);
     MenuInit->gMenubackground[0].x = 0;
     MenuInit->gMenubackground[0].y = 0;
     MenuInit->gMenubackground[0].w = 1200;
     MenuInit->gMenubackground[0].h = 1200;
 
-  
     //Map
     SDL_Surface* gTilesSurface = IMG_Load("resources/images/Textur32x32V8.PNG");
     backTiles->mTiles = SDL_CreateTextureFromSurface(iSDL->renderer, gTilesSurface);
@@ -296,5 +295,5 @@ void playZombieAttack(){
 
 void playZombieBrain(){
     if(rand() % 300 == 0)
-        Mix_PlayChannel(-1, sounds.sfxZombieBrain, 0);
+    Mix_PlayChannel(-1, sounds.sfxZombieBrain, 0);
 }

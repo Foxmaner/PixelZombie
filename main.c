@@ -12,7 +12,7 @@
 #include "gameRender.h"
 #include "gameQuit.h"
 
-int WinMain(void){
+int main(int argc, char* argv[]){
     srand(time(NULL));
     int close = 0;
     GIO.initedGame = false;
@@ -21,7 +21,7 @@ int WinMain(void){
         if(GIO.gameOver) initGame();
         close = mainGameEvent();
         renderGame();
-    }while(close != 1);
-
-    quitGame();
+    } while (close != 1); {
+        quitGame();
+    }
 }

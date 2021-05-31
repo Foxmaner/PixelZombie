@@ -19,7 +19,7 @@
 int lastDmgTakenTime = 0, currentDmgTakenTime = 0;
 int playerID = -1;
 int kordLista[4];
-int up_w,down_s,left_a,right_d,lctrl, select=2, IPletter=0, areyouhost=2,areyoulooking=2;
+int up_w,down_s,left_a,right_d,lctrl, select=2, IPletter=0, areyouhost=2,Lookingforgame=2;
 char IPBuffstring[12]=" \0";
 char AmountPlayersBuffstring[2]="4\0";
 
@@ -32,6 +32,10 @@ int checkmousestate(int *lowX,int *highX,int *lowY,int *highY){
 
     if (*lowX<MouseX && MouseX<*highX && *lowY<MouseY && MouseY<*highY){
         return 1;
+    }
+    else
+    {
+        return 0;
     }
 }
 
@@ -340,11 +344,9 @@ int mainGameEvent(){
     int LetterforIP;
     if(LetterforIP>12) LetterforIP=0;
     char bufIPaddress[12];
-
     char bufAmountPlayers[2]="4";
     areyouhost=CheckIfHost();
-    areyoulooking=CheckIfLooking();
-    const Uint8 *state = SDL_GetKeyboardState(NULL);
+    Lookingforgame=CheckIfLooking();
     int close_requested = 0;
     if (select!=1){
         select=checkIfGamestarted();
@@ -380,11 +382,12 @@ int mainGameEvent(){
         z[kordLista[1]]->alive = 0;
     }
     else if(kordLista[3]==3){
-        if (areyoulooking==1){
+        if (Lookingforgame==1){
             select=kordLista[1];
             PlayerInit.nrOfPlayers = kordLista[2];
         }
     }
+
     else if(kordLista[3]==4){
         PlayerInit.alive[kordLista[0]] = kordLista[1];
         printf("%d dog", kordLista[0]);
@@ -428,20 +431,19 @@ int mainGameEvent(){
         playerCollisionWithMap();
         isGameOver();
     }
-
 }
 //Keyboard to read specific keystrokes made towards IP address or number of players
 int MenuKeyboard(SDL_Event event,char buf[],char buf2[], int *LetterforIP){
 
     if (event.key.keysym.sym==SDLK_0)
     {
-        if (areyoulooking==1 && select!=1){
+        if (Lookingforgame==1 && select!=1){
             buf[*LetterforIP]='0';
         }
     }
     if (event.key.keysym.sym==SDLK_1)
     {
-        if (areyoulooking==1 && select!=1){
+        if (Lookingforgame==1 && select!=1){
         buf[*LetterforIP]='1'; 
         }
         if (areyouhost==1 && select!=1)
@@ -452,7 +454,7 @@ int MenuKeyboard(SDL_Event event,char buf[],char buf2[], int *LetterforIP){
     }
     if (event.key.keysym.sym==SDLK_2)
     {
-        if (areyoulooking==1 && select!=1){
+        if (Lookingforgame==1 && select!=1){
             buf[*LetterforIP]='2';
         }
         if (areyouhost==1 && select!=1){
@@ -462,7 +464,7 @@ int MenuKeyboard(SDL_Event event,char buf[],char buf2[], int *LetterforIP){
     }
     if (event.key.keysym.sym==SDLK_3)
     {
-        if (areyoulooking==1 && select!=1){
+        if (Lookingforgame==1 && select!=1){
             buf[*LetterforIP]='3';
         }
         if (areyouhost==1 && select!=1){
@@ -472,7 +474,7 @@ int MenuKeyboard(SDL_Event event,char buf[],char buf2[], int *LetterforIP){
     }
     if (event.key.keysym.sym==SDLK_4)
     {
-        if (areyoulooking==1 && select!=1){
+        if (Lookingforgame==1 && select!=1){
             buf[*LetterforIP]='4';
         }
         if (areyouhost==1 && select!=1){
@@ -482,43 +484,43 @@ int MenuKeyboard(SDL_Event event,char buf[],char buf2[], int *LetterforIP){
     }
     if (event.key.keysym.sym==SDLK_5)
     {
-        if (areyoulooking==1 && select!=1){
+        if (Lookingforgame==1 && select!=1){
             buf[*LetterforIP]='5';
         }    
     }
     if (event.key.keysym.sym==SDLK_6)
     {
-        if (areyoulooking==1 && select!=1){
+        if (Lookingforgame==1 && select!=1){
             buf[*LetterforIP]='6';
         }
     }
     if (event.key.keysym.sym==SDLK_7)
     {
-        if (areyoulooking==1 && select!=1){
+        if (Lookingforgame==1 && select!=1){
             buf[*LetterforIP]='7';
         }
     }
     if (event.key.keysym.sym==SDLK_8)
     {
-        if (areyoulooking==1 && select!=1){
+        if (Lookingforgame==1 && select!=1){
             buf[*LetterforIP]='8';
         }
     }
     if (event.key.keysym.sym==SDLK_9)
     {
-        if (areyoulooking==1 && select!=1){
+        if (Lookingforgame==1 && select!=1){
             buf[*LetterforIP]='9';
         }
     }
     if (event.key.keysym.sym==SDLK_PERIOD)
     {
-        if (areyoulooking==1 && select!=1){
+        if (Lookingforgame==1 && select!=1){
             buf[*LetterforIP]='.';
         }
     }
 
     strcpy(AmountPlayersBuffstring,buf2);    
-    if (areyoulooking==1){
+    if (Lookingforgame==1){
         (*LetterforIP)++;
         buf[*LetterforIP]='\0';
         strcpy(IPBuffstring,buf);

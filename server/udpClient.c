@@ -3,6 +3,7 @@
 #include <string.h>
 #include "udpClient.h"
 #include "SDL2/SDL_net.h"
+#include <SDL2/SDL.h>
 
 UDPsocket sd;
 IPaddress srvadd;

@@ -25,12 +25,12 @@ PRIVATE int zSpawnPointY1 = 1224;
 PRIVATE int zSpawnPointX2 = 1224;
 PRIVATE int zSpawnPointY2 = 360;
 
-/* int currentLevel=1;
+int currentLevel=1;
 
 int getCurrentLevel(){
     return currentLevel;
 }
-*/
+
 PUBLIC Zombie createZombie(int x, int y){  //Allocate memory to create a zombie, must make free when done.
     Zombie z = malloc(sizeof(struct zombie_type));
     z->ZOMBIE_POSITION_Y = y;
@@ -208,9 +208,7 @@ PUBLIC void respawnZombie(){
         newZombieId = ZombInit.nrOfZombies;
         printf("%d\n",newZombieId);
         ZombInit.nrOfZombies+=2;
-        printf("nr# %d\n",ZombInit.nrOfZombies);
-        //currentLevel++; sprintf(txt,"%d",currentLevel);
-        //createTextbox(iSDL.renderer,40,40,txt,20);                                                        //FIX
+        printf("nr# %d\n",ZombInit.nrOfZombies);                                                   
         for(int i = newZombieId; i < newZombieId+2; i++){ //Create 2 more zombies each wave
             z[i] = createZombie(getZSpawnPointX(i % 3),getZSpawnPointY(i % 3));
             ZombInit.zPosition[i].x = getZombiePositionX(z[i]);
@@ -228,5 +226,8 @@ PUBLIC int msTimer(int *pCurrentTime, int *pLastRecordedTime, int ms){ //Wait x 
         *pLastRecordedTime = *pCurrentTime;
         return 1;
     }
-    else return 0;
+    else 
+    {
+        return 0;
+    }
 }

@@ -18,7 +18,7 @@
 
 
 int tempID = -1; 
-
+int tempCreate = 1;
 
 //Creates inital time values for in-game clock
 
@@ -101,34 +101,35 @@ void startGameTimer(){
     }
 }
 
+    int getSeconds(){
+        return timer.second;
+    }
+
 
 //Calls all initilizers
 void initGame(){
 
     PlayerInit.playerID;
-    
-
     //Only initilizes once
 
     if(!GIO.initedGame){
         initSDL();
         initWindow();
         initAudio();
-        PlayerInit.nrOfPlayers = 2;
         ZombInit.nrOfZombies = 6;
         GIO.initedGame = true;
     }
     ///Initilizes at start of game and at every game over
     initTime();
     createHeart();
-    createAllZombies();
-
+        createAllZombies();
+        createAllPlayers();
+        tempCreate=0;
     //Initilizes a connection to server
     sendData(10,0,0,"127.0.0.1" ,PlayerInit.playerID);
     PlayerInit.nrOfPlayers = 4;
     printf("Player ID  %d \n", PlayerInit.playerID);
 
-    createAllPlayers();
     createBullet();
     loadMedia(&iSDL, &backTiles, &ZombInit, &PlayerInit, &b, &h, &MenuInit);
     Mix_HaltMusic();
