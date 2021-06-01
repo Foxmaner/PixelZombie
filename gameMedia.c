@@ -15,17 +15,6 @@
 #include "server/udpClient.h"
 #include "gameEvent.h"
 
-
-Mix_Music *bgGameMusic;
-Mix_Music *bgMenuMusic;
-
-Mix_Chunk *sfxPistolShot;
-Mix_Chunk *sfxPlayerHurt;
-Mix_Chunk *sfxPlayerDie;
-Mix_Chunk *sfxZombieDie;
-Mix_Chunk *sfxZombieAttack;
-Mix_Chunk *sfxZombieBrain;
-
 void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit, Player_Init* PlayerInit, Bullet* b, Heart* h, Menu_Init* MenuInit){
     //Background for menu
     SDL_Surface* gMenuBackgroundsurface = IMG_Load("resources/images/finalDay.png");
@@ -62,7 +51,7 @@ void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit,
     //O X O O
     //O O O O
     for(int i = 8; i < 16; i++){
-        //ZombInit->gZombie[i].x = (108 * (i % 2)) + 166;       This line does not work for some reason, even though the exact same line reoccurs at line 77
+        //ZombInit->gZombie[i].x = (108 * (i % 2)) + 166;       This line does not work for some reason, even though the exact same line(though different [i]values) reoccurs at line 77
         if(i % 2 == 0) ZombInit->gZombie[i].y = (54 * (i % 8)) / 2;
         else ZombInit->gZombie[i].y = ZombInit->gZombie[i-1].y;
         ZombInit->gZombie[i].w = 43;

@@ -350,7 +350,9 @@ int mainGameEvent(){
     int close_requested = 0;
     if (select!=1){
         select=checkIfGamestarted();
-        Mix_HaltMusic();
+        if(select==1){
+            Mix_HaltMusic();
+        }
     }
 
     // Handels all information recived from the server and updates the character with that id
@@ -397,22 +399,21 @@ int mainGameEvent(){
     //Game events 
 
     SDL_Event event;
-    while(SDL_PollEvent(&event)){ 
+    while(SDL_PollEvent(&event)){
         if(event.type == SDL_QUIT){
             close_requested = 1;
             return close_requested;
-            } 
-            playBgGameMusic();
-            if(event.type == SDL_KEYDOWN){
-                if (select == 1){
-                    sendData(0, PlayerInit.pPosition[playerID].x, PlayerInit.pPosition[playerID].y, "127.0.0.1", playerID);
-                    pressedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
-                }
-                MenuKeyboard(event, bufIPaddress, bufAmountPlayers, &LetterforIP);
+        }
+        if(event.type == SDL_KEYDOWN){
+            if (select == 1){
+                sendData(0, PlayerInit.pPosition[playerID].x, PlayerInit.pPosition[playerID].y, "127.0.0.1", playerID);
+                pressedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
             }
-            if(event.type == SDL_KEYUP){
-                releasedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
-            }
+            MenuKeyboard(event, bufIPaddress, bufAmountPlayers, &LetterforIP);
+        }
+        if(event.type == SDL_KEYUP){
+            releasedKeyEvent(&up_w, &down_s, &left_a, &right_d, &lctrl, event);
+        }
     }
 
     //Game Logic

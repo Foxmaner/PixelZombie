@@ -21,7 +21,7 @@ int main(int argc, char* argv[]){
         if(GIO.gameOver) initGame();
         close = mainGameEvent();
         renderGame();
-    } while (close != 1); {
-        quitGame();
-    }
+    }while (close != 1);
+        
+    quitGame();
 }
