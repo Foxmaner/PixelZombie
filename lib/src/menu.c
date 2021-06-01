@@ -9,6 +9,7 @@
 #include "../include/ttf.h"
 #include "../include/player.h"
 #include "../include/gameRender.h"
+#include <SDL2/SDL_mixer.h>
 
 #define PUBLIC /* empty */
 #define PRIVATE static
@@ -49,6 +50,7 @@ PUBLIC void findinggameLobby(SDL_Renderer *renderer, int *back, int *lookingforg
     createTextbox(iSDL.renderer, 300, 40,  IPaddress, 36); 
     createTextbox(iSDL.renderer, 40, 600, "Back", 36);
     *startrender=sendSelect();
+    if(*startrender==1) Mix_HaltMusic();
     *back=checkmousestate(&backbutton[0],&backbutton[1],&backbutton[2],&backbutton[3]);
     if (*back==1){
         clearRenderer();
@@ -111,14 +113,14 @@ PUBLIC void theMenu(SDL_Renderer *renderer){
     if (lookingforgame!=1 && credits!=1 && lookingforgame!=1 && hostinggame!=1){
         mainMenu(iSDL.renderer, &lookingforgame, &hostinggame, &credits, &back);
     }
-    //None host lobby
-    if (lookingforgame==1){
-        findinggameLobby(iSDL.renderer, &back, &lookingforgame, &startrender,IPaddress);
-    }
     //Host session lobby
     if (hostinggame==1)
     {
         hostinglobby(iSDL.renderer, &back, &hostinggame, &startrender,AmountPlayers);
+    }
+    //None host lobby
+    if (lookingforgame==1){
+        findinggameLobby(iSDL.renderer, &back, &lookingforgame, &startrender,IPaddress);
     }
     //Credits for creators and artists
     if (credits==1)
