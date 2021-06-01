@@ -263,26 +263,32 @@ void playBgMenuMusic(){
 }
 
 void playPistolShot(){
+    Mix_VolumeChunk(sounds.sfxPistolShot, MIX_MAX_VOLUME/2);
     Mix_PlayChannel(-1, sounds.sfxPistolShot, 0);
 }
 
 void playPlayerHurt(){
+    Mix_VolumeChunk(sounds.sfxPlayerHurt, MIX_MAX_VOLUME/2);
     Mix_PlayChannel(-1, sounds.sfxPlayerHurt, 0);
 }
 
 void playPlayerDie(){
+    Mix_VolumeChunk(sounds.sfxPlayerDie, MIX_MAX_VOLUME/2);
     Mix_PlayChannel(-1, sounds.sfxPlayerDie, 0);
 }
 
 void playZombieDie(){
+    Mix_VolumeChunk(sounds.sfxZombieDie, MIX_MAX_VOLUME/2);
     Mix_PlayChannel(-1, sounds.sfxZombieDie, 0);
 }
 
 void playZombieAttack(){
+    Mix_VolumeChunk(sounds.sfxZombieAttack, MIX_MAX_VOLUME/2);
     Mix_PlayChannel(-1, sounds.sfxZombieAttack, 0);
 }
 
 void playZombieBrain(){
+    Mix_VolumeChunk(sounds.sfxZombieBrain, MIX_MAX_VOLUME/2);
     if(rand() % 300 == 0)
     Mix_PlayChannel(-1, sounds.sfxZombieBrain, 0);
 }

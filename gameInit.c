@@ -78,6 +78,7 @@ void initRenderer(SDL_Window* pWin){
 void initAudio(){
     if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0 )
         printf("Error: %s", Mix_GetError());
+    Mix_VolumeMusic(MIX_MAX_VOLUME/2);
 }
 
 //Starts the heads-up-display game timer
