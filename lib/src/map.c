@@ -1,4 +1,4 @@
-#include "map.h"
+#include "../include/map.h"
 
 #define PUBLIC /* empty */
 #define PRIVATE static

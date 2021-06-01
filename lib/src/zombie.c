@@ -4,9 +4,9 @@
 #include <stdbool.h>
 #include <SDL2/SDL.h>
 
-#include "zombie.h"
-#include "gameInit.h"
-#include "server/udpClient.h"
+#include "../include/zombie.h"
+#include "../include/gameInit.h"
+#include "../../server/udpClient.h"
 
 #define PUBLIC /* empty */
 #define PRIVATE static

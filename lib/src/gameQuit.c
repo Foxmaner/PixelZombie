@@ -5,9 +5,9 @@
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_mixer.h>
 
-#include "gameQuit.h"
-#include "gameInit.h"
-#include "gameMedia.h"
+#include "../include/gameQuit.h"
+#include "../include/gameInit.h"
+#include "../include/gameMedia.h"
 
 void quitGame(){
     Mix_FreeMusic(music.bgGameMusic);

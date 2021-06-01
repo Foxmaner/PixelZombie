@@ -7,10 +7,10 @@
 #include <time.h>
 #include <SDL2/SDL.h>
 
-#include "gameInit.h"
-#include "gameEvent.h"
-#include "gameRender.h"
-#include "gameQuit.h"
+#include "lib/include/gameInit.h"
+#include "lib/include/gameEvent.h"
+#include "lib/include/gameRender.h"
+#include "lib/include/gameQuit.h"
 
 int main(int argc, char* argv[]){
     srand(time(NULL));

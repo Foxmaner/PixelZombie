@@ -1,15 +1,14 @@
-
 #include <stdlib.h>
 #include <math.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-#include "gameInit.h"
-#include "menu.h"
-#include "gameEvent.h"
-#include "ttf.h"
-#include "player.h"
-#include "gameRender.h"
+#include "../include/gameInit.h"
+#include "../include/menu.h"
+#include "../include/gameEvent.h"
+#include "../include/ttf.h"
+#include "../include/player.h"
+#include "../include/gameRender.h"
 
 #define PUBLIC /* empty */
 #define PRIVATE static

@@ -6,14 +6,14 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
 
-#include "gameInit.h"
-#include "gameEvent.h"
-#include "gameMedia.h"
-#include "gameRender.h"
-#include "zombie.h"
-#include "player.h"
-#include "gameRender.h"
-#include "server/udpClient.h"
+#include "../include/gameInit.h"
+#include "../include/gameEvent.h"
+#include "../include/gameMedia.h"
+#include "../include/gameRender.h"
+#include "../include/zombie.h"
+#include "../include/player.h"
+#include "../include/gameRender.h"
+#include "../../server/udpClient.h"
 
 //Helps track time so players only take damage once per second
 int lastDmgTakenTime = 0, currentDmgTakenTime = 0;

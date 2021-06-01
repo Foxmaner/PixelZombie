@@ -6,14 +6,14 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
-#include "gameInit.h"
-#include "gameEvent.h"
-#include "map.h"
-#include "zombie.h"
-#include "player.h"
-#include "menu.h"
-#include "ttf.h"
-#include "server/udpClient.h"
+#include "../include/gameInit.h"
+#include "../include/gameEvent.h"
+#include "../include/map.h"
+#include "../include/zombie.h"
+#include "../include/player.h"
+#include "../include/menu.h"
+#include "../include/ttf.h"
+#include "../../server/udpClient.h"
 
 
 int firstStart = 0;

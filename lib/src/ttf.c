@@ -6,8 +6,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 
-#include "ttf.h"
-#include "gameInit.h"
+#include "../include/ttf.h"
+#include "../include/gameInit.h"
 
 #define PUBLIC /* empty */
 #define PRIVATE static

@@ -1,9 +1,9 @@
 #include <stdlib.h>
 #include <SDL2/SDL.h>
 
-#include "player.h"
-#include "gameEvent.h"
-#include "gameRender.h"
+#include "../include/player.h"
+#include "../include/gameEvent.h"
+#include "../include/gameRender.h"
 
 #define PUBLIC /* empty */
 #define PRIVATE static

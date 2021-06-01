@@ -5,13 +5,13 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
 
-#include "gameEvent.h"
-#include "gameInit.h"
-#include "gameMedia.h"
-#include "zombie.h"
-#include "player.h"
-#include "menu.h"
-#include "server/udpClient.h"
+#include "../include/gameEvent.h"
+#include "../include/gameInit.h"
+#include "../include/gameMedia.h"
+#include "../include/zombie.h"
+#include "../include/player.h"
+#include "../include/menu.h"
+#include "../../server/udpClient.h"
 
 #define WINDOW_WIDTH (1024)
 #define WINDOW_HEIGHT (1024)
