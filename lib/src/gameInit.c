@@ -16,12 +16,10 @@
 #define WINDOW_WIDTH (1024)
 #define WINDOW_HEIGHT (1024)
 
-
 int tempID = -1; 
 int tempCreate = 1;
 
 //Creates inital time values for in-game clock
-
 GameTimer initTime(){
     timer.second = 0;
     timer.minute = 0;
@@ -53,15 +51,15 @@ Bullet createBullet(){
 
 //Initilizes SDL VIDEO, TIMER & AUDIO
 void initSDL(){
-    if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER|SDL_INIT_AUDIO) != 0){
+    if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER|SDL_INIT_AUDIO) != 0){
         printf("error initializing SDL: %s\n", SDL_GetError());
     }
 }
 
 //Initilizes window and calls to initilize renderer
 void initWindow(){
-    iSDL.win = SDL_CreateWindow("Pixel Zombie", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT,0);
-    if (!iSDL.win){
+    iSDL.win = SDL_CreateWindow("Pixel Zombie", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, 0);
+    if(!iSDL.win){
         printf("error creating window: %s\n", SDL_GetError());
         SDL_Quit();
     }
@@ -76,9 +74,10 @@ void initRenderer(SDL_Window* pWin){
 
 //Initilizes audio frequency, format, channels & chunk
 void initAudio(){
-    if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0 )
+    if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0){
         printf("Error: %s", Mix_GetError());
-    Mix_VolumeMusic(MIX_MAX_VOLUME/2);
+    }
+    Mix_VolumeMusic(MIX_MAX_VOLUME / 2);
 }
 
 //Starts the heads-up-display game timer
@@ -102,17 +101,14 @@ void startGameTimer(){
     }
 }
 
-    int getSeconds(){
-        return timer.second;
-    }
-
+int getSeconds(){
+    return timer.second;
+}
 
 //Calls all initilizers
 void initGame(){
-
     PlayerInit.playerID;
     //Only initilizes once
-
     if(!GIO.initedGame){
         initSDL();
         initWindow();
@@ -120,12 +116,14 @@ void initGame(){
         ZombInit.nrOfZombies = 6;
         GIO.initedGame = true;
     }
+    
     ///Initilizes at start of game and at every game over
     initTime();
     createHeart();
-        createAllZombies();
-        createAllPlayers();
-        tempCreate=0;
+    createAllZombies();
+    createAllPlayers();
+    tempCreate=0;
+
     //Initilizes a connection to server
     sendData(10,0,0,"127.0.0.1" ,PlayerInit.playerID);
     PlayerInit.nrOfPlayers = 4;

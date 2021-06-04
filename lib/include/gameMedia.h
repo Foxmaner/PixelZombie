@@ -10,7 +10,6 @@
 #include "player.h"
 #include "menu.h"
 
-
 struct MusicFiles{
     Mix_Music *bgGameMusic;
     Mix_Music *bgMenuMusic;
@@ -30,7 +29,6 @@ SoundEffects sounds;
 void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit, Player_Init* PlayerInit, Bullet* b, Heart* h, Menu_Init* MenuInit);
 
 //Play background music
-
 void playBgGameMusic();
 void playBgMenuMusic();
 

@@ -8,9 +8,7 @@ void renderBackground(InitSDL* iSDL, Background_Tiles backTiles);
 void renderHealthBar();
 void renderMenu();
 
-
 //Draws white canvas
-
 void SetRenderDrawColor();
 
 void clearRenderer();

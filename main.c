@@ -1,4 +1,3 @@
-//v0.1
 //Project start: 2021-04-15
 //Created by Eskil B, Marcus M, Carl G, Anton C and Markus H
 
@@ -22,6 +21,6 @@ int main(int argc, char* argv[]){
         close = mainGameEvent();
         renderGame();
     }while (close != 1);
-        
+
     quitGame();
 }

@@ -25,7 +25,7 @@ PRIVATE int zSpawnPointY1 = 1224;
 PRIVATE int zSpawnPointX2 = 1224;
 PRIVATE int zSpawnPointY2 = 360;
 
-int currentLevel=1;
+int currentLevel = 1;
 
 int getCurrentLevel(){
     return currentLevel;
@@ -48,7 +48,6 @@ PUBLIC int getZombiePositionX(Zombie a){
     return a->ZOMBIE_POSITION_X;
 }
 
-
 PUBLIC int getZombiePositionY(Zombie a){
     return a->ZOMBIE_POSITION_Y;
 }
@@ -67,7 +66,6 @@ PUBLIC int getZombieHitPoint(Zombie a){
 
 //Gives and spawn zombies at "random" spawnpoint and give random skin
 PUBLIC void createAllZombies(){
-    //createTextbox(iSDL.renderer,x,y,"1",size);
     for(int i = 0; i < ZombInit.nrOfZombies; i++){
         z[i] = createZombie(getZSpawnPointX(i % 3),getZSpawnPointY(i % 3));
         ZombInit.zPosition[i].x = getZombiePositionX(z[i]);
@@ -79,24 +77,31 @@ PUBLIC void createAllZombies(){
 }
 
 PUBLIC int getZSpawnPointX(int a){
-    if(a == 0)
+    if(a == 0){
         return zSpawnPointX0 + (rand() % 200);
-    else if(a == 1)
+    }
+    else if(a == 1){
         return zSpawnPointX1 + (rand() % 115);
-    else if(a == 2)
+    }
+    else if(a == 2){
         return zSpawnPointX2 - (rand() % 200);
+    }
 }
 
 PUBLIC int getZSpawnPointY(int a){
-    if(a == 0)
+    if(a == 0){
         return zSpawnPointY0 + (rand() % 65);
-    else if(a == 1)
+    }
+    else if(a == 1){
         return zSpawnPointY1 - (rand() % 200);
-    else if(a == 2)
+    }
+    else if(a == 2){
         return zSpawnPointY2 + (rand() % 65);
+    }
 }
 
-PUBLIC void changeZFrameX(int frameA, int frameB, int i){ //Changes the zombie frame making it appear like its walking
+//Changes the zombie frame making it appear like its walking
+PUBLIC void changeZFrameX(int frameA, int frameB, int i){
     zFrame[i].diagonal = 0;
     if(zFrame[i].frame == frameA && zFrame[i].counter >= 25){
         zFrame[i].frame = frameB;
@@ -107,7 +112,9 @@ PUBLIC void changeZFrameX(int frameA, int frameB, int i){ //Changes the zombie f
             zFrame[i].frame = frameA;
             zFrame[i].counter = 0;
         }
-        else (zFrame[i].counter)++;
+        else{
+            (zFrame[i].counter)++;
+        }
     }
     else{
         zFrame[i].frame = frameA;
@@ -115,7 +122,8 @@ PUBLIC void changeZFrameX(int frameA, int frameB, int i){ //Changes the zombie f
     }
 }
 
-PUBLIC void changeZFrameY(int frameA, int frameB, int i){ //Changes the zombie frame making it appear like its walking
+//Changes the zombie frame making it appear like its walking
+PUBLIC void changeZFrameY(int frameA, int frameB, int i){
     if((zFrame[i].diagonal)++ > 0){
         if(zFrame[i].frame == frameA && zFrame[i].counter >= 25){
             zFrame[i].frame = frameB;
@@ -126,7 +134,9 @@ PUBLIC void changeZFrameY(int frameA, int frameB, int i){ //Changes the zombie f
                 zFrame[i].frame = frameA;
                 zFrame[i].counter = 0;
             }
-            else (zFrame[i].counter)++;
+            else{
+                (zFrame[i].counter)++;
+            }
         }
         else{
             zFrame[i].frame = frameA;
@@ -152,10 +162,18 @@ PUBLIC bool checkZCollisionWithZ(SDL_Rect zombie1, SDL_Rect zombie2){
     z2Bottom = zombie2.y + zombie2.h - 10;
 
     //Check if sides collide with eachother
-    if(z1Top > z2Bottom) return false;
-    if(z1Bottom < z2Top) return false;
-    if(z1Left > z2Right) return false;
-    if(z1Right < z2Left) return false;
+    if(z1Top > z2Bottom){
+        return false;
+    }
+    if(z1Bottom < z2Top){
+        return false;
+    }
+    if(z1Left > z2Right){
+        return false;
+    }
+    if(z1Right < z2Left){
+        return false;
+    }
     //if sides are not outside eachother(aka collision), then return true
     return true;
 }
@@ -177,10 +195,18 @@ PUBLIC bool checkZCollisionWithP(SDL_Rect zombie, SDL_Rect player){
     plBottom = player.y + player.h;
     
     //Check if sides collide with eachother
-    if(zTop > plBottom) return false;
-    if(zBottom < plTop) return false;
-    if(zLeft > plRight) return false;
-    if(zRight < plLeft) return false;
+    if(zTop > plBottom){
+        return false;
+    }
+    if(zBottom < plTop){
+        return false;
+    }
+    if(zLeft > plRight){
+        return false;
+    }
+    if(zRight < plLeft){
+        return false;
+    }
     //if sides are not outside eachother(aka collision), then return true
     return true;
 }
@@ -191,13 +217,16 @@ PUBLIC void killZombie(Zombie a, int i, int playerID){
 }
 
 PUBLIC void respawnZombie(){
-    int alive=0;   // All zombies dead?
+    int alive=0;
     int newZombieId=0;
     for(int a = 0; a < ZombInit.nrOfZombies; a++){
-        if(z[a]->alive) alive++;
+        if(z[a]->alive){
+            alive++;
+        }
     }
-
-    if(!alive){  //if all zombies are dead, create a "new" wave of zombies.
+    
+    //if all zombies are dead, create a "new" wave of zombies.
+    if(!alive){
         currentLevel++;
         for(int a = 0; a < ZombInit.nrOfZombies; a++){
             z[a]->alive = 1;
@@ -206,9 +235,9 @@ PUBLIC void respawnZombie(){
         }
         
         newZombieId = ZombInit.nrOfZombies;
-        printf("%d\n",newZombieId);
-        ZombInit.nrOfZombies+=2;
-        printf("nr# %d\n",ZombInit.nrOfZombies);                                                   
+        printf("%d\n", newZombieId);
+        ZombInit.nrOfZombies += 2;
+        printf("nr# %d\n", ZombInit.nrOfZombies);
         for(int i = newZombieId; i < newZombieId+2; i++){ //Create 2 more zombies each wave
             z[i] = createZombie(getZSpawnPointX(i % 3),getZSpawnPointY(i % 3));
             ZombInit.zPosition[i].x = getZombiePositionX(z[i]);
@@ -226,7 +255,7 @@ PUBLIC int msTimer(int *pCurrentTime, int *pLastRecordedTime, int ms){ //Wait x 
         *pLastRecordedTime = *pCurrentTime;
         return 1;
     }
-    else 
+    else
     {
         return 0;
     }

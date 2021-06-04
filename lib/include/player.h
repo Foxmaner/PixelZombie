@@ -22,22 +22,39 @@ struct Player_Init{
     int hitPoint[4];
     int playerID;
     bool alive[4];
-
 };typedef struct Player_Init Player_Init;
 Player_Init PlayerInit;
 
-int getPlayerPositionX(Player a); //returns player's specific X position
-int getPlayerPositionY(Player a); //returns player's specific Y position
+//returns player's specific X position
+int getPlayerPositionX(Player a);
+
+//returns player's specific Y position
+int getPlayerPositionY(Player a);
+
 Player createPlayer(int x, int y);
-void setPlayerPositionY(Player a, int y); //sets player position to specific Y value
-void setPlayerPositionX(Player a, int x); //sets player position to specific X value
-int getPlayerWidth(); //returns player's specific width of texture
-int getPlayerHeight(); //returns player's specific height of texture
-int getPlayerHitpoint(int playerID); //returns player´s specific current health
-void createAllPlayers(); //Create all player with their own spawnpoint
-int getSpawnPointX(int a); //Decides what X value the player will spawn on
-int getSpawnPointY(int a); //Decides what Y value the player will spawn on
 
+//sets player position to specific Y value
+void setPlayerPositionY(Player a, int y);
 
+//sets player position to specific X value
+void setPlayerPositionX(Player a, int x);
+
+//returns player's specific width of texture
+int getPlayerWidth();
+
+//returns player's specific height of texture
+int getPlayerHeight();
+
+//returns player´s specific current health
+int getPlayerHitpoint(int playerID);
+
+//Create all player with their own spawnpoint
+void createAllPlayers();
+
+//Decides what X value the player will spawn on
+int getSpawnPointX(int a);
+
+//Decides what Y value the player will spawn on
+int getSpawnPointY(int a);
 
 #endif /* Player_h */

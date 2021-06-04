@@ -24,8 +24,6 @@ GameTimer timer;
 //Creates the initiall time values
 GameTimer initTime();
 
-int getSeconds();
-
 //Struct that holds varibles for background textures
 struct Background_Tiles{
     SDL_Texture *mTiles;
@@ -39,7 +37,7 @@ struct Bullet{
     SDL_Rect gBullet[1];
     SDL_Rect bPosition;
     bool shot;
-    int lastShotTime , currentShotTime;
+    int lastShotTime, currentShotTime;
     int bVelX, bVelY, bUpDown;
 };typedef struct Bullet Bullet;
 Bullet b;
@@ -80,6 +78,7 @@ void initAudio();
 //Values from 00h 00m 00s - 24h 59m 59s
 void startGameTimer();
 
+int getSeconds();
 
 //Calls all initilizers
 void initGame();

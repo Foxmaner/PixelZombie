@@ -28,7 +28,7 @@ void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit,
     SDL_Surface* gTilesSurface = IMG_Load("resources/images/Textur32x32V8.PNG");
     backTiles->mTiles = SDL_CreateTextureFromSurface(iSDL->renderer, gTilesSurface);
     SDL_FreeSurface(gTilesSurface);
-    for (int i = 0; i < 32; i++) {
+    for (int i = 0; i < 32; i++){
         backTiles->gTiles[i].x = i*getTileWidth();
         backTiles->gTiles[i].y = 0;
         backTiles->gTiles[i].w = getTileWidth();
@@ -39,12 +39,16 @@ void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit,
     SDL_Surface* gZombieSurface = IMG_Load("resources/images/ZombieSheetSizeX2.png");
     ZombInit->mZombie = SDL_CreateTextureFromSurface(iSDL->renderer, gZombieSurface);
     SDL_FreeSurface(gZombieSurface);
-    //X O O O   <---Where in the sprite
+    //X O O O   <---X is where in the sprite
     //O O O O
     for(int i = 0; i < 8; i++){
         ZombInit->gZombie[i].x = 108 * (i % 2) + 6;
-        if(i % 2 == 0) ZombInit->gZombie[i].y = (54 * i) / 2;
-        else ZombInit->gZombie[i].y = ZombInit->gZombie[i-1].y;
+        if(i % 2 == 0){
+            ZombInit->gZombie[i].y = (54 * i) / 2;
+        }
+        else{
+            ZombInit->gZombie[i].y = ZombInit->gZombie[i-1].y;
+        }
         ZombInit->gZombie[i].w = 43;
         ZombInit->gZombie[i].h = 54;
     }
@@ -52,12 +56,17 @@ void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit,
     //O O O O
     for(int i = 8; i < 16; i++){
         //ZombInit->gZombie[i].x = (108 * (i % 2)) + 166;       This line does not work for some reason, even though the exact same line(though different [i]values) reoccurs at line 77
-        if(i % 2 == 0) ZombInit->gZombie[i].y = (54 * (i % 8)) / 2;
-        else ZombInit->gZombie[i].y = ZombInit->gZombie[i-1].y;
+        if(i % 2 == 0){
+            ZombInit->gZombie[i].y = (54 * (i % 8)) / 2;
+        }
+        else{
+            ZombInit->gZombie[i].y = ZombInit->gZombie[i-1].y;
+        }
         ZombInit->gZombie[i].w = 43;
         ZombInit->gZombie[i].h = 54;
     }
-    ZombInit->gZombie[8].x = 166;            //Because line 60 does not work, it had to be manually inputed...
+    //Because line 60 does not work, it had to be manually inputed...
+    ZombInit->gZombie[8].x = 166;
     ZombInit->gZombie[9].x = 274;
     ZombInit->gZombie[10].x = 166;
     ZombInit->gZombie[11].x = 274;
@@ -69,13 +78,17 @@ void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit,
     //O X O O
     for(int i = 16; i < 24; i++){
         ZombInit->gZombie[i].x = (108 * (i % 2)) + 166;
-        if(i % 2 == 0) ZombInit->gZombie[i].y = ((54 * (i % 8)) / 2) + 212;
-        else ZombInit->gZombie[i].y = ZombInit->gZombie[i-1].y;
+        if(i % 2 == 0){
+            ZombInit->gZombie[i].y = ((54 * (i % 8)) / 2) + 212;
+        }
+        else{
+            ZombInit->gZombie[i].y = ZombInit->gZombie[i-1].y;
+        }
         ZombInit->gZombie[i].w = 43;
         ZombInit->gZombie[i].h = 54;
     }
     //O O O O
-    //O O X O       DOWN            It is possible to refine this code, not willing to spend that time now.
+    //O O X O       DOWN        It is possible to refine this code, not willing to spend that time now.
     for(int i = 24; i < 32; i++){
         ZombInit->gZombie[i].w = 45;
         ZombInit->gZombie[i].h = 54;
@@ -105,25 +118,21 @@ void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit,
     ZombInit->gZombie[31].y = 374;
 
     //Player
-
     SDL_Surface *gPlayerSurface = IMG_Load("resources/images/pixel-768x768-31.png");
     PlayerInit->mPlayer = SDL_CreateTextureFromSurface(iSDL->renderer, gPlayerSurface);
     SDL_Surface *gPlayerSurfaceB = IMG_Load("resources/images/pixel-768x768-31-b.png");
     PlayerInit->mPlayerBlack = SDL_CreateTextureFromSurface(iSDL->renderer, gPlayerSurfaceB);
-
-
     SDL_FreeSurface(gPlayerSurface);
 
-
-    //Ståendes med kroppen mot skärmen med pistol
+    //Standing
     PlayerInit->gPlayer[0].x = 8;
     PlayerInit->gPlayer[0].y = 400;
     PlayerInit->gPlayer[0].w = 64;
     PlayerInit->gPlayer[0].h = 64;
 
     //left and right
-    PlayerInit->gPlayer[1].x = 8; //Det är 96 mellan varje bild sidleds
-    PlayerInit->gPlayer[1].y = 210;//80 mellan varje rad
+    PlayerInit->gPlayer[1].x = 8;
+    PlayerInit->gPlayer[1].y = 210;
     PlayerInit->gPlayer[1].w = 64;
     PlayerInit->gPlayer[1].h = 64;
  
@@ -200,7 +209,7 @@ void loadMedia(InitSDL* iSDL, Background_Tiles* backTiles, ZombieInit* ZombInit,
     PlayerInit->gPlayer[15].y = 399;
     PlayerInit->gPlayer[15].w = 69;
     PlayerInit->gPlayer[15].h = 64;
-    //Shoot Up                              Not working...
+    //Shoot Up          Not working
     /*PlayerInit->gPlayer[16].x = 595;
     PlayerInit->gPlayer[16].y = 397;
     PlayerInit->gPlayer[16].w = 64;
@@ -263,32 +272,32 @@ void playBgMenuMusic(){
 }
 
 void playPistolShot(){
-    Mix_VolumeChunk(sounds.sfxPistolShot, MIX_MAX_VOLUME/2);
+    Mix_VolumeChunk(sounds.sfxPistolShot, MIX_MAX_VOLUME / 2);
     Mix_PlayChannel(-1, sounds.sfxPistolShot, 0);
 }
 
 void playPlayerHurt(){
-    Mix_VolumeChunk(sounds.sfxPlayerHurt, MIX_MAX_VOLUME/2);
+    Mix_VolumeChunk(sounds.sfxPlayerHurt, MIX_MAX_VOLUME / 2);
     Mix_PlayChannel(-1, sounds.sfxPlayerHurt, 0);
 }
 
 void playPlayerDie(){
-    Mix_VolumeChunk(sounds.sfxPlayerDie, MIX_MAX_VOLUME/2);
+    Mix_VolumeChunk(sounds.sfxPlayerDie, MIX_MAX_VOLUME / 2);
     Mix_PlayChannel(-1, sounds.sfxPlayerDie, 0);
 }
 
 void playZombieDie(){
-    Mix_VolumeChunk(sounds.sfxZombieDie, MIX_MAX_VOLUME/2);
+    Mix_VolumeChunk(sounds.sfxZombieDie, MIX_MAX_VOLUME / 2);
     Mix_PlayChannel(-1, sounds.sfxZombieDie, 0);
 }
 
 void playZombieAttack(){
-    Mix_VolumeChunk(sounds.sfxZombieAttack, MIX_MAX_VOLUME/2);
+    Mix_VolumeChunk(sounds.sfxZombieAttack, MIX_MAX_VOLUME / 2);
     Mix_PlayChannel(-1, sounds.sfxZombieAttack, 0);
 }
 
 void playZombieBrain(){
-    Mix_VolumeChunk(sounds.sfxZombieBrain, MIX_MAX_VOLUME/2);
+    Mix_VolumeChunk(sounds.sfxZombieBrain, MIX_MAX_VOLUME / 2);
     if(rand() % 300 == 0)
     Mix_PlayChannel(-1, sounds.sfxZombieBrain, 0);
 }

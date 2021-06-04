@@ -1,15 +1,17 @@
 #ifndef ttf_h
 #define ttf_h
 
-#define TEXTSIZE 10
-
 #include <stdio.h>
 #include <SDL2/SDL.h>
 
+#define TEXTSIZE 10
 
 void createTextbox(SDL_Renderer *renderer, int x, int y, char *text, int size);
-//Tar en ensiffrig int och gör om den till en char
+
+//Takes a digit and makes it a char
 void createTextFromInt(SDL_Renderer *renderer, int x, int y, int variable, int size);
-//Skapar en timer specifikt för att rendera tiden på skärmen.
+
+//Creates timer for HUD
 void createTimer();
+
 #endif

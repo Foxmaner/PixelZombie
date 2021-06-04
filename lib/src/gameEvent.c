@@ -19,9 +19,9 @@
 int lastDmgTakenTime = 0, currentDmgTakenTime = 0;
 int playerID = -1;
 int kordLista[4];
-int up_w,down_s,left_a,right_d,lctrl, select=2, IPletter=0, areyouhost=2,Lookingforgame=2;
-char IPBuffstring[12]=" \0";
-char AmountPlayersBuffstring[2]="4\0";
+int up_w, down_s, left_a, right_d, lctrl, select = 2, IPletter = 0, areyouhost = 2, Lookingforgame = 2;
+char IPBuffstring[12] = " \0";
+char AmountPlayersBuffstring[2] = "4\0";
 
 //Check if person running the game has clicked within a certain area
 int checkmousestate(int *lowX,int *highX,int *lowY,int *highY){
@@ -30,11 +30,10 @@ int checkmousestate(int *lowX,int *highX,int *lowY,int *highY){
         SDL_GetMouseState(&MouseX, &MouseY);
     }
 
-    if (*lowX<MouseX && MouseX<*highX && *lowY<MouseY && MouseY<*highY){
+    if (*lowX < MouseX && MouseX < *highX && *lowY < MouseY && MouseY < *highY){
         return 1;
     }
-    else
-    {
+    else{
         return 0;
     }
 }
@@ -47,12 +46,12 @@ void setSelect(int a){
 int getPlayerID(){
     return playerID;
 }
-//
-void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lctrl,SDL_Event event){
-    if (event.key.keysym.sym == SDLK_w){
+
+void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lctrl, SDL_Event event){
+    if(event.key.keysym.sym == SDLK_w){
         *up_w = 1;
     }
-    if (event.key.keysym.sym == SDLK_s){
+    if(event.key.keysym.sym == SDLK_s){
         *down_s = 1;
     } 
     if(event.key.keysym.sym == SDLK_a){
@@ -62,10 +61,12 @@ void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lct
         *right_d = 1;
     }
     if(event.key.keysym.sym == SDLK_LCTRL){
-        if(msTimer(&b.currentShotTime, &b.lastShotTime, 500)){  //13 rps
+        if(msTimer(&b.currentShotTime, &b.lastShotTime, 500)){  //Regulates the fire speed
             b.shot = true;
             playPistolShot();
-            if(PlayerInit.pFrame[playerID] >= 0 && PlayerInit.pFrame[playerID] <= 8) PlayerInit.pFrame[playerID] = 15;
+            if(PlayerInit.pFrame[playerID] >= 0 && PlayerInit.pFrame[playerID] <= 8){
+                PlayerInit.pFrame[playerID] = 15;
+            }
             sendData(1, 0,  0, "127.0.0.1", playerID);
         }
     }
@@ -74,16 +75,24 @@ void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lct
         b.bVelY = -1;
         b.bVelX = 0;
         b.bUpDown = 90;
-        if (PlayerInit.pFrame[playerID] != 9 && PlayerInit.pFrame[playerID] >= 10) PlayerInit.pFrame[playerID] = 9;
-        else PlayerInit.pFrame[playerID]++;
+        if(PlayerInit.pFrame[playerID] != 9 && PlayerInit.pFrame[playerID] >= 10){
+            PlayerInit.pFrame[playerID] = 9;
+        }
+        else{
+            PlayerInit.pFrame[playerID]++;
+        }
     }
     if(*down_s == 1){
         PlayerInit.pPosition[playerID].y += 6;
         b.bVelY = 1;
         b.bVelX = 0;
         b.bUpDown = 90;
-        if (PlayerInit.pFrame[playerID] != 12 && PlayerInit.pFrame[playerID] >= 13) PlayerInit.pFrame[playerID] = 12;
-        else PlayerInit.pFrame[playerID]++;
+        if(PlayerInit.pFrame[playerID] != 12 && PlayerInit.pFrame[playerID] >= 13){
+            PlayerInit.pFrame[playerID] = 12;
+        }
+        else{
+            PlayerInit.pFrame[playerID]++;
+        }
     }
     if(*left_a == 1){
         PlayerInit.pPosition[playerID].x -= 6;
@@ -91,8 +100,12 @@ void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lct
         b.bVelY = 0;
         b.bUpDown = 0;
         PlayerInit.flip[playerID] = SDL_FLIP_NONE;
-        if (PlayerInit.pFrame[playerID] >= 8) PlayerInit.pFrame[playerID] = 1;
-        else PlayerInit.pFrame[playerID]++;
+        if(PlayerInit.pFrame[playerID] >= 8){
+            PlayerInit.pFrame[playerID] = 1;
+        }
+        else{
+            PlayerInit.pFrame[playerID]++;
+        }
     }
     if(*right_d == 1){
         PlayerInit.pPosition[playerID].x += 6;
@@ -100,8 +113,12 @@ void pressedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lct
         b.bVelY = 0;
         b.bUpDown = 0;
         PlayerInit.flip[playerID] = SDL_FLIP_HORIZONTAL;
-        if (PlayerInit.pFrame[playerID] >= 8) PlayerInit.pFrame[playerID] = 1;
-        else PlayerInit.pFrame[playerID]++;
+        if(PlayerInit.pFrame[playerID] >= 8){
+            PlayerInit.pFrame[playerID] = 1;
+        }
+        else{
+            PlayerInit.pFrame[playerID]++;
+        }
     }
 }
 
@@ -122,7 +139,6 @@ void releasedKeyEvent(int *up_w, int *down_s, int *left_a, int *right_d, int *lc
         *right_d = 0;
         PlayerInit.pFrame[playerID] = 0;
     }
-
     if(event.key.keysym.sym==SDLK_LCTRL){
         if(PlayerInit.pFrame[playerID] == 15) PlayerInit.pFrame[playerID]=0;
     }
@@ -151,7 +167,7 @@ int closestPlayerToZombie(int zombieNr){
 
 //Zombies walk towards nearest player and changes frames (animation)
 void zombieTrackingPlayer(int i){
-    int playerToTrack=0;
+    int playerToTrack = 0;
     playerToTrack = closestPlayerToZombie(i);
     if(!PlayerInit.alive[playerToTrack]){                   //This solved zombies only following one specific player...
         for(int j = 0; j < PlayerInit.nrOfPlayers; j++){    //...the rootproblem may be that clients start at different...
@@ -190,11 +206,12 @@ void zombieCollisionWithZombie(int i){
         if(!z[i]->alive || j == i){
             break;
         }
-        else 
+        else{
             if(checkZCollisionWithZ(ZombInit.zPosition[i], ZombInit.zPosition[j])){
                 ZombInit.zPosition[i].x += 2;
                 ZombInit.zPosition[i].y += 2;
             }
+        }
     }
 }
 
@@ -215,13 +232,15 @@ void isGameOver(){
 
 //Checks if alive zombie collide with alive players...
 //...and removes player hitpoints if they do
-void zombieCollisionWithPlayer(int i, int *currentDmgTakenTime,int *lastDmgTakenTime){
-    if(z[i]->alive && PlayerInit.alive[playerID] && checkZCollisionWithP(ZombInit.zPosition[i],PlayerInit.pPosition[playerID])){
+void zombieCollisionWithPlayer(int i, int *currentDmgTakenTime, int *lastDmgTakenTime){
+    if(z[i]->alive && PlayerInit.alive[playerID] && checkZCollisionWithP(ZombInit.zPosition[i], PlayerInit.pPosition[playerID])){
         if(msTimer(currentDmgTakenTime, lastDmgTakenTime, 1000)){
             playZombieAttack();
             playPlayerHurt();
             PlayerInit.hitPoint[playerID]--;
-            if(PlayerInit.hitPoint[playerID] == 0) PlayerInit.alive[playerID] = false;
+            if(PlayerInit.hitPoint[playerID] == 0){
+                PlayerInit.alive[playerID] = false;
+            }
             sendData( 4, PlayerInit.alive[playerID], 0, "127.0.0.1", playerID);
         }
     }
@@ -235,52 +254,75 @@ void zombieCollisionWithMap(int i){
         ZombInit.zPosition[i].y = 15;
     }
     //BOTTOM with "Room" outside of map where zombies may spawn
-    if(ZombInit.zPosition[i].y > 1224) ZombInit.zPosition[i].y = 1224;
-    if(ZombInit.zPosition[i].y > 905 && (ZombInit.zPosition[i].x < 330 || ZombInit.zPosition[i].x > 455))
+    if(ZombInit.zPosition[i].y > 1224){
+        ZombInit.zPosition[i].y = 1224;
+    }
+    if(ZombInit.zPosition[i].y > 905 && (ZombInit.zPosition[i].x < 330 || ZombInit.zPosition[i].x > 455)){
         ZombInit.zPosition[i].y = 905;
-    else if(ZombInit.zPosition[i].y > 905 && ZombInit.zPosition[i].x < 335)
+    }
+    else if(ZombInit.zPosition[i].y > 905 && ZombInit.zPosition[i].x < 335){
         ZombInit.zPosition[i].x = 335;
-    else if(ZombInit.zPosition[i].y > 905 && ZombInit.zPosition[i].x > 450)
+    }
+    else if(ZombInit.zPosition[i].y > 905 && ZombInit.zPosition[i].x > 450){
         ZombInit.zPosition[i].x = 450;
+    }
     //LEFT with "Room" outside of map where zombies may spawn
-    if(ZombInit.zPosition[i].x < -200) ZombInit.zPosition[i].x = -200;
-    if(ZombInit.zPosition[i].x < 64 && (ZombInit.zPosition[i].y < 355 || ZombInit.zPosition[i].y > 430))
+    if(ZombInit.zPosition[i].x < -200){
+        ZombInit.zPosition[i].x = -200;
+    }
+    if(ZombInit.zPosition[i].x < 64 && (ZombInit.zPosition[i].y < 355 || ZombInit.zPosition[i].y > 430)){
         ZombInit.zPosition[i].x = 64;
-    else if(ZombInit.zPosition[i].x < 64 && ZombInit.zPosition[i].y < 360)
+    }
+    else if(ZombInit.zPosition[i].x < 64 && ZombInit.zPosition[i].y < 360){
         ZombInit.zPosition[i].y = 360;
-    else if(ZombInit.zPosition[i].x < 64 && ZombInit.zPosition[i].y > 425)
+    }
+    else if(ZombInit.zPosition[i].x < 64 && ZombInit.zPosition[i].y > 425){
         ZombInit.zPosition[i].y = 425;
+    }
     //RIGHT with "Room" outside of map where zombies may spawn
-    if(ZombInit.zPosition[i].x > 1224) ZombInit.zPosition[i].x = 1224;
-    if(ZombInit.zPosition[i].x > 930 && (ZombInit.zPosition[i].y < 355 || ZombInit.zPosition[i].y > 430))
+    if(ZombInit.zPosition[i].x > 1224){
+        ZombInit.zPosition[i].x = 1224;
+    }
+    if(ZombInit.zPosition[i].x > 930 && (ZombInit.zPosition[i].y < 355 || ZombInit.zPosition[i].y > 430)){
         ZombInit.zPosition[i].x = 930;
-    else if(ZombInit.zPosition[i].x > 930 && ZombInit.zPosition[i].y < 360)
+    }
+    else if(ZombInit.zPosition[i].x > 930 && ZombInit.zPosition[i].y < 360){
         ZombInit.zPosition[i].y = 360;
-    else if(ZombInit.zPosition[i].x > 930 && ZombInit.zPosition[i].y > 425)
+    }
+    else if(ZombInit.zPosition[i].x > 930 && ZombInit.zPosition[i].y > 425){
         ZombInit.zPosition[i].y = 425;
+    }
 }
 
 //Checks if players collide with map boundries...
 //...and adjust thier position accordingly.
 void playerCollisionWithMap(){
     //TOP
-    if(PlayerInit.pPosition[playerID].y < 15) PlayerInit.pPosition[playerID].y = 15;
+    if(PlayerInit.pPosition[playerID].y < 15){
+        PlayerInit.pPosition[playerID].y = 15;
+    }
     //BOTTOM
-    if(PlayerInit.pPosition[playerID].y > 905) PlayerInit.pPosition[playerID].y = 905;
+    if(PlayerInit.pPosition[playerID].y > 905){
+        PlayerInit.pPosition[playerID].y = 905;
+    }
     //LEFT
-    if(PlayerInit.pPosition[playerID].x < 30) PlayerInit.pPosition[playerID].x = 30;
+    if(PlayerInit.pPosition[playerID].x < 30){
+        PlayerInit.pPosition[playerID].x = 30;
+    }
     //RIGHT
-    if(PlayerInit.pPosition[playerID].x > 930) PlayerInit.pPosition[playerID].x = 930;
+    if(PlayerInit.pPosition[playerID].x > 930){
+        PlayerInit.pPosition[playerID].x = 930;
+    }
 }
 
 //If player has not shot, bullet follows player...
 //...when shot, shoots in direction and checks for collision.
 void bulletPositioning(int i){
-    if(!b.shot){    
+    if(!b.shot){
         b.bPosition.x = PlayerInit.pPosition[playerID].x + 25;
         b.bPosition.y = PlayerInit.pPosition[playerID].y + 20;
     }
-    else{   
+    else{
         if(!b.bVelY){
             b.bPosition.x += b.bVelX * 10;
             bulletCollisionWithZombieX(i);
@@ -335,28 +377,30 @@ void bulletCollisionWithZombieY(int i){
     }
 }
 
-
-
 //Handles game events and game logic
-
 int mainGameEvent(){
     playerID = PlayerInit.playerID;
     int LetterforIP;
-    if(LetterforIP>12) LetterforIP=0;
-    char bufIPaddress[12];
-    char bufAmountPlayers[2]="4";
-    areyouhost=CheckIfHost();
-    Lookingforgame=CheckIfLooking();
     int close_requested = 0;
-    if (select!=1){
-        select=checkIfGamestarted();
-        if(select==1){
+    char bufIPaddress[12];
+    char bufAmountPlayers[2] = "4";
+    
+    if(LetterforIP > 12){
+        LetterforIP = 0;
+    }
+
+    areyouhost = CheckIfHost();
+    Lookingforgame = CheckIfLooking();
+
+    if(select != 1){
+        select = checkIfGamestarted();
+        if(select == 1){
             Mix_HaltMusic();
         }
     }
 
-    // Handels all information recived from the server and updates the character with that id
-    //udpClient explains what flags(kordLista[3]) does   
+    // Handles all information recived from the server and updates the character with that id
+    //udpClient explains what flags(kordLista[3]) does
     reciveData("127.0.0.1", kordLista);
 
     if(kordLista[3] == 0){
@@ -365,39 +409,37 @@ int mainGameEvent(){
             PlayerInit.flip[kordLista[0]] = SDL_FLIP_HORIZONTAL;
         }
         else if((PlayerInit.pPosition[kordLista[0]].x) > (kordLista[1])){
-            PlayerInit.pFrame[kordLista[0]]=0;
+            PlayerInit.pFrame[kordLista[0]] = 0;
             PlayerInit.flip[kordLista[0]] = SDL_FLIP_NONE;
         }
         else if((PlayerInit.pPosition[kordLista[0]].y) < (kordLista[2])){
-            PlayerInit.pFrame[kordLista[0]]=14;
+            PlayerInit.pFrame[kordLista[0]] = 14;
         }
         else if((PlayerInit.pPosition[kordLista[0]].y) > (kordLista[2])){
-            PlayerInit.pFrame[kordLista[0]]=11;
+            PlayerInit.pFrame[kordLista[0]] = 11;
         }
         PlayerInit.pPosition[kordLista[0]].x = kordLista[1];
         PlayerInit.pPosition[kordLista[0]].y = kordLista[2];
 
-    }else if(kordLista[3]==1){
-        PlayerInit.pFrame[kordLista[0]]=15;
     }
-    else if(kordLista[3]==2){
+    else if(kordLista[3] == 1){
+        PlayerInit.pFrame[kordLista[0]] = 15;
+    }
+    else if(kordLista[3] == 2){
         z[kordLista[1]]->alive = 0;
     }
-    else if(kordLista[3]==3){
-        if (Lookingforgame==1){
-            select=kordLista[1];
+    else if(kordLista[3] == 3){
+        if (Lookingforgame == 1){
+            select = kordLista[1];
             PlayerInit.nrOfPlayers = kordLista[2];
         }
     }
-
-    else if(kordLista[3]==4){
+    else if(kordLista[3] == 4){
         PlayerInit.alive[kordLista[0]] = kordLista[1];
-        printf("%d dog", kordLista[0]);
     }
     //receiveCoordData(&kordLista, &playerID);
 
     //Game events 
-
     SDL_Event event;
     while(SDL_PollEvent(&event)){
         if(event.type == SDL_QUIT){
@@ -433,108 +475,100 @@ int mainGameEvent(){
         isGameOver();
     }
 }
+
 //Keyboard to read specific keystrokes made towards IP address or number of players
 int MenuKeyboard(SDL_Event event,char buf[],char buf2[], int *LetterforIP){
-
-    if (event.key.keysym.sym==SDLK_0)
-    {
-        if (Lookingforgame==1 && select!=1){
-            buf[*LetterforIP]='0';
+    if (event.key.keysym.sym == SDLK_0){
+        if (Lookingforgame == 1 && select != 1){
+            buf[*LetterforIP] = '0';
         }
     }
-    if (event.key.keysym.sym==SDLK_1)
-    {
-        if (Lookingforgame==1 && select!=1){
-        buf[*LetterforIP]='1'; 
+    if(event.key.keysym.sym == SDLK_1){
+        if(Lookingforgame == 1 && select != 1){
+            buf[*LetterforIP] = '1'; 
         }
-        if (areyouhost==1 && select!=1)
-        {
-            buf2[0]='1';
+        if(areyouhost == 1 && select != 1){
+            buf2[0] = '1';
             PlayerInit.nrOfPlayers = 1;
         }
     }
-    if (event.key.keysym.sym==SDLK_2)
-    {
-        if (Lookingforgame==1 && select!=1){
-            buf[*LetterforIP]='2';
+    if(event.key.keysym.sym == SDLK_2){
+        if(Lookingforgame == 1 && select != 1){
+            buf[*LetterforIP] = '2';
         }
-        if (areyouhost==1 && select!=1){
-            buf2[0]='2';
+        if(areyouhost == 1 && select != 1){
+            buf2[0] = '2';
             PlayerInit.nrOfPlayers = 2;
         }
     }
-    if (event.key.keysym.sym==SDLK_3)
-    {
-        if (Lookingforgame==1 && select!=1){
-            buf[*LetterforIP]='3';
+    if(event.key.keysym.sym == SDLK_3){
+        if(Lookingforgame == 1 && select != 1){
+            buf[*LetterforIP] = '3';
         }
-        if (areyouhost==1 && select!=1){
-            buf2[0]='3';
+        if(areyouhost == 1 && select != 1){
+            buf2[0] = '3';
             PlayerInit.nrOfPlayers = 3;
         }
     }
-    if (event.key.keysym.sym==SDLK_4)
-    {
-        if (Lookingforgame==1 && select!=1){
-            buf[*LetterforIP]='4';
+    if(event.key.keysym.sym == SDLK_4){
+        if(Lookingforgame == 1 && select != 1){
+            buf[*LetterforIP] = '4';
         }
-        if (areyouhost==1 && select!=1){
-            buf2[0]='4';
+        if(areyouhost == 1 && select != 1){
+            buf2[0] = '4';
             PlayerInit.nrOfPlayers = 4;
         }
     }
-    if (event.key.keysym.sym==SDLK_5)
-    {
-        if (Lookingforgame==1 && select!=1){
-            buf[*LetterforIP]='5';
-        }    
-    }
-    if (event.key.keysym.sym==SDLK_6)
-    {
-        if (Lookingforgame==1 && select!=1){
-            buf[*LetterforIP]='6';
+    if(event.key.keysym.sym == SDLK_5){
+        if(Lookingforgame == 1 && select != 1){
+            buf[*LetterforIP] = '5';
         }
     }
-    if (event.key.keysym.sym==SDLK_7)
-    {
-        if (Lookingforgame==1 && select!=1){
-            buf[*LetterforIP]='7';
+    if(event.key.keysym.sym == SDLK_6){
+        if (Lookingforgame == 1 && select != 1){
+            buf[*LetterforIP] = '6';
         }
     }
-    if (event.key.keysym.sym==SDLK_8)
-    {
-        if (Lookingforgame==1 && select!=1){
-            buf[*LetterforIP]='8';
+    if(event.key.keysym.sym == SDLK_7){
+        if(Lookingforgame == 1 && select != 1){
+            buf[*LetterforIP] = '7';
         }
     }
-    if (event.key.keysym.sym==SDLK_9)
-    {
-        if (Lookingforgame==1 && select!=1){
-            buf[*LetterforIP]='9';
+    if(event.key.keysym.sym == SDLK_8){
+        if(Lookingforgame == 1 && select != 1){
+            buf[*LetterforIP] = '8';
         }
     }
-    if (event.key.keysym.sym==SDLK_PERIOD)
-    {
-        if (Lookingforgame==1 && select!=1){
-            buf[*LetterforIP]='.';
+    if(event.key.keysym.sym == SDLK_9){
+        if(Lookingforgame == 1 && select != 1){
+            buf[*LetterforIP] = '9';
+        }
+    }
+    if(event.key.keysym.sym == SDLK_PERIOD){
+        if(Lookingforgame == 1 && select != 1){
+            buf[*LetterforIP] = '.';
         }
     }
 
-    strcpy(AmountPlayersBuffstring,buf2);    
-    if (Lookingforgame==1){
+    strcpy(AmountPlayersBuffstring,buf2);
+
+    if(Lookingforgame == 1){
         (*LetterforIP)++;
-        buf[*LetterforIP]='\0';
-        strcpy(IPBuffstring,buf);
+        buf[*LetterforIP] = '\0';
+        strcpy(IPBuffstring, buf);
     }
 }
+
 //returns the IP address that the non host has entered
-void GetIPaddress( char* strOut, unsigned int strSize ){
-   strncpy( strOut, IPBuffstring, strSize );
+void GetIPaddress(char* strOut, unsigned int strSize){
+   strncpy(strOut, IPBuffstring, strSize);
 }
+
 //returns the amount of players that host has entered 
-void GetAmountPlayers( char* strOut, unsigned int strSize ){
-    strncpy( strOut, AmountPlayersBuffstring, strSize );
+void GetAmountPlayers(char* strOut, unsigned int strSize){
+    strncpy(strOut, AmountPlayersBuffstring, strSize);
 }
+
 //Returns if game has been started
 int sendSelect(){
     return select;

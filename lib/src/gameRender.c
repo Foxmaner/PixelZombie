@@ -15,12 +15,7 @@
 #include "../include/ttf.h"
 #include "../../server/udpClient.h"
 
-
 int firstStart = 0;
-
-
-//Sets startrender in order to make game over
-
 
 //Draws white canvas
 void SetRenderDrawColor(){
@@ -35,7 +30,6 @@ void renderMenu(){
     theMenu(iSDL.renderer);
 }
 
-
 void renderBackground(InitSDL* iSDL, Background_Tiles backTiles){
     SDL_Rect position;
     position.y = 0;
@@ -43,10 +37,10 @@ void renderBackground(InitSDL* iSDL, Background_Tiles backTiles){
     position.h = getTileHeight();
     position.w = getTileWidth();
     
-    for (int i = 0; i<getTileColumns(); i++){
-        for (int j = 0; j<getTileRows(); j++){
-            position.y = i*getTileHeight();
-            position.x = j*getTileWidth();
+    for (int i = 0; i < getTileColumns(); i++){
+        for (int j = 0; j < getTileRows(); j++){
+            position.y = i * getTileHeight();
+            position.x = j * getTileWidth();
             SDL_RenderCopyEx(iSDL->renderer, backTiles.mTiles, &backTiles.gTiles[getTileGrid(i,j)], &position , 0, NULL,  SDL_FLIP_NONE);
         }
     }
@@ -61,7 +55,6 @@ void renderHealthBar(){
 
 //Renders all alive players
 void renderAllPlayers(){
-
     for(int i = 0; i < PlayerInit.nrOfPlayers; i++){
         if(getPlayerID() == i && PlayerInit.alive[i]){
             SDL_RenderCopyEx(iSDL.renderer, PlayerInit.mPlayer, &PlayerInit.gPlayer[PlayerInit.pFrame[i]], &PlayerInit.pPosition[i], 0, NULL, PlayerInit.flip[i]);
@@ -76,14 +69,17 @@ void renderAllPlayers(){
 //Renders all alive zombies
 void renderAllZombies(){
     for(int i = 0; i < ZombInit.nrOfZombies; i++){
-        if(z[i]->alive)
+        if(z[i]->alive){
             SDL_RenderCopyEx(iSDL.renderer, ZombInit.mZombie, &ZombInit.gZombie[zFrame[i].frame], &ZombInit.zPosition[i], 0, NULL, SDL_FLIP_NONE);
+        }
     }
 }
 
 //Renders bullet if shot
 void renderBullet(){
-    if(b.shot) SDL_RenderCopyEx(iSDL.renderer, b.mBullet, &b.gBullet[0], &b.bPosition, b.bUpDown, NULL, SDL_FLIP_NONE);
+    if(b.shot){
+        SDL_RenderCopyEx(iSDL.renderer, b.mBullet, &b.gBullet[0], &b.bPosition, b.bUpDown, NULL, SDL_FLIP_NONE);
+    }
 }
 
 void renderPreset(){
@@ -91,8 +87,8 @@ void renderPreset(){
 }
 
 void renderTimeAndLevel(){
-
     int level = getCurrentLevel();
+
     createTextbox(iSDL.renderer, 20, 2, "Stage:", 36); 
     //Level
     createTextFromInt(iSDL.renderer,125,2,level,40);
@@ -102,24 +98,21 @@ void renderTimeAndLevel(){
 
 //Renders menu at start and game over...
 //...when game start renders game
-
 void renderGame(){
     SetRenderDrawColor();
     clearRenderer();
 
-    if (checkIfGamestarted()!=1){
-        //if(firstStart==0){
-            renderMenu();
-        //}
+    if(checkIfGamestarted() != 1){
+       renderMenu();
     }
-    
-    if (checkIfGamestarted()==1){
+
+    if(checkIfGamestarted() == 1){
         if(firstStart == 0){
-            sendData(3,1,PlayerInit.nrOfPlayers,"127.0.0.1" ,PlayerInit.playerID); 
+            sendData(3, 1, PlayerInit.nrOfPlayers, "127.0.0.1" , PlayerInit.playerID);
             firstStart = 1;
         }
         SDL_PumpEvents();
-        renderBackground(&iSDL, backTiles);   
+        renderBackground(&iSDL, backTiles);
         renderHealthBar();
         renderAllZombies();
         renderBullet();

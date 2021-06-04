@@ -53,11 +53,13 @@ PUBLIC int getPlayerHeight(){
     return PLAYER_HEIGTH;
 }
 
-PUBLIC int getPlayerHitpoint(int PlayerID){ //returns player´s specific current health
+//returns player´s specific current health
+PUBLIC int getPlayerHitpoint(int PlayerID){
     return PlayerInit.hitPoint[PlayerID];
 }
 
-PUBLIC void createAllPlayers(){ //Create all player with their own spawnpoint
+//Create all player with their own spawnpoint
+PUBLIC void createAllPlayers(){
     for(int i = 0; i < PlayerInit.nrOfPlayers; i++){
         PlayerInit.p[i] = createPlayer(getSpawnPointX(i), getSpawnPointY(i));
         PlayerInit.pPosition[i].x = getPlayerPositionX(PlayerInit.p[i]);
@@ -68,19 +70,24 @@ PUBLIC void createAllPlayers(){ //Create all player with their own spawnpoint
         PlayerInit.alive[i] = true;
     }
 }
-
-PUBLIC int getSpawnPointX(int a){ //Decides what X value the player will spawn on
-    if(a == 0)
+//Decides what X value the player will spawn on
+PUBLIC int getSpawnPointX(int a){
+    if(a == 0){
         return zSpawnPointX0;
-    else if(a == 1)
+    }
+    else if(a == 1){
         return zSpawnPointX1;
-    else if(a == 2)
+    }
+    else if(a == 2){
         return zSpawnPointX2;
-    else if(a == 3)
+    }
+    else if(a == 3){
         return zSpawnPointX3;
+    }
 }
 
-PUBLIC int getSpawnPointY(int a){ //Decides what Y value the player will spawn on
+//Decides what Y value the player will spawn on
+PUBLIC int getSpawnPointY(int a){
     if(a == 0){
         return zSpawnPointY0;
     }

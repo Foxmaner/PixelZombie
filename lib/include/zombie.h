@@ -18,7 +18,7 @@ struct zombie_frame{
     int diagonal;
     int counter;
     int skin;
-}; typedef struct zombie_frame ZombieFrame;
+};typedef struct zombie_frame ZombieFrame;
 ZombieFrame zFrame[100];
 
 struct Zombie_Init{
@@ -26,12 +26,15 @@ struct Zombie_Init{
     SDL_Rect gZombie[32];
     int nrOfZombies;
     SDL_Rect zPosition[100];
-}; typedef struct Zombie_Init ZombieInit;
+};typedef struct Zombie_Init ZombieInit;
 ZombieInit ZombInit;
 
 int getZombiePositionX(Zombie a);
 int getZombiePositionY(Zombie a);
-Zombie createZombie(int x, int y); //Allocate memory to create a zombie, must make free when done.
+
+//Allocate memory to create a zombie, must make free when done.
+Zombie createZombie(int x, int y);
+
 void setZombiePositionY(Zombie a, int y);
 int getZombieWidth();
 int getZombieHeight();
@@ -42,15 +45,23 @@ void createAllZombies();
 int getCurrentLevel();
 int getZSpawnPointX(int a);
 int getZSpawnPointY(int a);
-void changeZFrameX(int frameA, int frameB, int i); //Changes the zombie frame making it appear like its walking
-void changeZFrameY(int frameA, int frameB, int i); //Changes the zombie frame making it appear like its walking
-bool checkZCollisionWithZ(SDL_Rect zombie1, SDL_Rect zombie2); //Check if zombies collide with eachother
-bool checkZCollisionWithP(SDL_Rect zombie, SDL_Rect player); //Check if zombies collide with player
+
+//Changes the zombie frame making it appear like its walking
+void changeZFrameX(int frameA, int frameB, int i); 
+void changeZFrameY(int frameA, int frameB, int i);
+
+//Check if zombies collide with eachother
+bool checkZCollisionWithZ(SDL_Rect zombie1, SDL_Rect zombie2);
+
+//Check if zombies collide with player
+bool checkZCollisionWithP(SDL_Rect zombie, SDL_Rect player);
 
 void killZombie(Zombie a, int i, int playerID);
 
-void respawnZombie(); //if all zombies are dead, create a "new" wave + 2 more zombies.
+//if all zombies are dead, create a "new" wave + 2 more zombies.
+void respawnZombie();
 
-int msTimer(int *pCurrentTime, int *pLastRecordedTime, int ms); //Wait x ms.
+//Wait x ms.
+int msTimer(int *pCurrentTime, int *pLastRecordedTime, int ms); 
 
 #endif /* Zombie_h */

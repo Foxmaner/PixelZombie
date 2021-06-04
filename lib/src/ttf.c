@@ -12,7 +12,7 @@
 #define PUBLIC /* empty */
 #define PRIVATE static
 
-PUBLIC void createTextbox(SDL_Renderer *renderer, int x, int y, char *text, int size) {
+PUBLIC void createTextbox(SDL_Renderer *renderer, int x, int y, char *text, int size){
     char *font_path;
     font_path = "resources/fonts/OpenSans-BoldItalic.ttf";
     TTF_Init();
@@ -41,37 +41,41 @@ PUBLIC void createTextbox(SDL_Renderer *renderer, int x, int y, char *text, int 
     TTF_CloseFont(font);
     SDL_DestroyTexture(texture);
 }
-//Tar en ensiffrig int och gör om den till en char
+
+//Takes one digit and makes it a char
 PUBLIC void createTextFromInt(SDL_Renderer *renderer, int x, int y, int variable, int size){
     char charValue[2] = "X";
-    charValue[0] = variable+ '0';
+    charValue[0] = variable + '0';
     createTextbox(renderer, x, y, charValue, size);
 }
-//Skapar en timer specifikt för att rendera tiden på skärmen.
+
+//Creates gametimer in HUD
 PUBLIC void createTimer(){
-    int Minutes=0, TwoletterMinutes=0, Seconds, TwoletterSeconds=0;
-    if (10>getSeconds()){
-        Seconds=getSeconds();
+    int Minutes = 0, TwoletterMinutes = 0, Seconds, TwoletterSeconds = 0;
+    if (10 > getSeconds()){
+        Seconds = getSeconds();
     }
-    else if(10<=getSeconds()){
-        Seconds=getSeconds()%10;
-        TwoletterSeconds=(getSeconds()-Seconds)/10;
+    else if(10 <= getSeconds()){
+        Seconds = getSeconds() % 10;
+        TwoletterSeconds = (getSeconds() - Seconds) / 10;
     }
     else{
-        Seconds=0;
+        Seconds = 0;
     }
-    createTextbox(iSDL.renderer,875,0,"S:",40);
-    createTextFromInt(iSDL.renderer,950,0,Seconds,40);
-    createTextFromInt(iSDL.renderer,925,0,TwoletterSeconds,40);
-    
-    Minutes=timer.minute;
-    if (timer.minute>10){
-        Minutes=timer.minute%10;
-        TwoletterMinutes=(timer.minute-Minutes)/10;
+
+    createTextbox(iSDL.renderer, 875, 0, "S:", 40);
+    createTextFromInt(iSDL.renderer, 950, 0, Seconds, 40);
+    createTextFromInt(iSDL.renderer, 925, 0, TwoletterSeconds, 40);
+
+    Minutes = timer.minute;
+    if(timer.minute > 10){
+        Minutes = timer.minute % 10;
+        TwoletterMinutes = (timer.minute - Minutes) / 10;
     }
-    createTextbox(iSDL.renderer,725,0,"M:",40);    
-    createTextFromInt(iSDL.renderer,825,0,Minutes,40);
-    createTextFromInt(iSDL.renderer,800,0,TwoletterMinutes,40);
-    createTextbox(iSDL.renderer,625,0,"H:",40);   
-    createTextFromInt(iSDL.renderer,685,0,timer.hour,40);
+
+    createTextbox(iSDL.renderer, 725, 0, "M:", 40);
+    createTextFromInt(iSDL.renderer, 825, 0, Minutes, 40);
+    createTextFromInt(iSDL.renderer, 800, 0, TwoletterMinutes, 40);
+    createTextbox(iSDL.renderer, 625, 0, "H:", 40);
+    createTextFromInt(iSDL.renderer, 685, 0, timer.hour, 40);
 }
