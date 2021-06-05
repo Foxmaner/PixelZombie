@@ -473,6 +473,7 @@ int mainGameEvent(){
         }
         playerCollisionWithMap();
         isGameOver();
+        printf(" ");    //1 player mode does not work unless this printf() is present, great success, very nice. nasa please give me job
     }
 }
 
