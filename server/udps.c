@@ -25,28 +25,28 @@ int main(int argc, char **argv)
 	int nrOfConnections = 0;
  
 	/* Initialize SDL_net */
-	if (SDLNet_Init() < 0){
+	if(SDLNet_Init() < 0){
 		fprintf(stderr, "SDLNet_Init: %s\n", SDLNet_GetError());
 		exit(EXIT_FAILURE);
 	}
  
 	/* Open a socket */
-	if (!(sd = SDLNet_UDP_Open(2000))){
+	if(!(sd = SDLNet_UDP_Open(2000))){
 		fprintf(stderr, "SDLNet_UDP_Open: %s\n", SDLNet_GetError());
 		exit(EXIT_FAILURE);
 	}
  
 	/* Make space for the packet */
-	if (!((pSent = SDLNet_AllocPacket(512)) && (pRecive = SDLNet_AllocPacket(512)))){
+	if(!((pSent = SDLNet_AllocPacket(512)) && (pRecive = SDLNet_AllocPacket(512)))){
 		fprintf(stderr, "SDLNet_AllocPacket: %s\n", SDLNet_GetError());
 		exit(EXIT_FAILURE);
 	}
  
 	/* Main loop */
 	quit = 0;
-	while (!quit){
+	while(!quit){
 		/* Wait a packet. UDP_Recv returns != 0 if a packet is coming */
-		if (SDLNet_UDP_Recv(sd, pRecive)){
+		if(SDLNet_UDP_Recv(sd, pRecive)){
 			printf("UDP Packet incoming\n");
 			printf("\tData:    %s\n", (char *)pRecive->data);
 			printf("\tAddress: %x %x\n", pRecive->address.host, pRecive->address.port);

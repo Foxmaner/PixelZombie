@@ -42,7 +42,7 @@ void sendData(int flag, int x_cord, int y_cord, char selectedIp[100], int player
 	}
 	else{
 		createConnection(selectedIp);
-		sendData(flag, x_cord, y_cord, selectedIp,playerID);
+		sendData(flag, x_cord, y_cord, selectedIp, playerID);
 	}
 }
 
